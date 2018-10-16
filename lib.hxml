@@ -1,0 +1,5 @@
+-cp src
+
+-lib castle
+-lib heaps
+-lib ecs

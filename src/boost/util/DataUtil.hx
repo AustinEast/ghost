@@ -8,28 +8,17 @@ class DataUtil {
 	 * NOTE: Grabbed from DJFlixel Library: https://github.com/johndimi/djFlixel
 	 * Copy an object's fields into target object. Overwrites the target object's fields.
 	 * Can work with Static Classes as well (as destination)
-	 * @param	node The Master object to copy fields from
+	 * @param	from The Master object to copy fields from
 	 * @param	into The Target object to copy fields to
 	 * @return	The resulting object
 	 */
 	public static function copy_fields(from:Dynamic, into:Dynamic):Dynamic {
-		if (from == null) {
-			// trace("Warning: No fields to copy from source, returning destination object");
-			return into;
-		}
-
-		if (into == null) {
-			trace("Warning: No fields on the target, copying source object");
-			into = Reflect.copy(from);
-		} else {
-			for (f in Reflect.fields(from)) {
-				Reflect.setField(into, f, Reflect.field(from, f));
-			}
-		}
+		if (from == null) return into;
+		if (into == null) into = Reflect.copy(from);
+		else for (f in Reflect.fields(from)) Reflect.setField(into, f, Reflect.field(from, f));
 
 		return into;
-	} //---------------------------------------------------;
-
+	}
 	/**
 	 * NOTE: Grabbed from DJFlixel Library: https://github.com/johndimi/djFlixel
 	 * Copy All Fields AND translates colors. Overwrites the target object's fields.
@@ -42,8 +31,7 @@ class DataUtil {
 	 * @return  The resulting object
 	 */
 	public static function copy_fields_c(from:Dynamic, ?into:Dynamic):Dynamic {
-		if (into == null)
-			into = {};
+		if (into == null) into = {};
 		if (from != null)
 			for (f in Reflect.fields(from)) {
 				var d:Dynamic = Reflect.field(from, f);

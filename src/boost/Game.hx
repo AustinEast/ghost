@@ -37,7 +37,7 @@ class Game extends hxd.App implements IDestroyable {
 	 * @param initial_state The Initial State the Game will load
 	 * @param options Optional Parameters to configure the Game
 	 */
-	public function new(initial_state:Class<GameState>, filesystem:FileSystemOptions, ?options:GameOptions) {
+	public function new(initial_state:Class<GameState>, filesystem:FileSystemOptions = FileSystemOptions.EMBED, ?options:GameOptions) {
 		super();
 
 		this.initial_state = initial_state;
@@ -52,6 +52,8 @@ class Game extends hxd.App implements IDestroyable {
 		ecs.systems.add(new ScaleSystem());
 
 		// Load the FileSystem
+		// If we dont have access to macros, just `initEmbed()`
+		#if macro
 		switch(filesystem) {
 			case EMBED:
 			hxd.Res.initEmbed();
@@ -60,6 +62,9 @@ class Game extends hxd.App implements IDestroyable {
 			case PAK:
 			hxd.Res.initPak();
 		}
+		#else 
+		hxd.Res.initEmbed();
+		#end
 	}
 
 	@:dox(hide) @:noCompletion
