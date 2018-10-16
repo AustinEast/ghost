@@ -1,0 +1,15 @@
+{
+    "name": "boostlib",
+    "license": "MIT",
+    "tags": [],
+    "classPath": "src",
+    "contributors": [
+      "kevinresol"
+    ],
+    "releasenote": "initial release",
+    "version": "0.0.1",
+    "dependencies": {
+      "heaps": "",
+      "ecs": ""
+    }
+  }

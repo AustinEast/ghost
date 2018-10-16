@@ -1,0 +1,12 @@
+# class paths
+-cp src
+# entry point
+-main Main
+# libraries
+-lib castle
+-lib heaps
+-lib ecs
+-lib boostlib
+# 
+-dce full
+-D standalone
