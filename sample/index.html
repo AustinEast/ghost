@@ -27,5 +27,13 @@
 <body>
     <canvas id="webgl"></canvas>
     <script src="bin/game.js"></script>
+    <script>
+        // Resize the canvas on window resize
+        window.addEventListener('resize', () => {
+            var canvas = document.getElementById('webgl')
+            canvas.style.width = "75%";
+            canvas.style.height = "75%";
+        }, false);
+    </script>
 </body>
 </html>
