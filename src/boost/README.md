@@ -4,7 +4,7 @@ The Source of boostlib
 
 ## Classes
 
-### Game.hx
+### Game
 The main entry point for a boostlib-powered game. Simply pass in a GameState and your configurations and you're ready to go!
 
 ### GameState
