@@ -11,6 +11,6 @@ More documentation coming soon!
 
 ## Usage
 
-See `samples`
+See `sample`
 
 ## TODO
