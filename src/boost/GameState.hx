@@ -58,6 +58,16 @@ class GameState implements IDestroyable {
         ecs.update(dt);
     }
 
+    /**
+     * Override this to run cleanup logic when closing the state
+     */
+    public function destroy() {
+        DestroyUtil.destroy(substate);
+        ecs.destroy();
+        local2d.remove();
+        local3d.remove();
+    }
+
     @:allow(boost.ecs.system.sys.StateSystem)
     function try_update(dt:Float) {
         if (persistent_update || substate == null) update(dt);
@@ -66,14 +76,6 @@ class GameState implements IDestroyable {
 		// 	reset_substate();
 		// } else 
         if (substate != null) substate.try_update(dt);
-    }
-
-    @:dox(hide) @:noCompletion
-    public function destroy() {
-        DestroyUtil.destroy(substate);
-        ecs.destroy();
-        local2d.remove();
-        local3d.remove();
     }
 
     // public function open_substate(substate:Class<GameState>) {

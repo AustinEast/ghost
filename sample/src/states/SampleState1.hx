@@ -11,7 +11,7 @@ import boost.ecs.system.physics.Arcade2D;
 import systems.ScreenWrapper;
 
 /**
- * Sample State 
+ * Sample State 1 - Pixel Art Stress Test
  */
 class SampleState1 extends GameState {
 
@@ -50,10 +50,10 @@ class SampleState1 extends GameState {
 
         // Add some info text
         // TODO: add text stuff into ECS 
+        fps = new h2d.Text(hxd.res.DefaultFont.get(), local2d);
         var entity_count_text = new h2d.Text(hxd.res.DefaultFont.get(), local2d);
         entity_count_text.text = 'Entities: $entity_count';
-        fps = new h2d.Text(hxd.res.DefaultFont.get(), local2d);
-        fps.y += 12;
+        entity_count_text.y += 12;
     }
 
     // This framework supports both using ECS Systems or a good old fashioned update loop to handle game logic.

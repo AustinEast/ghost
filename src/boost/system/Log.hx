@@ -98,8 +98,9 @@ class Log implements IDestroyable {
     }
 }
 
-enum LogType {
-    INFO;
-    WARNING;
-    ERROR;
+@:enum 
+abstract LogType (Int) {
+    var INFO    = 0;
+    var WARNING = 1;
+    var ERROR   = 2;
 }

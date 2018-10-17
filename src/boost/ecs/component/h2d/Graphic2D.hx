@@ -10,13 +10,15 @@ class Graphic2D extends Component {
 
 	public var animations:Map<String,Animation>;
 
-	public var current_animation:Animation;
-
 	public var animation_index:Int;
 
 	public var frames:Array<Tile>;
 
+	public var current_animation:Animation;
+
 	public var current_frame:Int;
+
+	public var animation_is_reserved:Bool;
 
 	public var visible(get, set):Bool;
 
@@ -60,14 +62,15 @@ class Graphic2D extends Component {
 
 	public function play_animation(name:String) {
 		if (animations.exists(name)) {
-			animation_index = 0;
 			current_animation = animations.get(name);
+			animation_index = current_animation.direction == REVERSE ? current_animation.frames.length : 0;
 		} else GM.log.warn('Animation `${name}` does not exist on this Entity');
 	}
 
-	public function add_animation(name:String, frames:Array<Int>, speed:Int, looped:Bool) {
+	public function add_animation(name:String, frames:Array<Int>, speed:Int = 15, looped:Bool = false, direction:AnimationDirection = AnimationDirection.FORWARD):Animation {
 		animations.exists(name) ? GM.log.warn('Animation `${name}` already exists on this Entity') 
-		: animations.set(name, {name:name, frames:frames, speed:speed, looped:looped});
+		: animations.set(name, {name:name, frames:frames, speed:speed, looped:looped, direction: direction);
+		return animations.get(name);
 	}
 
 	function clear_frames() while (frames.length > 0) frames.pop().dispose();
@@ -89,7 +92,15 @@ typedef Animation = {
     name:String,
 	frames:Array<Int>,
 	speed:Int,
-	looped:Bool
+	looped:Bool,
+	direction: AnimationDirection
+}
+
+@:enum 
+abstract AnimationDirection (Int) {
+	var FORWARD  = 0;
+	var REVERSE  = 1;
+	var PINGPONG = 2;
 }
 
 
