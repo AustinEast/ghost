@@ -46,7 +46,7 @@ class Graphic2D extends Component {
 			];
 		} else frames[0] = asset.toTile();
 		update_frames();
-		bitmap.tile = frames[current_frame];
+		bitmap.tile = frames[0];
     }
 
     public function make(width:Int, height:Int, color:Int = Color.WHITE, alpha:Float = 1) {

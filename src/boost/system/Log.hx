@@ -65,7 +65,7 @@ class Log implements IDestroyable {
      */
     public inline function log(message: String, type: LogType) {
         if (suppress) return;
-        message = '${Std.string(type)}: $message';
+        message = '$type: $message';
         if (!quiet) trace(message);
         // Store the message
         _all.push(message);
@@ -99,8 +99,8 @@ class Log implements IDestroyable {
 }
 
 @:enum 
-abstract LogType (Int) {
-    var INFO    = 0;
-    var WARNING = 1;
-    var ERROR   = 2;
+abstract LogType (String) {
+    var INFO    = "INFO";
+    var WARNING = "WARN";
+    var ERROR   = "ERROR";
 }

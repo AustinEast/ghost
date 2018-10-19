@@ -31,9 +31,11 @@ class Render2D extends System {
 							if (a.current.looped) a.index = 0;
 							a.finished = true;
 						}
-
 						case REVERSE:
-
+						if (a.index >= a.current.frames.length) {
+							if (a.current.looped) a.index = 0;
+							a.finished = true;
+						}
 						case PINGPONG:
 					}
 					g.current_frame = a.current.frames[a.index];

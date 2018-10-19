@@ -1,0 +1,4 @@
+# import base.xml
+sample.hxml
+# output
+-js sample/bin/game.js

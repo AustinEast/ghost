@@ -1,8 +1,10 @@
 # import base.xml
-base.hxml
+sample.hxml
 # libraries
 -lib hlsdl
 # output
--hl bin/game.hl
+-hl sample/bin/game.hl
+# defines
 # -D windowSize=1400x700
--cmd hl bin/game.hl
+# 
+-cmd hl sample/bin/game.hl

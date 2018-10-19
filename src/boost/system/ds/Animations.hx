@@ -42,7 +42,8 @@ typedef Animation = {
 	frames:Array<Int>,
 	speed:Int,
 	looped:Bool,
-	direction: AnimationDirection
+	direction: AnimationDirection,
+	?ease:Ease
 }
 
 @:enum 
@@ -50,4 +51,10 @@ abstract AnimationDirection (Int) {
 	var FORWARD  = 0;
 	var REVERSE  = 1;
 	var PINGPONG = 2;
+}
+
+// TODO: Add in optional Easing functions on enter/exit
+@:enum 
+abstract Ease (Int) {
+	var TODO  = 0;
 }
