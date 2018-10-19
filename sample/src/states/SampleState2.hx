@@ -32,8 +32,8 @@ class SampleState2 extends GameState {
         // Create the Animation target
         target = new GameObject(GM.width * 0.5, GM.height * 0.5);
         target.load_graphic(hxd.Res.images.baddegg, true, 180, 96);
-        target.graphic.add_animation("crack", [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14], 15, true);
-        target.graphic.play_animation("crack");
+        target.graphic.animations.add("crack", [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14], 15, true);
+        target.graphic.animations.play("crack");
         // Center the origin of the graphic
         target.graphic.dx -= Math.floor(target.graphic.width * 0.5);
         target.graphic.dy -= Math.floor(target.graphic.height * 0.5);
