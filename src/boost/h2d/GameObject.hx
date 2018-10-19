@@ -33,12 +33,12 @@ class GameObject extends Entity {
 
     public function load_graphic(asset:Image, animated:Bool = false, width:Int = 0, height:Int = 0) {
 		graphic.visible = true;
-        graphic.load_graphic(asset, animated, width, height);
+        graphic.load(asset, animated, width, height);
     }
 
     public function make_graphic(width:Int, height:Int, color:Int = Color.WHITE, alpha:Float = 1) {
         graphic.visible = true;
-        graphic.make_graphic(width, height, color, alpha);
+        graphic.make(width, height, color, alpha);
     }
 
     public function add_child(game_object:GameObject) {

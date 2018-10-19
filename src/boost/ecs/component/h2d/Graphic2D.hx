@@ -34,7 +34,7 @@ class Graphic2D extends Component {
 		current_frame = 0;
 	}
 
-	public function load_graphic(asset:Image, animated:Bool = false, width:Int = 0, height:Int = 0) {
+	public function load(asset:Image, animated:Bool = false, width:Int = 0, height:Int = 0) {
 		clear_frames();
 		current_frame = 0;
 		if (animated) {
@@ -49,7 +49,7 @@ class Graphic2D extends Component {
 		bitmap.tile = frames[current_frame];
     }
 
-    public function make_graphic(width:Int, height:Int, color:Int = Color.WHITE, alpha:Float = 1) {
+    public function make(width:Int, height:Int, color:Int = Color.WHITE, alpha:Float = 1) {
 		clear_frames();
 		current_frame = 0;
 		frames[0] = Tile.fromColor(color, width, height, alpha);

@@ -1,6 +1,7 @@
 # TODO
 
 * Fix line spacing issues in Github
+* Figure out engine update FPS vs render FPS
 * Text component
 * Animation support (Animation System or extend Render2D?)
 * 2D Camera Entity
