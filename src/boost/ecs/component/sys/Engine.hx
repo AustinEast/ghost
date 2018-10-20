@@ -4,6 +4,7 @@ import ecs.component.Component;
 
 /**
  * Component for keeping reference to the HEAPS Engine's properties
+ * 
  * TODO: Finish docs
  */
 class Engine extends Component {

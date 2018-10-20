@@ -64,7 +64,7 @@ class Display2D extends System {
 	}
 
     static function get_defaults() return {
-        pixelPerfect: false
+        pixelPerfect: true
     }
 }
 

@@ -9,7 +9,7 @@ import ecs.system.System;
 import tink.CoreApi.CallbackLink;
 
 /**
- * System for managing the current `GameState`
+ * System for managing the current `State`
  */
 class StateSystem extends System {
 	@:nodes var nodes:Node<States,Game>;
@@ -63,6 +63,7 @@ class StateSystem extends System {
 		node.states.active = node.states.requested;
 		GM.log.info('- Initializing State: ${Type.getClassName(Type.getClass(node.states.active))}');
 		node.states.active.attach(node.game.s2d, node.game.s3d);
+		if (Std.is(node.states.active, GameState)) cast (node.states.active, GameState).init_systems();
 		node.states.active.init();
 		GM.log.info('- State Initialized');
 		// Trigger a scale event for the new state

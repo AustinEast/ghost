@@ -31,13 +31,13 @@ class Game extends hxd.App implements IDestroyable {
 	/**
 	 * Temporary store of initial_state to pass into the Game Component on `init()`
 	 */
-	var initial_state:Class<GameState>;
+	var initial_state:Class<State>;
 	/**
 	 * Creates a new Game and Initial State
 	 * @param initial_state The Initial State the Game will load
 	 * @param options Optional Parameters to configure the Game
 	 */
-	public function new(initial_state:Class<GameState>, filesystem:FileSystemOptions = FileSystemOptions.EMBED, ?options:GameOptions) {
+	public function new(initial_state:Class<State>, filesystem:FileSystemOptions = EMBED, ?options:GameOptions) {
 		super();
 
 		this.initial_state = initial_state;

@@ -5,14 +5,17 @@ The Source of boostlib
 ## Classes
 
 ### Game
-The main entry point for a boostlib-powered game. Simply pass in a GameState and your configurations and you're ready to go!
+The main entry point for a boostlib-powered game. Simply pass in a `State` and it's configurations and its ready to go!
+
+### State
+Use these to construct the different States of a `Game`. 
+For example, a different `State` can be made for the Main Menu, the Game Loop, and the Game Over Screen.
 
 ### GameState
-Use these to construct the different states of your game. 
-For example, a different State can be made for the Main Menu, the Game Loop, and then the Game Over Screen.
+A `State` of the `Game` preconfigured with it's own Entity-Component-System (ECS) Engine and some default Systems to handle Rendering and Physics.
 
 ### GM
-The Game Manager. Use this to access useful methods and properties like resetting the game, changing the state, and setting the target FPS.
+The Game Manager. Use this to access useful methods and properties like resetting the `Game`, changing the `State`, and setting the target FPS.
 
 ## Directories
 

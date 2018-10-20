@@ -1,96 +1,55 @@
 package boost;
 
-import h2d.Layers;
-import boost.util.DestroyUtil;
-import boost.util.DestroyUtil.IDestroyable;
+import boost.ecs.system.render.Render2D;
+import boost.ecs.system.render.Display2D;
+import boost.ecs.system.physics.Arcade2D;
 import ecs.Engine;
 
 /**
- * The Base "State" of a `Game`.
- * This is where you add all of your Game's Entities and systems.
- * Extend this to access the `init()` and `update()` functions in order to construct/manage the State
- * TODO: Integrate the StateSystem for SubStates
+ * A State of the `Game` preconfigured with it's own Entity-Component-System (ECS) Engine and some default Systems to handle Rendering and Physics.
+ * If use of the ECS Engine and the default Systems aren't desired, it is recommended to Extend the `State` class instead.
+ * 
+ * Extend this to access and override the `init()`, `init_systems()`, `update()`, and `destroy()` functions in order to construct/manage the State
  */
-class GameState implements IDestroyable {
+class GameState extends State {
     /**
-     * This State's ECS Engine instance.
+     * This State's ECS Engine instance
      */
     public var ecs(default, null):Engine;
     /**
-     * This State's 2D Scene instance.
-     * If the State is a Sub State, it is added as a child to the Parent State's s2d instance.
-     * Otherwise it is added as a child to the `Game`'s root s2d instance
+     * Creates the State and it's ECS Engine
      */
-    public var local2d(default, null):Layers;
-    /**
-     * This State's 3D Scene instance.
-     * If the State is a Sub State, it is added as a child to the Parent State's s3d instance.
-     * Otherwise it is added as a child to the `Game`'s root s3d instance
-     */
-    public var local3d(default, null):h3d.scene.Object;
-    /**
-     * Current SubState
-     */
-    public var substate(default, null):GameState;
-    /**
-     * Flag to set whether the State will continue to update if it has opened a Substate
-     */
-    public var persistent_update:Bool = false;
-    public var open_state_callback:Void->Void;
-    public var close_substate_callback:Void->Void;
-
     function new() {
+        super();
         ecs = new Engine();
-        local2d = new Layers();
-        local3d = new h3d.scene.Object();
     }
-
     /**
-     * Override this to add initialization logic
+     * Override this to add initialization logic.
+     * This is a good place to add this State's Entities
      */
-    public function init() {}
-
+    override public function init() {}
     /**
-     * Override this to run logic every frame
+     * Override this to customize the default ECS Systems for the GameState
+     */
+    public function init_systems() {
+        ecs.systems.add(new Arcade2D());
+        ecs.systems.add(new Display2D(local2d));
+        ecs.systems.add(new Render2D());
+    }
+    /**
+     * Override this to run logic every frame.
+     * This also updates the ECS Engine
      * @param dt Time elapsed since last frame
      */
-    public function update(dt:Float) {
+    override public function update(dt:Float) {
+        super.update(dt);
         ecs.update(dt);
     }
-
     /**
      * Override this to run cleanup logic when closing the state
      */
-    public function destroy() {
-        DestroyUtil.destroy(substate);
+    override public function destroy() {
+        super.destroy();
         ecs.destroy();
-        local2d.remove();
-        local3d.remove();
     }
-
-    @:allow(boost.ecs.system.sys.StateSystem)
-    function try_update(dt:Float) {
-        if (persistent_update || substate == null) update(dt);
-		// if (request_substate_reset) {
-		// 	request_substate_reset = false;
-		// 	reset_substate();
-		// } else 
-        if (substate != null) substate.try_update(dt);
-    }
-
-    // public function open_substate(substate:Class<GameState>) {
-        // this.substate = Type.createInstance(substate, []);
-        // if (child)
-    // }
-
-    // public function closeSubState() {
-        
-    // }
-
-    @:allow(boost.ecs.system.sys.StateSystem)
-    function attach(context2d:h2d.Object, context3d:h3d.scene.Object) {
-        context2d.addChild(local2d);
-        context3d.addChild(local3d);
-    }
-
 }

@@ -2,49 +2,47 @@ package states;
 
 import boost.util.Color;
 import boost.GM;
-import hxd.Key;
 import boost.h2d.GameObject;
 import boost.GameState;
-import boost.ecs.system.render.Display2D;
-import boost.ecs.system.render.Render2D;
-import boost.ecs.system.physics.Arcade2D;
 import systems.ScreenWrapper;
 
 /**
  * Sample State 1 - Pixel Art Stress Test
  */
 class SampleState1 extends GameState {
-
+    /**
+     * Text to display the FPS
+     */
     var fps:h2d.Text;
-    var entity_count:Int = 4000;
-
+    /**
+     * The amount of Entities to spawn
+     */
+    var entity_count:Int = 5000;
+    /**
+     * Override `init()` to initialize the State
+     */
     override public function init() {
 
-        // Add and configure our basic systems
-        ecs.systems.add(new Arcade2D());
-        ecs.systems.add(new Display2D(local2d, {pixelPerfect: true}));
-        ecs.systems.add(new Render2D());
-
-        // Add our custom system to handle in screen wrapping
-        ecs.systems.add(new ScreenWrapper());
-
-        // Create a Background Image
+        // Create a GameObject to act as a background image
         var bg = new GameObject();
+        // Make a Gray graphic that covers the Screen
         bg.make_graphic(GM.width, GM.height, Color.GRAY);
+        // Add the GameObject to the Entities List
         ecs.entities.add(bg);
         
-        // Create our legion of circles
+        // Create a legion of circles!
         for (i in 0...entity_count) {
+            // Create a GameObject at a random point on the Screen
             var c = new GameObject(Math.random() * GM.width, Math.random() * GM.height);
+            // Load the GameObject's graphic
             c.load_graphic(hxd.Res.images.cir);
             // Center the origin of the graphic
-            c.graphic.dx -= Math.floor(c.graphic.width * 0.5);
-            c.graphic.dy -= Math.floor(c.graphic.height * 0.5);
+            c.graphic.center_origin();
             // Add some motion
             c.transform.rotation = Math.random() * 360;
             c.motion.rotational_velocity = 0.01;
             c.motion.velocity.x = Math.random() * 5;
-            
+            // Add the GameObject to the Entities List
             ecs.entities.add(c);
         }
 
@@ -55,9 +53,18 @@ class SampleState1 extends GameState {
         entity_count_text.text = 'Entities: $entity_count';
         entity_count_text.y += 12;
     }
-
-    // This framework supports both using ECS Systems or a good old fashioned update loop to handle game logic.
-    // Or in this case, both at one time!
+    /**
+     * Override `init_systems()` to add the custom ScreenWrapper system
+     */
+    override function init_systems() {
+        super.init_systems();         
+        ecs.systems.add(new ScreenWrapper());
+    }
+    /**
+     * Override `update()` to run logic every frame
+     * This framework supports both using ECS Systems or a good old fashioned update loop to handle game logic.
+     * Or in this case, both at one time!
+     */ 
     override public function update(dt:Float) {
         super.update(dt);
         fps.text = 'FPS: ${GM.fps}';

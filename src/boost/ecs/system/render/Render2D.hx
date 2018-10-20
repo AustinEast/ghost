@@ -9,7 +9,6 @@ import tink.CoreApi.CallbackLink;
 
 /**
  * System for handling the rendering of 2D Graphics
- * TODO: Add in animations
  */
 class Render2D extends System {
     @:nodes var nodes:Node<Graphic2D>;

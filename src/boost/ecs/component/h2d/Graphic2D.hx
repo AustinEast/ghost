@@ -21,9 +21,9 @@ class Graphic2D extends Component {
 
 	public var height(get, null):Int;
 
-	public var dx(default, set):Int;
+	public var dx(default, set):Null<Int>;
 
-	public var dy(default, set):Int;
+	public var dy(default, set):Null<Int>;
 
 	public var bitmap:Bitmap;
 	
@@ -34,10 +34,10 @@ class Graphic2D extends Component {
 		current_frame = 0;
 	}
 
-	public function load(asset:Image, animated:Bool = false, width:Int = 0, height:Int = 0) {
+	public function load(asset:Image, sprite_sheet:Bool = false, width:Int = 0, height:Int = 0) {
 		clear_frames();
 		current_frame = 0;
-		if (animated) {
+		if (sprite_sheet) {
 			var t = asset.toTile();
 			frames = [
 				for(y in 0 ... Std.int(t.height / height))
@@ -56,6 +56,11 @@ class Graphic2D extends Component {
 		update_frames();
 		bitmap.tile = frames[current_frame];
     }
+
+	public function center_origin() {
+		dx = -Math.floor(width * 0.5);
+        dy = -Math.floor(height * 0.5);
+	}
 
 	inline function clear_frames() while (frames.length > 0) frames.pop().dispose();
 
