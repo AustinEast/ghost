@@ -21,9 +21,9 @@ class Graphic2D extends Component {
 
 	public var height(get, null):Int;
 
-	public var dx(default, set):Null<Int>;
+	public var dx(default, set):Int;
 
-	public var dy(default, set):Null<Int>;
+	public var dy(default, set):Int;
 
 	public var bitmap:Bitmap;
 	
@@ -31,6 +31,8 @@ class Graphic2D extends Component {
 		this.bitmap = bitmap == null ? new Bitmap() : bitmap;
 		animations = new Animations();
 		frames = [];
+		dx = 0;
+		dy = 0;
 		current_frame = 0;
 	}
 
