@@ -4,11 +4,11 @@ import boost.util.DataUtil;
 import ecs.component.Component;
 
 /**
- * Component for keeping reference to the Game properties
+ * Component for keeping reference to the Game properties.
  */
 class Game extends Component {
     /**
-	 * Default Game Options
+	 * Default Game Options.
 	 */
 	public static var defaults(get, null): GameOptions;
     /**
@@ -16,7 +16,7 @@ class Game extends Component {
 	 */
 	public var name:String;
 	/**
-	 * The version of the Game
+	 * The version of the Game.
 	 */
 	public var version:String;
     /**
@@ -28,19 +28,19 @@ class Game extends Component {
 	 */
     public var height(default, null):Int;
     /**
-	 * The target framerate
+	 * The target framerate.
 	 */
 	public var framerate:Int;
 	/**
-     * The root 2D Scene to be displayed
+     * The root 2D Scene to be displayed.
      */
     public var s2d(default, null):h2d.Scene;
     /**
-     * The root 3D Scene to be displayed
+     * The root 3D Scene to be displayed.
      */
     public var s3d(default, null):h3d.scene.Scene;
     /**
-	 * Flag to check if a game reset is request 
+	 * Flag to check if a game reset is request.
 	 */
     public var resized:Bool;
 

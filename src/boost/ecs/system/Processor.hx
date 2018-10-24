@@ -4,7 +4,7 @@ import ecs.node.Node;
 import ecs.system.System;
 
 /**
- * Process Runner
+ * Process Runner.
  */
 class Processor extends System {
     @:nodes var nodes:Node<Process>;

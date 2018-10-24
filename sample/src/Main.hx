@@ -1,7 +1,7 @@
 package;
 
 import boost.Game;
-import states.SampleState1;
+import states.*;
 import systems.SampleSwapper;
 
 class Main {
@@ -12,7 +12,7 @@ class Main {
 
 	function new() {
 		// Create our Game with an Initial State and Options
-		var game = new Game(SampleState1, EMBED, {
+		var game = new Game(SampleState2, EMBED, {
 			name: "Sample App",
 			version: "0.0.1",
 			width: 320,

@@ -10,7 +10,7 @@ import ecs.system.System;
 import tink.CoreApi.CallbackLink;
 
 /**
- * System for wrapping GameObjects around the screen
+ * System for wrapping GameObjects around the screen.
  */
 class ScreenWrapper extends System {
     @:nodes var nodes:Node<Transform2D, Graphic2D>;

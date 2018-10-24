@@ -5,19 +5,19 @@ import ecs.component.Component;
 
 class Process extends Component {
     /**
-	 * Default Process Options
+	 * Default Process Options.
 	 */
 	public static var defaults(get, null): ProcessOptions;
     /**
-     * The Task to be Processed
+     * The Task to be Processed.
      */
     public var task:Void->Void;
     /**
-     * Flag to set whether this Process will remain active between Processor loops
+     * Flag to set whether this Process will remain active between Processor loops.
      */
     public var loop:Bool;
     /**
-     * Flag to set whether the Task will be processed in the current Processor loop
+     * Flag to set whether the Task will be processed in the current Processor loop.
      */
     public var active:Bool;
 
@@ -29,7 +29,7 @@ class Process extends Component {
     }
 
     static function get_defaults():ProcessOptions return {
-        loop: true,
+        loop: false,
         active: true
     }
 }

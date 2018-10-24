@@ -52,7 +52,7 @@ class Graphic2D extends Component {
     public function make(width:Int, height:Int, color:Int = Color.WHITE, alpha:Float = 1) {
 		clear_frames();
 		current_frame = 0;
-		frames[0] = Tile.fromColor(color, width, height, alpha);
+		frames[current_frame] = Tile.fromColor(color, width, height, alpha);
 		update_frames();
 		bitmap.tile = frames[current_frame];
     }

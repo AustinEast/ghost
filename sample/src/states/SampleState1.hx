@@ -7,28 +7,28 @@ import boost.GameState;
 import systems.ScreenWrapper;
 
 /**
- * Sample State 1 - Pixel Art Stress Test
+ * Sample State 1 - Pixel Art Stress Test.
  */
 class SampleState1 extends GameState {
     /**
-     * Text to display the FPS
+     * Text to display the FPS.
      */
     var fps:h2d.Text;
     /**
-     * The amount of Entities to spawn
+     * The amount of Entities to spawn.
      */
     var entity_count:Int = 5000;
     /**
-     * Override `init()` to initialize the State
+     * Override `init()` to initialize the State.
      */
     override public function init() {
 
         // Create a GameObject to act as a background image
         var bg = new GameObject();
-        // Make a Gray graphic that covers the Screen
-        bg.make_graphic(GM.width, GM.height, Color.GRAY);
-        // Add the GameObject to the Entities List
-        ecs.entities.add(bg);
+        // Make a colored graphic that covers the Screen
+        bg.make_graphic(GM.width, GM.height, 0xff222034);
+        // Add the GameObject to the State
+        add(bg);
         
         // Create a legion of circles!
         for (i in 0...entity_count) {
@@ -42,8 +42,8 @@ class SampleState1 extends GameState {
             c.transform.rotation = Math.random() * 360;
             c.motion.rotational_velocity = 0.01;
             c.motion.velocity.x = Math.random() * 5;
-            // Add the GameObject to the Entities List
-            ecs.entities.add(c);
+            // Add the GameObject to the State
+            add(c);
         }
 
         // Add some info text
@@ -54,14 +54,14 @@ class SampleState1 extends GameState {
         entity_count_text.y += 12;
     }
     /**
-     * Override `init_systems()` to add the custom ScreenWrapper system
+     * Override `init_systems()` to add the custom ScreenWrapper system.
      */
     override function init_systems() {
         super.init_systems();         
         ecs.systems.add(new ScreenWrapper());
     }
     /**
-     * Override `update()` to run logic every frame
+     * Override `update()` to run logic every frame.
      * This framework supports both using ECS Systems or a good old fashioned update loop to handle game logic.
      * Or in this case, both at one time!
      */ 

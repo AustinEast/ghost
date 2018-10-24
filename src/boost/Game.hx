@@ -10,38 +10,44 @@ import hxd.App;
 import boost.util.DestroyUtil;
 
 /**
- * The Game Class bootstraps the creation of a HEAPS game
+ * The Game Class bootstraps the creation of a HEAPS game.
  * 
- * Once created, this class doesn't need to be interacted with directly
- * Instead, look to the Game Manager (GM) Class for available properties and methods
+ * Once created, this class doesn't need to be interacted with directly.
+ * Instead, look to the Game Manager (GM) Class for available properties and methods.
  */
 class Game extends hxd.App implements IDestroyable {
 	/**
-	 * ECS Engine
+	 * ECS Engine.
 	 */
 	var ecs:ecs.Engine;
     /**
-     * The Game Entity
+     * The Game Entity.
      */
     var game:Entity;
 	/**
-	 * Temporary store of options to pass into the Game Component on `init()`
+     * Age of the Game (in Seconds).
+     */
+    public var age(default, null):Float;
+	/**
+	 * Temporary store of options to pass into the Game Component on `init()`.
 	 */
 	var options:GameOptions;
 	/**
-	 * Temporary store of initial_state to pass into the Game Component on `init()`
+	 * Temporary store of initial_state to pass into the Game Component on `init()`.
 	 */
 	var initial_state:Class<State>;
 	/**
-	 * Creates a new Game and Initial State
-	 * @param initial_state The Initial State the Game will load
-	 * @param options Optional Parameters to configure the Game
+	 * Creates a new Game and Initial State.
+	 * @param initial_state The Initial State the Game will load.
+	 * @param filesystem The type of FileSystem to initialize.
+	 * @param options Optional Parameters to configure the Game.
 	 */
 	public function new(initial_state:Class<State>, filesystem:FileSystemOptions = EMBED, ?options:GameOptions) {
 		super();
 
 		this.initial_state = initial_state;
 		this.options = options;
+		this.age = 0;
 
 		// Create the ECS Engine and Game Entity
 		ecs = new ecs.Engine();
@@ -85,6 +91,7 @@ class Game extends hxd.App implements IDestroyable {
 	@:dox(hide) @:noCompletion
 	override public function update(dt:Float) {
 		super.update(dt);
+		age += dt;
 		ecs.update(dt);
 	}
 
@@ -96,15 +103,15 @@ class Game extends hxd.App implements IDestroyable {
 
 	/**
 	 * Adds a `System` to the Game.
-	 * Useful for adding custom game-wide functionality that persists between states
-	 * @param system `System` to add
+	 * Useful for adding custom game-wide functionality that persists between states.
+	 * @param system `System` to add.
 	 */
 	public function add_system(system:System) ecs.systems.add(system);
 
 	/**
 	 * Adds a `Component` to the Game.
-	 * Useful for adding custom game-wide functionality that persists between states
-	 * @param component 
+	 * Useful for adding custom game-wide functionality that persists between states.
+	 * @param component `Component to add.
 	 */
 	public function add_component(component:Component) game.add(component); 
 

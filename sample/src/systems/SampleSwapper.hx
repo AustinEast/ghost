@@ -12,12 +12,12 @@ import tink.CoreApi.CallbackLink;
 import states.*;
 
 /**
- * System for swapping out the different Sample GameStates
+ * System for swapping out the different Sample GameStates.
  */
 class SampleSwapper extends System {
     @:nodes var nodes:Node<States>;
 
-    var samples:Array<Class<GameState>> = [ SampleState1, SampleState2 ];
+    var samples:Array<Class<GameState>> = [ SampleState2, SampleState1 ];
     var current:Int = 0;
 
     override function update(dt:Float) {

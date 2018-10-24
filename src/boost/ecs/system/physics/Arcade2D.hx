@@ -8,7 +8,7 @@ import ecs.node.Node;
 import ecs.system.System;
 
 /**
- * System for providing simple "Arcadey" 2D physics
+ * System for providing simple "Arcadey" 2D physics.
  */
 class Arcade2D extends System {
 	@:nodes var nodes:Node<Transform2D, Motion2D>;

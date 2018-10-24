@@ -3,19 +3,19 @@ package boost.ecs.component.sys;
 import ecs.component.Component;
 
 /**
- * Component for keeping reference to the HEAPS Engine's properties
+ * Component for keeping reference to the HEAPS Engine's properties.
  * 
  * TODO: Finish docs
  */
 class Engine extends Component {
     /**
      * The HEAPS Engine's width.
-     * Generally matches the Window's width
+     * Generally matches the Window's width.
      */
     public var width(get, null):Int;
     /**
      * The HEAPS Engine's height.
-     * Generally matches the Window's height
+     * Generally matches the Window's height.
      */
     public var height(get, null):Int;
 
@@ -27,11 +27,11 @@ class Engine extends Component {
 	public var auto_resize(get, set) : Bool;
     public var fullscreen(get, set) : Bool;
     /**
-     * The HEAPS Engine's current FPS
+     * The HEAPS Engine's current FPS.
      */
     public var fps(get, null):Float;
     /**
-     * Internal tracker for the HEAPS Engine
+     * Internal tracker for the HEAPS Engine.
      */
     var engine:h3d.Engine;
 

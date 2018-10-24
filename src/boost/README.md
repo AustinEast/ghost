@@ -1,11 +1,10 @@
-# boostsrc
-
-The Source of boostlib
+# boostlib
+A Booster Shot for the Heaps Engine
 
 ## Classes
 
 ### Game
-The main entry point for a boostlib-powered game. Simply pass in a `State` and it's configurations and its ready to go!
+The main entry point for a boostlib-powered game. Simply pass in a `State` and some configurations and its ready to go!
 
 ### State
 Use these to construct the different States of a `Game`. 

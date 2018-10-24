@@ -11,7 +11,7 @@ import ecs.system.System;
 import tink.CoreApi.CallbackLink;
 
 /**
- * System for handling the display of 2D objects added to a State
+ * System for handling the display of 2D objects added to a State.
  */
 class Display2D extends System {
     @:nodes var nodes:Node<Transform2D, Object2D>;
