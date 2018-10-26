@@ -50,8 +50,8 @@ class GameState extends State {
      * Override this to run cleanup logic when closing the state.
      */
     override public function destroy() {
-        super.destroy();
         ecs.destroy();
+        super.destroy();
     }
 
     /**

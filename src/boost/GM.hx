@@ -30,18 +30,10 @@ class GM {
 	 */
 	public static var height(get, null):Int;
 	/**
-	 * The current State of the Game.
-	 */
-	public static var state(get, null):State;
-	/**
 	 * The target framerate.
-	 * TODO: Make this settable
+	 * TODO: Make this set-able
 	 */
 	public static var fps(get, null):Float;
-	/**
-	 * How fast or slow time should pass in the game; default is `1.0`.
-	 */
-	public static var timeScale:Float = 1;
 	/**
 	 * Internal tracker for Window.
 	 */
@@ -72,14 +64,26 @@ class GM {
 	static var states(default, null):States;
 
 	/**
+	 * Loads a new State.
+	 * @param state The new State to load.
+	 * @param close_others If false, other open states will not be closed.
+	 */
+	public static function load_state(state:State, close_others:Bool = true) {
+		if (close_others) for(state in states.active) state.close();
+		states.requested.push(state);
+	}
+
+	/**
 	 * Requests the game to be reset.
 	 */
 	public static function reset() {
 		log.info('Resetting Game..');
+		for(state in states.active) state.close();
 		states.reset = true;
 	}
 
 	/**
+	 * TODO:
 	 * Quits the Game.
 	 * First, it calls the optional `GM.quit_game_callback` function.
 	 * Second, it destroys the `Game` instance. 
@@ -119,7 +123,6 @@ class GM {
 	static function get_version() return game.version;
 	static function get_width() return game.width;
 	static function get_height() return game.height;
-	static function get_state() return states.active;
 	static function get_fps() return engine.fps;
 
 	// setters

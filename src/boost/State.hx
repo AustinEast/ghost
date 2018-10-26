@@ -1,5 +1,6 @@
 package boost;
 
+import h2d.Flow;
 import h2d.Mask;
 import h2d.Layers;
 import boost.util.DestroyUtil;
@@ -20,7 +21,7 @@ class State implements IDestroyable {
      * If the State is a Sub State, it is added as a child to the Parent State's s2d instance.
      * Otherwise it is added as a child to the `Game`'s root s2d instance.
      */
-    public var local2d(default, null):Mask;
+    public var local2d(default, null):Layers;
     /**
      * This State's 3D Scene instance.
      * If the State is a Sub State, it is added as a child to the Parent State's s3d instance.
@@ -28,71 +29,68 @@ class State implements IDestroyable {
      */
     public var local3d(default, null):h3d.scene.Object;
     /**
+     * This State's UI instance.
+     * If the State is a Sub State, it is added as a child to the Parent State's s2d instance.
+     * Otherwise it is added as a child to the `Game`'s root s2d instance.
+     */
+    public var ui(default, null):Flow;
+    /**
+	 * How fast or slow time should pass in this State; default is `1.0`.
+	 */
+    public var time_scale:Float;
+    /**
      * Age of the State (in Seconds).
      */
+    @:allow(boost.ecs.system.sys.StateSystem)
     public var age(default, null):Float;
     /**
-     * Current SubState.
+     * When the State is marked as closed, it is destroyed after this update cycle.
      */
-    public var substate(default, null):State;
+    public var closed:Bool;
     /**
-     * Flag to set whether the State will continue to update if it has opened a Substate.
+     * A function that gets called when this state is closed.
      */
-    public var persistent_update:Bool = false;
-    public var open_state_callback:Void->Void;
-    public var close_substate_callback:Void->Void;
+    public var close_callback:Void->Void;
 
     function new() {
-        local2d = new Mask(GM.width, GM.height);
+        local2d = new Layers();
         local3d = new h3d.scene.Object();
+        ui = new Flow();
+        age = 0;
+        time_scale = 1;
+        closed = false;
+        close_callback = () -> {};
     }
 
     /**
      * Override this to add initialization logic.
      */
-    public function init() {
-        age = 0;
-    }
+    public function init() {}
 
     /**
      * Override this to run logic every frame.
      * @param dt Time elapsed since last frame.
      */
-    public function update(dt:Float) {
-        age += dt;
-    }
+    public function update(dt:Float) {}
+
+    /**
+     * Marks the State as closed.
+     */
+    public function close() closed = true;
 
     /**
      * Override this to run cleanup logic when closing the state.
      */
     public function destroy() {
-        DestroyUtil.destroy(substate);
         local2d.remove();
+        ui.remove();
         local3d.remove();
     }
 
     @:allow(boost.ecs.system.sys.StateSystem)
-    function try_update(dt:Float) {
-        if (persistent_update || substate == null) update(dt);
-		// if (request_substate_reset) {
-		// 	request_substate_reset = false;
-		// 	reset_substate();
-		// } else 
-        if (substate != null) substate.try_update(dt);
-    }
-
-    // public function open_substate(substate:Class<GameState>) {
-        // this.substate = Type.createInstance(substate, []);
-        // if (child)
-    // }
-
-    // public function closeSubState() {
-        
-    // }
-
-    @:allow(boost.ecs.system.sys.StateSystem)
     function attach(context2d:h2d.Object, context3d:h3d.scene.Object) {
         context2d.addChild(local2d);
+        context2d.addChild(ui);
         context3d.addChild(local3d);
     }
 

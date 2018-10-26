@@ -7,14 +7,12 @@ import boost.h2d.GameObject;
 import boost.GameState;
 import hxd.Math;
 
+using boost.ext.FlowExt;
+
 /**
  * Sample State 2 - 2D Animations.
  */
 class SampleState2 extends GameState {
-     /**
-     * Text to display the FPS.
-     */
-    var fps:h2d.Text;
      /**
      * The Animated Entity we are controlling.
      */
@@ -62,17 +60,7 @@ class SampleState2 extends GameState {
         target.graphic.animations.play("egg-crack");
         // Add the Target Entity to the State
         add(target);
-
-        init_ui();        
-
-        // Add some info text
-        // TODO: add text stuff into ECS 
-        fps = new h2d.Text(hxd.res.DefaultFont.get(), local2d);
-    }
-    /**
-     * Create some UI elements to control the target's animation.
-     */
-    function init_ui() {
+        
         cursor_bg = new GameObject(GM.width * 0.25, (GM.height * 0.5) + 10);
         cursor_bg.make_graphic(Math.floor(GM.width * 0.5), 10, Color.GRAY);
 
@@ -89,7 +77,7 @@ class SampleState2 extends GameState {
         // forward_text.text = "Forward";
 
         add(cursor_bg);
-        add(cursor);
+        add(cursor);    
     }
     /**
      * Override `update()` to run logic every frame.
@@ -98,8 +86,7 @@ class SampleState2 extends GameState {
      */ 
     override public function update(dt:Float) {
         super.update(dt);
-        fps.text = 'FPS: ${GM.fps}';
-
+        
         var pos = target.graphic.animations.index / (target.graphic.animations.current.frames.length - 1);
         cursor.x = Math.lerp(cursor_bg.x + 2, cursor_bg.x + cursor_bg.graphic.width - 3, pos);
     }

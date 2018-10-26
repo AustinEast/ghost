@@ -24,8 +24,20 @@ class StateSystem extends System {
 		for(node in nodes) {
 			var states = node.states;
 			if (states.reset) reset(states);
-			if (states.active != states.requested) switch_state(node);
-			states.active.try_update(dt);
+			for (state in states.requested) {
+				add(state, node.game);
+				states.active.push(state);
+			}
+			states.requested = [];
+			for (state in states.active) {
+				if (state.closed) {
+					remove(state);
+					states.active.remove(state);
+					continue;
+				}
+				state.age += dt;
+				state.update(state.time_scale * dt);
+			}
 		}
 	}
 
@@ -54,24 +66,24 @@ class StateSystem extends System {
 		// context3d.removeChild(node.states.local3d);
 	}
 
-    function switch_state(node:Node<States,Game>) {
-		GM.log.info('Opening State:');
-		if (node.states.active != null) {
-			GM.log.info('- Destroying Prior State: ${Type.getClassName(Type.getClass(node.states.active))}');
-			DestroyUtil.destroy(node.states.active);
-		}
-		node.states.active = node.states.requested;
-		GM.log.info('- Initializing State: ${Type.getClassName(Type.getClass(node.states.active))}');
-		node.states.active.attach(node.game.s2d, node.game.s3d);
-		if (Std.is(node.states.active, GameState)) cast (node.states.active, GameState).init_systems();
-		node.states.active.init();
-		GM.log.info('- State Initialized');
+    function add(state:State, game:Game) {	
+		GM.log.info('Initializing State: ${Type.getClassName(Type.getClass(state))}');
+		state.attach(game.mask2d, game.s3d);
+		if (Std.is(state, GameState)) cast (state, GameState).init_systems();
+		state.init();
+		state.age = 0;
 		// Trigger a scale event for the new state
-		node.game.resized = true;
+		game.resized = true;
+	}
+
+	function remove(state:State) {
+		GM.log.info('Destroying State: ${Type.getClassName(Type.getClass(state))}');
+		state.close_callback();
+		DestroyUtil.destroy(state);
 	}
 
     function reset(states:States) {
 		states.reset = false;
-		states.requested = cast Type.createInstance(states.initial, []);
+		states.requested.push(cast Type.createInstance(states.initial, []));
 	}
 }

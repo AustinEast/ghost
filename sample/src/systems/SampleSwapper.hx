@@ -30,7 +30,7 @@ class SampleSwapper extends System {
             if (Key.isPressed(Key.SPACE)) {
                 current += 1;
                 if (current >= samples.length) current = 0;
-                node.states.requested = cast Type.createInstance(samples[current], []);
+                GM.load_state(cast Type.createInstance(samples[current], []));
             }
 		}
 	}

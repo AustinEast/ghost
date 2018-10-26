@@ -1,5 +1,6 @@
 package boost.ecs.component.sys;
 
+import h2d.Mask;
 import boost.util.DataUtil;
 import ecs.component.Component;
 
@@ -39,6 +40,10 @@ class Game extends Component {
      * The root 3D Scene to be displayed.
      */
     public var s3d(default, null):h3d.scene.Scene;
+	/**
+     * A Mask to constrain the root 2D Scene to the Game's width/height. Eventually will be replaced by camera system
+     */
+    public var mask2d(default, null):Mask;
     /**
 	 * Flag to check if a game reset is request.
 	 */
@@ -52,6 +57,7 @@ class Game extends Component {
         height = options.height <= 0 ? engine.height : options.height;
         framerate = options.framerate;
         resized = false;
+		mask2d = new Mask(width, height, s2d);
 		this.s2d = s2d;
 		this.s3d = s3d;
     }

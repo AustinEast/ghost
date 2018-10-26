@@ -5,6 +5,7 @@ import boost.GM;
 import boost.h2d.GameObject;
 import boost.GameState;
 import systems.ScreenWrapper;
+using boost.ext.FlowExt;
 
 /**
  * Sample State 1 - Pixel Art Stress Test.
@@ -46,12 +47,10 @@ class SampleState1 extends GameState {
             add(c);
         }
 
-        // Add some info text
-        // TODO: add text stuff into ECS 
-        fps = new h2d.Text(hxd.res.DefaultFont.get(), local2d);
-        var entity_count_text = new h2d.Text(hxd.res.DefaultFont.get(), local2d);
-        entity_count_text.text = 'Entities: $entity_count';
-        entity_count_text.y += 12;
+        // Add some info text to the UI
+        fps = ui.add_text();
+        ui.add_text('Entities: $entity_count', 0, 12);
+        ui.isVertical = true;
     }
     /**
      * Override `init_systems()` to add the custom ScreenWrapper system.
