@@ -17,7 +17,7 @@ import states.*;
 class SampleSwapper extends System {
     @:nodes var nodes:Node<States>;
 
-    var samples:Array<Class<GameState>> = [ SampleState2, SampleState1 ];
+    var samples:Array<Class<GameState>> = [ SampleState1, SampleState2 ];
     var current:Int = 0;
 
     override function update(dt:Float) {

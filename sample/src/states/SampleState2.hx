@@ -1,13 +1,16 @@
 package states;
 
-import h2d.Interactive;
+import h2d.Bitmap;
+import boost.system.ds.Animations.AnimationDirection;
+import h2d.Tile;
+import h2d.Text;
 import boost.util.Color;
 import boost.GM;
 import boost.h2d.GameObject;
 import boost.GameState;
 import hxd.Math;
 
-using boost.ext.FlowExt;
+using boost.ext.ObjectExt;
 
 /**
  * Sample State 2 - 2D Animations.
@@ -18,13 +21,21 @@ class SampleState2 extends GameState {
      */
     var target:GameObject;
     /**
-     * Cursor to show Target Entity animation position.
+     * The name of the played Animation.
      */
-    var cursor:GameObject;
+    var animation_name:String = 'egg-crack';
+    /**
+     * Cursor to show Target Entity Animation position.
+     */
+    var cursor:Bitmap;
     /**
      * Cursor Backround.
      */
-    var cursor_bg:GameObject;
+    var cursor_bg:Bitmap;
+    /**
+     * Text to display the current Animation Direction.
+     */
+    var direction_text:Text;
     /**
      * Override `init()` to initialize the State.
      */
@@ -55,29 +66,37 @@ class SampleState2 extends GameState {
         // * the speed of the animation in Frames Per Second
         // * flag that the animation is looped
         // * the direction the animation should play
-        target.graphic.animations.add("egg-crack", [0,0,0,0,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14], 10, true, 2, FORWARD);
+        target.graphic.animations.add(animation_name, [0,0,0,0,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14], 10, true, 2, FORWARD);
         // Play the animation
-        target.graphic.animations.play("egg-crack");
+        target.graphic.animations.play(animation_name);
         // Add the Target Entity to the State
         add(target);
-        
-        cursor_bg = new GameObject(GM.width * 0.25, (GM.height * 0.5) + 10);
-        cursor_bg.make_graphic(Math.floor(GM.width * 0.5), 10, Color.GRAY);
 
-        cursor = new GameObject(cursor_bg.x + 1, cursor_bg.y + 1);
-        cursor.make_graphic(2,8);
+        // Add and configure a Flow Object for the UI
+        var menu = ui.add_flow(0, (GM.height * 0.5) + 10, {
+            vertical: true,
+            align: {
+                horizontal: Middle
+            },
+            spacing: { 
+                vertical: 6
+            },
+            width: {
+                min: GM.width
+            }
+        });
 
-        var dir = new h2d.Text(hxd.res.DefaultFont.get(), local2d);
-        dir.text = 'Animation Direction:';
-        dir.textAlign = Center;
-        dir.setPosition(GM.width * 0.5, cursor_bg.y + 10);
-
-        // var forward_i = new Interactive()
-        // var forward_text = new h2d.Text(hxd.res.DefaultFont.get(), local2d);
-        // forward_text.text = "Forward";
-
-        add(cursor_bg);
-        add(cursor);    
+        // Add the Animation Cursor
+        cursor_bg = menu.add_graphic(Tile.fromColor(Color.GRAY, Math.floor(GM.width * 0.5), 10));
+        cursor = cursor_bg.add_graphic(Tile.fromColor(Color.WHITE, 4, 8), 0, 1);
+        // Add the info Text
+        direction_text = menu.add_text('Animation Direction: $FORWARD');
+        // Add and configure a nested Flow Object to contain the directional buttons
+        var dir_buttons = menu.add_flow(0, 0, { spacing: { horizontal: 3 } });
+        // Add the directional buttons
+        dir_buttons.add_button(0, 0, '$FORWARD', () -> set_animation_direction(FORWARD));
+        dir_buttons.add_button(0, 0, '$REVERSE', () -> set_animation_direction(REVERSE));
+        dir_buttons.add_button(0, 0, '$PINGPONG', () -> set_animation_direction(PINGPONG));
     }
     /**
      * Override `update()` to run logic every frame.
@@ -88,6 +107,12 @@ class SampleState2 extends GameState {
         super.update(dt);
         
         var pos = target.graphic.animations.index / (target.graphic.animations.current.frames.length - 1);
-        cursor.x = Math.lerp(cursor_bg.x + 2, cursor_bg.x + cursor_bg.graphic.width - 3, pos);
+        cursor.x += (Math.lerp(2, cursor_bg.tile.width - cursor.tile.width - 2, pos) - cursor.x) * 0.3;
+    }
+
+    function set_animation_direction(anim_dir:AnimationDirection) {
+        target.graphic.animations.get(animation_name).direction = anim_dir;
+        target.graphic.animations.play(animation_name, true);
+        direction_text.text = 'Animation Direction: $anim_dir';
     }
 }

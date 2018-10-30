@@ -12,28 +12,21 @@ import boost.util.DestroyUtil.IDestroyable;
  * If use of the ECS Engine and default Systems are desired, it is recommended to Extend the `GameState` class instead.
  * 
  * Extend this class to access and override the `init()`, `update()`, and `destroy()` functions in order to construct/manage the State.
- * 
- * TODO: Integrate the StateSystem for SubStates
  */
 class State implements IDestroyable {
     /**
      * This State's 2D Scene instance.
-     * If the State is a Sub State, it is added as a child to the Parent State's s2d instance.
-     * Otherwise it is added as a child to the `Game`'s root s2d instance.
      */
     public var local2d(default, null):Layers;
     /**
      * This State's 3D Scene instance.
-     * If the State is a Sub State, it is added as a child to the Parent State's s3d instance.
-     * Otherwise it is added as a child to the `Game`'s root s3d instance.
      */
     public var local3d(default, null):h3d.scene.Object;
     /**
-     * This State's UI instance.
-     * If the State is a Sub State, it is added as a child to the Parent State's s2d instance.
-     * Otherwise it is added as a child to the `Game`'s root s2d instance.
+     * This State's UI instance. It is simply a `h2d.Object` rendered on top of everything else in the State. 
+     * See `boost.ext.ObjectExt` for adding simple UI elements.
      */
-    public var ui(default, null):Flow;
+    public var ui(default, null):h2d.Object;
     /**
 	 * How fast or slow time should pass in this State; default is `1.0`.
 	 */
@@ -55,7 +48,7 @@ class State implements IDestroyable {
     function new() {
         local2d = new Layers();
         local3d = new h3d.scene.Object();
-        ui = new Flow();
+        ui = new h2d.Object();
         age = 0;
         time_scale = 1;
         closed = false;

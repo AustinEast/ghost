@@ -10,6 +10,7 @@ class Animations extends StringMap<Animation> implements IDestroyable {
 	public var index:Int;
 	public var paused:Bool;
 	public var finished:Bool;
+	public var callback:Void->Void;
 
 	@:allow(boost.ecs.system.render.Render2D)
 	var delay:Float;
@@ -18,12 +19,13 @@ class Animations extends StringMap<Animation> implements IDestroyable {
 	@:allow(boost.ecs.system.render.Render2D)
 	var reversed:Bool;
 
-    public function play(name:String, force:Bool = false, frame:Int = 0) {
+    public function play(name:String, force:Bool = false, ?callback:Void->Void, frame:Int = 0) {
 		if (current != null && current.name == name && !force && !finished) return;
 		if (exists(name)) {
 			current = get(name);
 			index = current.direction == REVERSE ? current.frames.length - frame - 1 : frame;
 			index = Math.iclamp(index, 0, current.frames.length - 1);
+			this.callback = callback;
 			finished = false;
 			paused = false;
 			reversed = current.direction == REVERSE;
@@ -55,10 +57,10 @@ typedef Animation = {
 }
 
 @:enum 
-abstract AnimationDirection (Int) {
-	var FORWARD  = 0;
-	var REVERSE  = 1;
-	var PINGPONG = 2;
+abstract AnimationDirection (String) {
+	var FORWARD  = 'Forward';
+	var REVERSE  = 'Reverse';
+	var PINGPONG = 'PingPong';
 }
 
 // TODO: Add in optional Easing functions on enter/exit

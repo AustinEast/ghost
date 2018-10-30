@@ -12,6 +12,9 @@ import tink.CoreApi.CallbackLink;
 
 /**
  * System for handling the display of 2D objects added to a State.
+ * 
+ * TODO: Only update values on object when they have changed
+ * TODO: Re-evaluate this system and how it can support parent/child relationships
  */
 class Display2D extends System {
     @:nodes var nodes:Node<Transform2D, Object2D>;

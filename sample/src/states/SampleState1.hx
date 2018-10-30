@@ -1,11 +1,12 @@
 package states;
 
-import boost.util.Color;
+import h2d.Tile;
 import boost.GM;
 import boost.h2d.GameObject;
 import boost.GameState;
 import systems.ScreenWrapper;
-using boost.ext.FlowExt;
+
+using boost.ext.ObjectExt;
 
 /**
  * Sample State 1 - Pixel Art Stress Test.
@@ -48,9 +49,20 @@ class SampleState1 extends GameState {
         }
 
         // Add some info text to the UI
-        fps = ui.add_text();
-        ui.add_text('Entities: $entity_count', 0, 12);
-        ui.isVertical = true;
+        var menu = ui.add_flow(0, 0, {
+            background: Tile.fromColor(0x000000, 5, 5, 0.8),
+            vertical: true,
+            align: {
+                vertical: Middle
+            },
+            padding: {
+                bottom: 2,
+                left: 2,
+                right: 2
+            } 
+        });
+        fps = menu.add_text();
+        menu.add_text('Entities: $entity_count');
     }
     /**
      * Override `init_systems()` to add the custom ScreenWrapper system.

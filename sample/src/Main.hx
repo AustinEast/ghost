@@ -12,7 +12,7 @@ class Main {
 
 	function new() {
 		// Create our Game with an Initial State and Options
-		var game = new Game(SampleState2, EMBED, {
+		var game = new Game(SampleState1, EMBED, {
 			name: "Sample App",
 			version: "0.0.1",
 			width: 320,
