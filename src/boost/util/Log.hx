@@ -1,4 +1,4 @@
-package boost.system;
+package boost.util;
 
 import boost.util.DestroyUtil.IDestroyable;
 import haxe.Json;

@@ -3,7 +3,7 @@ package boost.ecs.component.h2d;
 import h2d.Bitmap;
 import h2d.Tile;
 import hxd.res.Image;
-import boost.system.ds.Animations;
+import boost.ds.Animations;
 import boost.util.Color;
 import ecs.component.Component;
 

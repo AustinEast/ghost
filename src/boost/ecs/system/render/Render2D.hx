@@ -1,7 +1,7 @@
 package boost.ecs.system.render;
 
 import boost.ecs.component.h2d.Graphic2D;
-import boost.system.ds.Animations;
+import boost.ds.Animations;
 import ecs.node.Node;
 import ecs.Engine;
 import ecs.system.System;

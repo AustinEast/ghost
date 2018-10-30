@@ -1,7 +1,7 @@
 package states;
 
 import h2d.Bitmap;
-import boost.system.ds.Animations.AnimationDirection;
+import boost.ds.Animations.AnimationDirection;
 import h2d.Tile;
 import h2d.Text;
 import boost.util.Color;

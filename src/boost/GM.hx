@@ -4,7 +4,7 @@ import boost.ecs.component.sys.Game;
 import boost.ecs.component.sys.Engine;
 import boost.ecs.component.sys.States;
 import ecs.entity.Entity;
-import boost.system.Log;
+import boost.util.Log;
 import hxd.Window;
 
 /**

@@ -1,4 +1,4 @@
-package boost.system.ds;
+package boost.ds;
 
 import haxe.ds.StringMap;
 import hxd.Math;

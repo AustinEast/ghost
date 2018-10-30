@@ -1,4 +1,4 @@
-package boost.system.debug;
+package boost.util.debug;
 
 import h2d.Object;
 

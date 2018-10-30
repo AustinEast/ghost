@@ -1,4 +1,4 @@
-package boost.system.debug;
+package boost.util.debug;
 
 import hxd.res.DefaultFont;
 import boost.util.Color;
