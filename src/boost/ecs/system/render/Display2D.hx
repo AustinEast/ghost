@@ -13,7 +13,6 @@ import tink.CoreApi.CallbackLink;
 /**
  * System for handling the display of 2D objects added to a State.
  * 
- * TODO: Only update values on object when they have changed
  * TODO: Re-evaluate this system and how it can support parent/child relationships
  */
 class Display2D extends System {
@@ -56,13 +55,16 @@ class Display2D extends System {
 	
 	override function update(dt:Float) {
 		for(node in nodes) {
-			var object = node.object2D.object;
 			var transform = node.transform2D;
-		    object.x = transform.position.x;
-			object.y = transform.position.y;
-			object.rotation = transform.rotation * 180 / Math.PI;
-			object.scaleX = transform.scale.x;
-			object.scaleY = transform.scale.y;
+			if (transform.dirty) {
+				transform.dirty = false;
+				var object = node.object2D.object;
+				object.x = transform.x;
+				object.y = transform.y;
+				object.rotation = transform.rotation * 180 / Math.PI;
+				object.scaleX = transform.scale_x;
+				object.scaleY = transform.scale_y;
+			}
 		}
 	}
 
