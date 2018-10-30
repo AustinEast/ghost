@@ -51,6 +51,7 @@ class Render2D extends System {
 
 	inline function finish_animation(a:Animations) {
 		a.finished = true;
+		a.callback();
 		if (a.current.looped) a.timer -= a.current.loop_delay;
 	}
 }
