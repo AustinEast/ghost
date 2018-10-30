@@ -2,17 +2,13 @@ package boost.ext;
 
 import h2d.Bitmap;
 import h2d.Slider;
-import boost.ui.Styles;
 import boost.ui.Button;
-import boost.util.Color;
-import boost.util.DataUtil;
 import h2d.Object;
 import h2d.Tile;
 import h2d.Text;
-import h2d.Font;
 import h2d.Flow;
 import hxd.res.DefaultFont;
-using boost.ext.ObjectExt;
+
 using boost.ui.Styles;
 /**
  * Static Extension class for `h2d.Object`. Adds in various methods to quickly create UI and other Elements.

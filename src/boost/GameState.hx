@@ -1,6 +1,7 @@
 package boost;
 
 import ecs.entity.Entity;
+import boost.ecs.system.Processor;
 import boost.ecs.system.render.Render2D;
 import boost.ecs.system.render.Display2D;
 import boost.ecs.system.physics.Arcade2D;
@@ -33,6 +34,7 @@ class GameState extends State {
      * Override this to customize the default ECS Systems for the GameState.
      */
     public function init_systems() {
+        ecs.systems.add(new Processor());
         ecs.systems.add(new Arcade2D());
         ecs.systems.add(new Display2D(local2d));
         ecs.systems.add(new Render2D());

@@ -10,8 +10,11 @@ class Process extends Component {
 	public static var defaults(get, null): ProcessOptions;
     /**
      * The Task to be Processed.
+     * This is a function with a `Float` parameter, so the time elapsed since the last update frame (dt) can be passed in.
+     * 
+     * Example: task = (dt) -> trace('elapsed: $dt');
      */
-    public var task:Void->Void;
+    public var task:Float->Void;
     /**
      * Flag to set whether this Process will remain active between Processor loops.
      */
@@ -21,7 +24,7 @@ class Process extends Component {
      */
     public var active:Bool;
 
-    public function new (task:Void->Void, ?options:ProcessOptions) {
+    public function new (task:Float->Void, ?options:ProcessOptions) {
         options = DataUtil.copy_fields(options, defaults);
         this.task = task;
         loop = options.loop;

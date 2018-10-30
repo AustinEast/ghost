@@ -1,5 +1,6 @@
 package boost.ecs.system;
 
+import boost.ecs.component.Process;
 import ecs.node.Node;
 import ecs.system.System;
 
@@ -12,7 +13,7 @@ class Processor extends System {
     override function update(dt:Float) {
 		for(node in nodes) {
 			var process = node.process;
-			if (process.active) process.task();
+			if (process.task != null && process.active) process.task(dt);
             if (!process.loop) process.active = false;
 		}
 	}
