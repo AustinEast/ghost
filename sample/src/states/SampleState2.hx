@@ -55,11 +55,12 @@ class SampleState2 extends GameState {
         // Center the origin of the graphic
         target.graphic.center_origin();
         // Add an animation to the GameObject's graphic
-        // Passing in five arguments:
+        // Passing in six arguments:
         // * the animation's name
         // * the frames of the GameObject's graphic that the animation plays
         // * the speed of the animation in Frames Per Second
         // * flag that the animation is looped
+        // * how many seconds to delay the animation between loops
         // * the direction the animation should play
         target.graphic.animations.add('egg-crack', [0,0,0,0,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14], 10, true, 2, FORWARD);
         // Play the animation
