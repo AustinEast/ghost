@@ -28,7 +28,7 @@ class SampleState1 extends GameState {
         // Create a GameObject to act as a background image
         var bg = new GameObject();
         // Make a colored graphic that covers the Screen
-        bg.make_graphic(GM.width, GM.height, 0xff222034);
+        bg.graphic.make(GM.width, GM.height, 0xff222034);
         // Add the GameObject to the State
         add(bg);
         
@@ -37,7 +37,7 @@ class SampleState1 extends GameState {
             // Create a GameObject at a random point on the Screen
             var c = new GameObject(Math.random() * GM.width, Math.random() * GM.height);
             // Load the GameObject's graphic
-            c.load_graphic(hxd.Res.images.cir);
+            c.graphic.load(hxd.Res.images.cir);
             // Center the origin of the graphic
             c.graphic.center_origin();
             // Add some motion
@@ -49,20 +49,7 @@ class SampleState1 extends GameState {
         }
 
         // Add some info text to the UI
-        var menu = ui.add_flow(0, 0, {
-            background: Tile.fromColor(0x000000, 5, 5, 0.8),
-            vertical: true,
-            align: {
-                vertical: Middle
-            },
-            padding: {
-                bottom: 2,
-                left: 2,
-                right: 2
-            } 
-        });
-        fps = menu.add_text();
-        menu.add_text('Entities: $entity_count');
+        add_ui();
     }
     /**
      * Override `init_systems()` to add the custom ScreenWrapper system.
@@ -79,5 +66,22 @@ class SampleState1 extends GameState {
     override public function update(dt:Float) {
         super.update(dt);
         fps.text = 'FPS: ${GM.fps}';
+    }
+
+    function add_ui() {
+        var menu = ui.add_flow(0, 0, {
+            background: Tile.fromColor(0x000000, 5, 5, 0.8),
+            vertical: true,
+            align: {
+                vertical: Middle
+            },
+            padding: {
+                bottom: 2,
+                left: 2,
+                right: 2
+            } 
+        });
+        fps = menu.add_text();
+        menu.add_text('Entities: $entity_count');
     }
 }

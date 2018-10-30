@@ -29,14 +29,14 @@ class Arcade2D extends System {
 			var motion = node.motion2D;
 			
 			// Apply Velocity
-			transform.position.x += motion.velocity.x * dt;
-			transform.position.y += motion.velocity.y * dt;
+			transform.x += motion.velocity.x * dt;
+			transform.y += motion.velocity.y * dt;
 			transform.rotation += motion.rotational_velocity * dt;
 
 			// Apply Gravity
 			if (!motion.kinematic) {
-				transform.position.x += gravity.x * dt;
-				transform.position.y += gravity.y * dt;
+				transform.x += gravity.x * dt;
+				transform.y += gravity.y * dt;
 			}
 
 			// Apply Drag

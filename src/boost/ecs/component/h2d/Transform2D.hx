@@ -20,41 +20,66 @@ class Transform2D extends Component {
 
     public function new (?options:Transform2DOptions) {
         options = DataUtil.copy_fields(options, defaults);
-        set_position(options.x, options.y);
+        x = options.x;
+        y = options.y;
         rotation = options.rotation;
-        set_scale(options.scale_x, options.scale_y);
+        scale_x = options.scale_x;
+        scale_y = options.scale_y;
+    }
+    /**
+     * Gets `x` and `y` as a new `Point`.
+     * @param point If a `Point` is passed in, it will be `set` instead of creating a new `Point`.
+     * @return Point containing X and Y position.
+     */
+    public function get_position(?point:Point):Point {
+        if (point == null) return new Point(x, y);
+        point.set(x, y);
+        return point;
+    }
+    /**
+     * Sets `x` and `y` with a `Point`.
+     * @param point The `Point` to apply to the properties
+     */
+    public function set_position(point:Point) {
+        this.x = point.x;
+        this.y = point.y;
+    }
+    /**
+     * Gets `scale_x` and `scale_y` as a new `Point`.
+     * @param point If a `Point` is passed in, it will be `set` instead of creating a new `Point`.
+     * @return Point containing `scale_x` and `scale_y`.
+     */
+    public function get_scale(?point:Point):Point {
+        if (point == null) return new Point(scale_x, scale_y);
+        point.set(scale_x, scale_y);
+        return point;
+    }
+    /**
+     * Sets `scale_x` and `scale_y` with a `Point`.
+     * @param point The `Point` to apply to the properties
+     */
+    public function set_scale(point:Point) {
+        this.scale_x = point.x;
+        this.scale_y = point.y;
     }
 
-    public function set_position(x:Float, y:Float) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public function set_scale(x:Float, y:Float) {
-        this.scale_x = x;
-        this.scale_y = y;
-    }
-
+    // setters
     function set_x(value:Float):Float {
         if (x != value) dirty = true;
         return x = value;
     }
-
     function set_y(value:Float):Float {
         if (y != value) dirty = true;
         return y = value;
     }
-
     function set_rotation(value:Float):Float {
         if (rotation != value) dirty = true;
         return rotation = value;
     }
-
     function set_scale_x(value:Float):Float {
         if (scale_x != value) dirty = true;
         return scale_x = value;
     }
-
     function set_scale_y(value:Float):Float {
         if (scale_y != value) dirty = true;
         return scale_y = value;

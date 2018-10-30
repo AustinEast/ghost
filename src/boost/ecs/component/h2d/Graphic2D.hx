@@ -8,17 +8,33 @@ import boost.util.Color;
 import ecs.component.Component;
 
 class Graphic2D extends Component {
-
+	/**
+	 * Animation Controller Class.
+	 */
 	public var animations:Animations;
-
+	/**
+	 * Array of Tiles that this Graphic can display.
+	 * Each Tile can be thought of as a frame of an animation.
+	 */
 	public var frames:Array<Tile>;
-
+	/**
+	 * The index of the Tile (from `frames`) that is being displayed.
+	 */
 	public var current_frame:Int;
-
+	/**
+	 * Flag to set if this Graphic will be displayed.
+	 * Alias for `bitmap.visible`.
+	 */
 	public var visible(get, set):Bool;
-
+	/**
+	 * Width of the Graphic. Can change depending on the current frame.
+	 * Alias for `bitmap.tile.width`.
+	 */
 	public var width(get, null):Int;
-
+	/**
+	 * Height of the Graphic. Can change depending on the current frame.
+	 * Alias for `bitmap.tile.height`.
+	 */
 	public var height(get, null):Int;
 
 	public var dx(default, set):Int;
@@ -36,6 +52,13 @@ class Graphic2D extends Component {
 		current_frame = 0;
 	}
 
+	/**
+     * Loads an Image asset to be displayed by the Entity.
+     * @param asset The Image asset to load.
+     * @param sprite_sheet Flag the set whether the Image is a Sprite Sheet.
+     * @param width Width of the Sprite. This only needs to be set if the Image is a Sprite Sheet.
+     * @param height Height of the Sprite. This only needs to be set if the Image is a Sprite Sheet.
+     */
 	public function load(asset:Image, sprite_sheet:Bool = false, width:Int = 0, height:Int = 0) {
 		clear_frames();
 		current_frame = 0;
@@ -51,6 +74,13 @@ class Graphic2D extends Component {
 		bitmap.tile = frames[0];
     }
 
+	/**
+     * Creates a Colored Rectangle to be displayed by the Entity.
+     * @param width Width of the Graphic.
+     * @param height Height of the Graphic.
+     * @param color Color of the Graphic.
+     * @param alpha Alpha of the Graphic.
+     */
     public function make(width:Int, height:Int, color:Int = Color.WHITE, alpha:Float = 1) {
 		clear_frames();
 		current_frame = 0;
@@ -59,6 +89,9 @@ class Graphic2D extends Component {
 		bitmap.tile = frames[current_frame];
     }
 
+	/**
+	 * Centers the Graphic's origin.
+	 */
 	public function center_origin() {
 		dx = -Math.floor(width * 0.5);
         dy = -Math.floor(height * 0.5);

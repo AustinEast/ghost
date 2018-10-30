@@ -19,7 +19,7 @@ class Animations extends StringMap<Animation> implements IDestroyable {
 	@:allow(boost.ecs.system.render.Render2D)
 	var reversed:Bool;
 
-    public function play(name:String, force:Bool = false, ?callback:Void->Void, frame:Int = 0) {
+    public function play(name:String, force:Bool = false, callback:Void->Void = null, frame:Int = 0) {
 		if (current != null && current.name == name && !force && !finished) return;
 		if (exists(name)) {
 			current = get(name);
@@ -36,7 +36,7 @@ class Animations extends StringMap<Animation> implements IDestroyable {
 
 	public function add(name:String, frames:Array<Int>, speed:Int = 15, looped:Bool = false, loop_delay:Int = 0, direction:AnimationDirection = AnimationDirection.FORWARD):Animation {
 		exists(name) ? GM.log.warn('Animation `${name}` already exists on this Entity') 
-		: set(name, { name:name, frames:frames, speed:speed, looped:looped, loop_delay: loop_delay, direction: direction });
+		: set(name, { name:name, frames:frames, speed:speed, looped:looped, loop_delay:loop_delay, direction:direction });
 		return get(name);
 	}
 

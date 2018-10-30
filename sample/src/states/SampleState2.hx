@@ -21,10 +21,6 @@ class SampleState2 extends GameState {
      */
     var target:GameObject;
     /**
-     * The name of the played Animation.
-     */
-    var animation_name:String = 'egg-crack';
-    /**
      * Cursor to show Target Entity Animation position.
      */
     var cursor:Bitmap;
@@ -40,11 +36,10 @@ class SampleState2 extends GameState {
      * Override `init()` to initialize the State.
      */
     override public function init() {
-
         // Create a GameObject to act as a background image
         var bg = new GameObject();
         // Make a colored graphic that covers the Screen
-        bg.make_graphic(GM.width, GM.height, 0xff222034);
+        bg.graphic.make(GM.width, GM.height, 0xff222034);
         // Add the GameObject to the State
         add(bg);
         
@@ -56,7 +51,7 @@ class SampleState2 extends GameState {
         // * flag that the image is a Sprite Sheet
         // * the width of each Sprite Sheet cell
         // * the height of each Sprite Sheet cell
-        target.load_graphic(hxd.Res.images.baddegg, true, 180, 96);
+        target.graphic.load(hxd.Res.images.baddegg, true, 180, 96);
         // Center the origin of the graphic
         target.graphic.center_origin();
         // Add an animation to the GameObject's graphic
@@ -66,12 +61,27 @@ class SampleState2 extends GameState {
         // * the speed of the animation in Frames Per Second
         // * flag that the animation is looped
         // * the direction the animation should play
-        target.graphic.animations.add(animation_name, [0,0,0,0,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14], 10, true, 2, FORWARD);
+        target.graphic.animations.add('egg-crack', [0,0,0,0,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14], 10, true, 2, FORWARD);
         // Play the animation
-        target.graphic.animations.play(animation_name);
+        target.graphic.animations.play('egg-crack');
         // Add the Target Entity to the State
         add(target);
+        // Add the UI Elements
+        add_ui();
+    }
+    /**
+     * Override `update()` to run logic every frame.
+     * This framework supports both using ECS Systems or a good old fashioned update loop to handle game logic.
+     * Or in this case, both at one time!
+     */ 
+    override public function update(dt:Float) {
+        super.update(dt);
+        
+        var pos = target.graphic.animations.index / (target.graphic.animations.current.frames.length - 1);
+        cursor.x = Math.lerp(2, cursor_bg.tile.width - cursor.tile.width - 2, pos);
+    }
 
+    function add_ui() {
         // Add and configure a Flow Object for the UI
         var menu = ui.add_flow(0, (GM.height * 0.5) + 10, {
             vertical: true,
@@ -98,21 +108,10 @@ class SampleState2 extends GameState {
         dir_buttons.add_button(0, 0, '$REVERSE', () -> set_animation_direction(REVERSE));
         dir_buttons.add_button(0, 0, '$PINGPONG', () -> set_animation_direction(PINGPONG));
     }
-    /**
-     * Override `update()` to run logic every frame.
-     * This framework supports both using ECS Systems or a good old fashioned update loop to handle game logic.
-     * Or in this case, both at one time!
-     */ 
-    override public function update(dt:Float) {
-        super.update(dt);
-        
-        var pos = target.graphic.animations.index / (target.graphic.animations.current.frames.length - 1);
-        cursor.x += (Math.lerp(2, cursor_bg.tile.width - cursor.tile.width - 2, pos) - cursor.x) * 0.3;
-    }
 
     function set_animation_direction(anim_dir:AnimationDirection) {
-        target.graphic.animations.get(animation_name).direction = anim_dir;
-        target.graphic.animations.play(animation_name, true);
+        target.graphic.animations.get('egg-crack').direction = anim_dir;
+        target.graphic.animations.play('egg-crack', true);
         direction_text.text = 'Animation Direction: $anim_dir';
     }
 }

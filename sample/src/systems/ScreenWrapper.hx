@@ -17,8 +17,8 @@ class ScreenWrapper extends System {
 
     override function update(dt:Float) {
 		for(node in nodes) {
-            if (node.transform2D.position.x > GM.width + node.graphic2D.width) {
-                node.transform2D.position.x = -node.graphic2D.width;
+            if (node.transform2D.x > GM.width + node.graphic2D.width) {
+                node.transform2D.x = -node.graphic2D.width;
             }
 		}
 	}
