@@ -1,5 +1,5 @@
 # boostlib
-library to help bootstrap and simplify game development with the Heaps library.
+Framework to help bootstrap and simplify game development with the Heaps Engine.
 More documentation coming soon!
 
 ## About
