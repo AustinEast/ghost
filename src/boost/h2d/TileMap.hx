@@ -9,3 +9,12 @@ import ecs.entity.Entity;
 class TileMap extends Entity {
 
 }
+
+@:enum
+abstract TileSlope (Int) {
+    var NONE  = 0;
+    var NE    = 1;
+    var SE    = 2;
+    var SW    = 3;
+    var NW    = 4;
+}
