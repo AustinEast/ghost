@@ -1,10 +1,10 @@
 package boost;
 
+import boost.util.DestroyUtil;
+import boost.util.DestroyUtil.IDestroyable;
 import h2d.Flow;
 import h2d.Mask;
 import h2d.Layers;
-import boost.util.DestroyUtil;
-import boost.util.DestroyUtil.IDestroyable;
 
 /**
  * The Base "State" of a `Game`. States are used to organize a Game's different views.
@@ -34,7 +34,7 @@ class State implements IDestroyable {
     /**
      * Age of the State (in Seconds).
      */
-    @:allow(boost.ecs.system.sys.StateSystem)
+    @:allow(boost.system.sys.StateSystem)
     public var age(default, null):Float;
     /**
      * When the State is marked as closed, it is destroyed after this update cycle.
@@ -80,7 +80,7 @@ class State implements IDestroyable {
         local3d.remove();
     }
 
-    @:allow(boost.ecs.system.sys.StateSystem)
+    @:allow(boost.system.sys.StateSystem)
     function attach(context2d:h2d.Object, context3d:h3d.scene.Object) {
         context2d.addChild(local2d);
         context2d.addChild(ui);

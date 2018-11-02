@@ -1,7 +1,7 @@
 package states;
 
+import boost.component.h2d.Animator.AnimationDirection;
 import h2d.Bitmap;
-import boost.ds.Animations.AnimationDirection;
 import h2d.Tile;
 import h2d.Text;
 import boost.util.Color;
@@ -35,14 +35,7 @@ class SampleState2 extends GameState {
     /**
      * Override `init()` to initialize the State.
      */
-    override public function init() {
-        // Create a GameObject to act as a background image
-        var bg = new GameObject();
-        // Make a colored graphic that covers the Screen
-        bg.graphic.make(GM.width, GM.height, 0xff222034);
-        // Add the GameObject to the State
-        add(bg);
-        
+    override public function init() {    
         // Create the target animated GameObject
         target = new GameObject(GM.width * 0.5, GM.height * 0.25);
         // Load the GameObject's graphic
@@ -62,9 +55,9 @@ class SampleState2 extends GameState {
         // * flag that the animation is looped
         // * how many seconds to delay the animation between loops
         // * the direction the animation should play
-        target.graphic.animations.add('egg-crack', [0,0,0,0,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14], 10, true, 2, FORWARD);
+        target.animator.add('egg-crack', [0,0,0,0,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14], 10, true, 2, FORWARD);
         // Play the animation
-        target.graphic.animations.play('egg-crack');
+        target.animator.play('egg-crack');
         // Add the Target Entity to the State
         add(target);
         // Add the UI Elements
@@ -78,7 +71,7 @@ class SampleState2 extends GameState {
     override public function update(dt:Float) {
         super.update(dt);
         
-        var pos = target.graphic.animations.index / (target.graphic.animations.current.frames.length - 1);
+        var pos = target.animator.index / (target.animator.current.frames.length - 1);
         cursor.x = Math.lerp(2, cursor_bg.tile.width - cursor.tile.width - 2, pos);
     }
 
@@ -111,8 +104,8 @@ class SampleState2 extends GameState {
     }
 
     function set_animation_direction(anim_dir:AnimationDirection) {
-        target.graphic.animations.get('egg-crack').direction = anim_dir;
-        target.graphic.animations.play('egg-crack', true);
+        target.animator.members.get('egg-crack').direction = anim_dir;
+        target.animator.play('egg-crack', true);
         direction_text.text = 'Animation Direction: $anim_dir';
     }
 }

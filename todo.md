@@ -7,6 +7,8 @@
 * Collision system
 * TileMap
 * Debug menu
+* implement haxe-concurrency? (optionally of course)
+* Redo Game.hx to not extend App, add more ECS integration
 * Add more Samples:
     * Scene made the "haxeflixel" way vs "ECS" way
     * horizontal shooter

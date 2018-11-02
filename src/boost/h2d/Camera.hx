@@ -1,4 +1,4 @@
-package boost.ecs.entity;
+package boost.h2d;
 
 import ecs.entity.Entity;
 

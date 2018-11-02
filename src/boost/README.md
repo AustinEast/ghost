@@ -15,10 +15,10 @@ The Game Manager. Use this to access useful methods and properties like resettin
 
 # Sections
 
-* ds   - Data Structures.
-* ecs  - The Entities, Components, and Systems that drive boostlib.
+* component  - ECS Components that drive boostlib.
 * ext  - Static Classes used to extend existing types with new methods.
 * h2d  - Useful classes to quickly create 2D games.
 * h3d  - Useful classes to quickly create 3D games.
+* system  - ECS Systems that drive boostlib.
 * ui   - UI elements.
 * util - Utility Classes.

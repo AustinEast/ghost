@@ -1,1 +1,0 @@
-This is an ECS framework I was exploring before settling on using Kevin Resol's ecs lib. Its unfinished but I may revisit someday :)

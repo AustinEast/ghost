@@ -1,10 +1,10 @@
 package boost;
 
-import boost.ecs.component.sys.Game;
-import boost.ecs.component.sys.Engine;
-import boost.ecs.component.sys.States;
-import ecs.entity.Entity;
+import boost.component.sys.Game;
+import boost.component.sys.Engine;
+import boost.component.sys.States;
 import boost.util.Log;
+import ecs.entity.Entity;
 import hxd.Window;
 
 /**
@@ -29,6 +29,10 @@ class GM {
 	 * The height of the screen in game pixels.
 	 */
 	public static var height(get, null):Int;
+	/**
+	 * The Background Color of the Game's window.
+	 */
+	public static var background_color(get, set):Int;
 	/**
 	 * The target framerate.
 	 * TODO: Make this set-able
@@ -123,8 +127,10 @@ class GM {
 	static function get_version() return game.version;
 	static function get_width() return game.width;
 	static function get_height() return game.height;
+	static function get_background_color() return engine.background_color;
 	static function get_fps() return engine.fps;
 
 	// setters
 	// static function set_framerate(value:Int) return game.framerate = value;
+	static function set_background_color(value:Int) return engine.background_color = value;
 }

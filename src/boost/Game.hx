@@ -1,13 +1,11 @@
 package boost;
 
+import boost.component.sys.Game.GameOptions;
+import boost.util.DestroyUtil;
 import ecs.component.Component;
 import ecs.system.System;
-import boost.ecs.component.sys.Game.GameOptions;
-import boost.ecs.system.sys.StateSystem;
-import boost.ecs.system.sys.ScaleSystem;
 import ecs.entity.Entity;
 import hxd.App;
-import boost.util.DestroyUtil;
 
 /**
  * The Game Class bootstraps the creation of a HEAPS game.
@@ -28,6 +26,11 @@ class Game extends hxd.App implements IDestroyable {
      * Age of the Game (in Seconds).
      */
     public var age(default, null):Float;
+	/**
+	 * Callback function that is called at the end of this Game's `init()`.
+	 * Useful for adding in game-wide Components and Systems from the Game's entry point.
+	 */
+	public var on_init:Void->Void;
 	/**
 	 * Temporary store of options to pass into the Game Component on `init()`.
 	 */
@@ -54,8 +57,8 @@ class Game extends hxd.App implements IDestroyable {
         game = new Entity("Game");
 
 		// Add the initial Systems to the ECS Engine
-		ecs.systems.add(new StateSystem());
-		ecs.systems.add(new ScaleSystem());
+		ecs.systems.add(new boost.system.sys.StateSystem());
+		ecs.systems.add(new boost.system.sys.ScaleSystem());
 
 		// Load the FileSystem
 		// If we dont have access to macros, just `initEmbed()`
@@ -73,12 +76,11 @@ class Game extends hxd.App implements IDestroyable {
 		#end
 	}
 
-	@:dox(hide) @:noCompletion
 	override public function init () {
 		// Add our game components, then add the game entity to the ECS Engine
-        game.add(new boost.ecs.component.sys.Game(s2d, s3d, engine, options));
-		game.add(new boost.ecs.component.sys.States(initial_state));
-		game.add(new boost.ecs.component.sys.Engine(engine));
+        game.add(new boost.component.sys.Game(s2d, s3d, engine, options));
+		game.add(new boost.component.sys.States(initial_state));
+		game.add(new boost.component.sys.Engine(engine));
         ecs.entities.add(game);
 
 		// Init the Game Manager
@@ -86,6 +88,9 @@ class Game extends hxd.App implements IDestroyable {
 		
 		// Call a resize event for good measure
 		onResize();
+
+		// Call the callback function if it's set
+		if (on_init != null) on_init();
 	}
 
 	@:dox(hide) @:noCompletion

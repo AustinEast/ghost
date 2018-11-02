@@ -6,6 +6,7 @@
 -lib castle
 -lib heaps
 -lib ecs
+-lib differ
 -lib boostlib
 # defines
 -dce full

@@ -3,7 +3,7 @@ package systems;
 import boost.GameState;
 import hxd.Key;
 import boost.GM;
-import boost.ecs.component.sys.States;
+import boost.component.sys.States;
 import ecs.node.Node;
 import ecs.Engine;
 import ecs.system.System;

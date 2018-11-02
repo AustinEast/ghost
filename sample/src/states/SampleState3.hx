@@ -9,9 +9,9 @@ import systems.ScreenWrapper;
 using boost.ext.ObjectExt;
 
 /**
- * Sample State 1 - Pixel Art Stress Test.
+ * Sample State 3 - Collision
  */
-class SampleState1 extends GameState {
+class SampleState3 extends GameState {
     /**
      * Text to display the FPS.
      */
@@ -19,11 +19,11 @@ class SampleState1 extends GameState {
     /**
      * The amount of Entities to spawn.
      */
-    var entity_count:Int = 5000;
+    var entity_count:Int = 10;
     /**
      * Override `init()` to initialize the State.
      */
-    override public function init() {        
+    override public function init() {
         // Create a legion of circles!
         for (i in 0...entity_count) {
             // Create a GameObject at a random point on the Screen
@@ -33,21 +33,15 @@ class SampleState1 extends GameState {
             // Center the origin of the graphic
             c.graphic.center_origin();
             // Add some motion
-            c.transform.rotation = Math.random() * 360;
-            c.motion.rotational_velocity = 0.01;
-            c.motion.velocity.x = Math.random() * 5;
+            // c.transform.rotation = Math.random() * 360;
+            // c.motion.rotational_velocity = 0.01;
+            // c.motion.velocity.x = Math.random() * 5;
             // Add the GameObject to the State
             add(c);
         }
+
         // Add some info text to the UI
         add_ui();
-    }
-    /**
-     * Override `init_systems()` to add the custom ScreenWrapper system.
-     */
-    override function init_systems() {
-        super.init_systems();         
-        ecs.systems.add(new ScreenWrapper());
     }
     /**
      * Override `update()` to run logic every frame.
