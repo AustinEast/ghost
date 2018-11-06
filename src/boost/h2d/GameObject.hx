@@ -67,7 +67,7 @@ class GameObject extends Entity {
 	 * The GameObject's Graphic Component.
 	 */
     public var graphic:Graphic;
-     /**
+    /**
 	 * The GameObject's Animator Component.
 	 */
     public var animator:Animator;
