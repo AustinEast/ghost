@@ -1,5 +1,3 @@
 package boost;
 
-enum Event {
-	
-}
+enum Event {}

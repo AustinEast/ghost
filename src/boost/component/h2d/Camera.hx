@@ -5,16 +5,16 @@ import h2d.col.Point;
 import ecs.component.Component;
 
 class Camera extends Component {
-    /**
-     * The x position within the viewport
-     */
-    public var x:Int;
-    /**
-     * The y position within the viewport
-     */
-    public var y:Int;
-    public var scroll:Point;
-    public var width:Float;
-    public var height:Float;
-    public var bounds:Bounds
+  /**
+   * The x position within the viewport
+   */
+  public var x:Int;
+  /**
+   * The y position within the viewport
+   */
+  public var y:Int;
+  public var scroll:Point;
+  public var width:Float;
+  public var height:Float;
+  public var bounds:Bounds
 }
