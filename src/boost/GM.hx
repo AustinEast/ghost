@@ -12,7 +12,6 @@ import hxd.Window;
  * Contains handy global references for many systems and properties.
  */
 class GM {
-
 	/**
 	 * The name of the Game. 
 	 */

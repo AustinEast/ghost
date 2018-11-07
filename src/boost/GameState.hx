@@ -13,7 +13,7 @@ class GameState extends State {
     /**
      * This State's ECS Engine instance.
      */
-    public var ecs(default, null):Engine;
+    public var ecs(default, null):Engine<Event>;
     /**
      * Creates the State and it's ECS Engine.
      */

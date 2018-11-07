@@ -1,5 +1,6 @@
 package boost.system.sys;
 
+import boost.Event;
 import boost.util.DestroyUtil;
 import boost.component.sys.States;
 import boost.component.sys.Game;
@@ -11,7 +12,7 @@ import tink.CoreApi.CallbackLink;
 /**
  * System for managing the current `State`
  */
-class StateSystem extends System {
+class StateSystem extends System<Event> {
 	@:nodes var nodes:Node<States,Game>;
 
 	var listeners:CallbackLink;
@@ -39,31 +40,6 @@ class StateSystem extends System {
 				state.update(state.time_scale * dt);
 			}
 		}
-	}
-
-	override function onAdded(engine:ecs.Engine) {
-		super.onAdded(engine);
-		for(node in nodes) addToDisplay(node);
-		listeners = [
-			nodes.nodeAdded.handle(addToDisplay),
-			nodes.nodeRemoved.handle(removeFromDisplay),
-		];
-	}
-	
-	override function onRemoved(engine:ecs.Engine) {
-		super.onRemoved(engine);
-		listeners.dissolve();
-		listeners = null;
-	}
-	
-	function addToDisplay(node:Node<States,Game>) {
-		// context2d.add(node.states.local2d, 0);
-		// context3d.add(node.states.local3d);
-	}
-	
-	function removeFromDisplay(node:Node<States,Game>) {
-		// context2d.removeChild(node.states.local2d);
-		// context3d.removeChild(node.states.local3d);
 	}
 
     function add(state:State, game:Game) {	

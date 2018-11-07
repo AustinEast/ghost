@@ -1,5 +1,6 @@
 package boost.system;
 
+import boost.Event;
 import boost.component.Process;
 import ecs.node.Node;
 import ecs.system.System;
@@ -7,7 +8,7 @@ import ecs.system.System;
 /**
  * Process Runner.
  */
-class Processor extends System {
+class Processor extends System<Event> {
     @:nodes var nodes:Node<Process>;
 
     override function update(dt:Float) {

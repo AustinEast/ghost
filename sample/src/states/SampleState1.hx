@@ -30,8 +30,6 @@ class SampleState1 extends GameState {
             var c = new GameObject(Math.random() * GM.width, Math.random() * GM.height);
             // Load the GameObject's graphic
             c.graphic.load(hxd.Res.images.cir);
-            // Center the origin of the graphic
-            c.graphic.center_origin();
             // Add some motion
             c.transform.rotation = Math.random() * 360;
             c.motion.rotational_velocity = 0.01;

@@ -8,7 +8,7 @@ import ecs.component.Component;
 
 class Graphic extends Component {
 	/**
-	 * Array of Tiles that this Graphic can display.
+	 * Array of Tiles that this `Graphic` can display.
 	 * Each Tile can be thought of as a frame of an animation.
 	 */
 	public var frames:Array<Tile>;
@@ -17,23 +17,27 @@ class Graphic extends Component {
 	 */
 	public var current_frame:Int;
 	/**
-	 * Flag to set if this Graphic will be displayed.
+	 * Flag to set if this `Graphic` will be displayed.
 	 * Alias for `bitmap.visible`.
 	 */
 	public var visible(get, set):Bool;
 	/**
-	 * Width of the Graphic. Can change depending on the current frame.
+	 * Width of the `Graphic`. Can change depending on the current frame.
 	 * Alias for `bitmap.tile.width`.
 	 */
 	public var width(get, null):Int;
 	/**
-	 * Height of the Graphic. Can change depending on the current frame.
+	 * Height of the `Graphic`. Can change depending on the current frame.
 	 * Alias for `bitmap.tile.height`.
 	 */
 	public var height(get, null):Int;
-
+	/**
+     * The X offset of the `Graphic` from it's `Transform`.
+     */
 	public var dx(default, set):Int;
-
+	/**
+     * The Y offset of the `Graphic` from it's `Transform`.
+     */
 	public var dy(default, set):Int;
 
 	public var bitmap:Bitmap;
@@ -41,8 +45,7 @@ class Graphic extends Component {
 	public function new(?bitmap:Bitmap) {
 		this.bitmap = bitmap == null ? new Bitmap() : bitmap;
 		frames = [];
-		dx = 0;
-		dy = 0;
+		center_offset();
 		current_frame = 0;
 	}
 
@@ -64,8 +67,8 @@ class Graphic extends Component {
 				t.sub(x * width, y * height, width, height)
 			];
 		} else frames[0] = asset.toTile();
-		update_frames();
 		bitmap.tile = frames[0];
+		center_offset();
     }
 
 	/**
@@ -79,14 +82,14 @@ class Graphic extends Component {
 		clear_frames();
 		current_frame = 0;
 		frames[current_frame] = Tile.fromColor(color, width, height, alpha);
-		update_frames();
 		bitmap.tile = frames[current_frame];
+		center_offset();
     }
 
 	/**
-	 * Centers the Graphic's origin.
+	 * Centers the Graphic's offset.
 	 */
-	public function center_origin() {
+	public function center_offset() {
 		dx = -Math.floor(width * 0.5);
         dy = -Math.floor(height * 0.5);
 	}
@@ -102,8 +105,8 @@ class Graphic extends Component {
 
 	// getters
 	function get_visible():Bool return bitmap.visible;
-	function get_width():Int return bitmap.tile.width;
-	function get_height():Int return bitmap.tile.height;
+	function get_width():Int return bitmap.tile == null ? 0 : bitmap.tile.width;
+	function get_height():Int return bitmap.tile == null ? 0 : bitmap.tile.height;
 
 	// setters
 	function set_visible(value:Bool):Bool return bitmap.visible = value;

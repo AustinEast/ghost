@@ -1,10 +1,10 @@
 package states;
 
+import h2d.Graphics;
 import h2d.Tile;
 import boost.GM;
 import boost.h2d.GameObject;
 import boost.GameState;
-import systems.ScreenWrapper;
 
 using boost.ext.ObjectExt;
 
@@ -21,24 +21,20 @@ class SampleState3 extends GameState {
      */
     var entity_count:Int = 10;
     /**
+     * Debug Graphic
+     */
+    var dg:Graphics;
+    /**
      * Override `init()` to initialize the State.
      */
     override public function init() {
-        // Create a legion of circles!
-        for (i in 0...entity_count) {
-            // Create a GameObject at a random point on the Screen
-            var c = new GameObject(Math.random() * GM.width, Math.random() * GM.height);
-            // Load the GameObject's graphic
-            c.graphic.load(hxd.Res.images.cir);
-            // Center the origin of the graphic
-            c.graphic.center_origin();
-            // Add some motion
-            // c.transform.rotation = Math.random() * 360;
-            // c.motion.rotational_velocity = 0.01;
-            // c.motion.velocity.x = Math.random() * 5;
-            // Add the GameObject to the State
-            add(c);
-        }
+        dg = new Graphics(local2d);
+
+        dg.beginFill(0x00FF00, 0.5);
+		dg.lineStyle(1, 0xFF00FF);
+		dg.drawRect(10, 10, 100, 100);
+		dg.drawCircle(100, 100, 30);
+		dg.endFill();
 
         // Add some info text to the UI
         add_ui();

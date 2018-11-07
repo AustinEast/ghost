@@ -1,0 +1,5 @@
+package boost;
+
+enum Event {
+	
+}

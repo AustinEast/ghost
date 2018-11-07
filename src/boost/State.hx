@@ -1,9 +1,6 @@
 package boost;
 
 import boost.util.DestroyUtil;
-import boost.util.DestroyUtil.IDestroyable;
-import h2d.Flow;
-import h2d.Mask;
 import h2d.Layers;
 
 /**

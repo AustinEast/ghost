@@ -1,6 +1,7 @@
 package boost.system.h2d;
 
 import h2d.col.Point;
+import boost.Event;
 import boost.util.DataUtil;
 import boost.component.h2d.Transform;
 import boost.component.h2d.Motion;
@@ -10,7 +11,7 @@ import ecs.system.System;
 /**
  * System for providing simple "Arcadey" 2D physics.
  */
-class Arcade extends System {
+class Arcade extends System<Event> {
 	@:nodes var nodes:Node<Transform, Motion>;
 
 	public static var defaults(get, null):ArcadeOptions;

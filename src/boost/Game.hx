@@ -17,7 +17,7 @@ class Game extends hxd.App implements IDestroyable {
 	/**
 	 * ECS Engine.
 	 */
-	var ecs:ecs.Engine;
+	var ecs:ecs.Engine<Event>;
     /**
      * The Game Entity.
      */
@@ -111,7 +111,7 @@ class Game extends hxd.App implements IDestroyable {
 	 * Useful for adding custom game-wide functionality that persists between states.
 	 * @param system `System` to add.
 	 */
-	public function add_system(system:System) ecs.systems.add(system);
+	public function add_system(system:System<Event>) ecs.systems.add(system);
 
 	/**
 	 * Adds a `Component` to the Game.

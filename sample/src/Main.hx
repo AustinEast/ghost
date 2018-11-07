@@ -13,7 +13,7 @@ class Main {
 
 	function new() {
 		// Create our Game with an Initial State and Options
-		var game = new Game(SampleState1, EMBED, {
+		var game = new Game(SampleState3, EMBED, {
 			name: "Sample App",
 			version: "0.0.1",
 			width: 320,
@@ -29,4 +29,8 @@ class Main {
 			game.add_system(new SampleSwapper());
 		}
 	}
+}
+
+enum Event {
+	
 }

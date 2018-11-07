@@ -4,7 +4,7 @@ class DestroyUtil {
 	/**
 	 * Checks if an object is not null before calling destroy(), always returns null.
 	 *
-	 * @param	object	An IFlxDestroyable object that will be destroyed if it's not null.
+	 * @param	object	An IDestroyable object that will be destroyed if it's not null.
 	 * @return	null
 	 */
 	public static function destroy<T:IDestroyable>(object:Null<IDestroyable>):T {
@@ -15,9 +15,9 @@ class DestroyUtil {
 	}
 
 	/**
-	 * Destroy every element of an array of IFlxDestroyables
+	 * Destroy every element of an array of IDestroyables
 	 *
-	 * @param	array	An Array of IFlxDestroyable objects
+	 * @param	array	An Array of IDestroyable objects
 	 * @return	null
 	 */
 	public static function destroyArray<T:IDestroyable>(array:Array<T>):Array<T> {

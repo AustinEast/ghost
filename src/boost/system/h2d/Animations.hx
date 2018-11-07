@@ -9,7 +9,7 @@ import ecs.system.System;
 /**
  * System for handling 2D Animations.
  */
-class Animations extends System {
+class Animations extends System<Event> {
     @:nodes var nodes:Node<Graphic,Animator>;
 
     override function update(dt:Float) {

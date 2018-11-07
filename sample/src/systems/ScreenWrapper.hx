@@ -3,16 +3,14 @@ package systems;
 import boost.GM;
 import boost.component.h2d.Transform;
 import boost.component.h2d.Graphic;
-import boost.util.DataUtil;
 import ecs.node.Node;
 import ecs.Engine;
 import ecs.system.System;
-import tink.CoreApi.CallbackLink;
 
 /**
  * System for wrapping GameObjects around the screen.
  */
-class ScreenWrapper extends System {
+class ScreenWrapper<Event> extends System<Event> {
     @:nodes var nodes:Node<Transform, Graphic>;
 
     override function update(dt:Float) {

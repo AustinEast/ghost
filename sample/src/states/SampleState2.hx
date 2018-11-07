@@ -45,8 +45,6 @@ class SampleState2 extends GameState {
         // * the width of each Sprite Sheet cell
         // * the height of each Sprite Sheet cell
         target.graphic.load(hxd.Res.images.baddegg, true, 180, 96);
-        // Center the origin of the graphic
-        target.graphic.center_origin();
         // Add an animation to the GameObject's graphic
         // Passing in six arguments:
         // * the animation's name

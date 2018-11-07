@@ -1,5 +1,6 @@
 package boost.system.sys;
 
+import boost.Event;
 import boost.component.sys.States;
 import boost.component.sys.Engine;
 import boost.component.sys.Game;
@@ -9,7 +10,7 @@ import ecs.system.System;
 /**
  * System for scaling the Viewport to maintain the ratio defined in the Game's options parameter
  */
-class ScaleSystem extends System {
+class ScaleSystem extends System<Event> {
     @:nodes var nodes:Node<Engine,Game>;
 
 	override function update(dt:Float) {
