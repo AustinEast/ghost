@@ -1,8 +1,8 @@
 package boost;
 
-import boost.component.sys.Game;
-import boost.component.sys.Engine;
-import boost.component.sys.States;
+import boost.hxd.component.Game;
+import boost.hxd.component.Engine;
+import boost.hxd.component.States;
 import boost.util.Log;
 import ecs.entity.Entity;
 import hxd.Window;

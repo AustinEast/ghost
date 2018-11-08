@@ -1,5 +1,6 @@
 package boost;
 
+import boost.sys.Event;
 import ecs.entity.Entity;
 import ecs.Engine;
 /**
@@ -29,11 +30,11 @@ class GameState extends State {
    * Override this to customize the default ECS Systems for the GameState.
    */
   public function init_systems() {
-    ecs.systems.add(new boost.system.Processor());
-    ecs.systems.add(new boost.system.h2d.Arcade());
-    ecs.systems.add(new boost.system.h2d.Collision());
-    ecs.systems.add(new boost.system.h2d.Render(local2d));
-    ecs.systems.add(new boost.system.h2d.Animations());
+    ecs.systems.add(new boost.hxd.system.ProcessSystem());
+    ecs.systems.add(new boost.h2d.system.ArcadeSystem());
+    ecs.systems.add(new boost.h2d.system.CollisionSystem());
+    ecs.systems.add(new boost.h2d.system.RenderSystem(local2d));
+    ecs.systems.add(new boost.h2d.system.AnimationSystem());
   }
   /**
    * Override this to run logic every frame.

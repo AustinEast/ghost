@@ -12,3 +12,9 @@ TODO
 
 ## TileMap
 TODO
+
+# Sections
+
+* component  - ECS Components that drive boostlib.
+* ext        - Static Classes used to extend existing types with new methods.
+* system     - ECS Systems that drive boostlib.

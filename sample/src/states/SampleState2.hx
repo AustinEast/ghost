@@ -1,6 +1,6 @@
 package states;
 
-import boost.component.h2d.Animator.AnimationDirection;
+import boost.h2d.component.Animator.AnimationDirection;
 import h2d.Bitmap;
 import h2d.Tile;
 import h2d.Text;
@@ -10,7 +10,7 @@ import boost.h2d.GameObject;
 import boost.GameState;
 import hxd.Math;
 
-using boost.ext.ObjectExt;
+using boost.h2d.ext.ObjectExt;
 /**
  * Sample State 2 - 2D Animations.
  */

@@ -1,10 +1,10 @@
 package boost.h2d;
 
-import boost.component.h2d.Motion;
-import boost.component.h2d.Transform;
-import boost.component.h2d.Animator;
-import boost.component.h2d.Graphic;
-import boost.component.Process;
+import boost.h2d.component.Motion;
+import boost.h2d.component.Transform;
+import boost.h2d.component.Animator;
+import boost.h2d.component.Graphic;
+import boost.hxd.component.Process;
 import ecs.entity.Entity;
 /**
  * GameObjects are Entities preconfigured with transform, physics, and graphic Components.

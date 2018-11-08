@@ -3,7 +3,7 @@ package;
 import boost.GM;
 import boost.Game;
 import states.*;
-import systems.SampleSwapper;
+import systems.SampleSwapperSystem;
 
 class Main {
   static function main() {
@@ -25,7 +25,7 @@ class Main {
       // Add a custom System to the Game's top-level ECS Engine
       // Systems added to the Game's ECS Engine will persist between states
       // This is useful for Level managers, Save managers, etc.
-      game.add_system(new SampleSwapper());
+      game.add_system(new SampleSwapperSystem());
     }
   }
 }

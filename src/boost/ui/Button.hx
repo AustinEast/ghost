@@ -6,7 +6,7 @@ import h2d.Object;
 import h2d.Text;
 import h2d.Flow;
 
-using boost.ext.ObjectExt;
+using boost.h2d.ext.ObjectExt;
 using boost.ui.Styles;
 
 class Button extends Flow {

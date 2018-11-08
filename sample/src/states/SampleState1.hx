@@ -4,9 +4,9 @@ import h2d.Tile;
 import boost.GM;
 import boost.h2d.GameObject;
 import boost.GameState;
-import systems.ScreenWrapper;
+import systems.ScreenWrapperSystem;
 
-using boost.ext.ObjectExt;
+using boost.h2d.ext.ObjectExt;
 /**
  * Sample State 1 - Pixel Art Stress Test.
  */
@@ -44,7 +44,7 @@ class SampleState1 extends GameState {
    */
   override function init_systems() {
     super.init_systems();
-    ecs.systems.add(new ScreenWrapper());
+    ecs.systems.add(new ScreenWrapperSystem());
   }
   /**
    * Override `update()` to run logic every frame.

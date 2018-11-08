@@ -3,4 +3,4 @@
 -lib castle
 -lib heaps
 -lib ecs
--lib differ
+-lib hxmath

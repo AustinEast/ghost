@@ -6,7 +6,7 @@ import boost.GM;
 import boost.h2d.GameObject;
 import boost.GameState;
 
-using boost.ext.ObjectExt;
+using boost.h2d.ext.ObjectExt;
 /**
  * Sample State 3 - Collision
  */

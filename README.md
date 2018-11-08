@@ -1,6 +1,6 @@
 # boostlib
 Framework to help bootstrap and simplify game development with the Heaps Engine.
-More documentation coming soon!
+Currently in rapid development, so it is not recommended for use yet.
 
 ## About
 

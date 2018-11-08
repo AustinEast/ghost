@@ -30,7 +30,7 @@ class State implements IDestroyable {
   /**
    * Age of the State (in Seconds).
    */
-  @:allow(boost.system.sys.StateSystem)
+  @:allow(boost.hxd.system.StateSystem)
   public var age(default, null):Float;
   /**
    * When the State is marked as closed, it is destroyed after this update cycle.
@@ -72,7 +72,7 @@ class State implements IDestroyable {
     local3d.remove();
   }
 
-  @:allow(boost.system.sys.StateSystem)
+  @:allow(boost.hxd.system.StateSystem)
   function attach(context2d:h2d.Object, context3d:h3d.scene.Object) {
     context2d.addChild(local2d);
     context2d.addChild(ui);

@@ -1,6 +1,7 @@
 package boost;
 
-import boost.component.sys.Game.GameOptions;
+import boost.hxd.component.Game.GameOptions;
+import boost.sys.Event;
 import boost.util.DestroyUtil;
 import ecs.component.Component;
 import ecs.system.System;
@@ -56,8 +57,8 @@ class Game extends hxd.App implements IDestroyable {
     game = new Entity("Game");
 
     // Add the initial Systems to the ECS Engine
-    ecs.systems.add(new boost.system.sys.StateSystem());
-    ecs.systems.add(new boost.system.sys.ScaleSystem());
+    ecs.systems.add(new boost.hxd.system.StateSystem());
+    ecs.systems.add(new boost.hxd.system.ScaleSystem());
 
     // Load the FileSystem
     // If we dont have access to macros, just `initEmbed()`
@@ -77,9 +78,9 @@ class Game extends hxd.App implements IDestroyable {
 
   override public function init() {
     // Add our game components, then add the game entity to the ECS Engine
-    game.add(new boost.component.sys.Game(s2d, s3d, engine, options));
-    game.add(new boost.component.sys.States(initial_state));
-    game.add(new boost.component.sys.Engine(engine));
+    game.add(new boost.hxd.component.Game(s2d, s3d, engine, options));
+    game.add(new boost.hxd.component.States(initial_state));
+    game.add(new boost.hxd.component.Engine(engine));
     ecs.entities.add(game);
 
     // Init the Game Manager
