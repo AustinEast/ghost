@@ -57,7 +57,7 @@ class Pool<T:IDestroyable> implements IPool<T> {
 
 interface IPooled extends IDestroyable {
   function put():Void;
-  private var in_pool:Bool;
+  private var pooled:Bool;
 }
 
 interface IPool<T:IDestroyable> {

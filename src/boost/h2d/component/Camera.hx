@@ -1,7 +1,7 @@
 package boost.h2d.component;
 
+import hxmath.math.Vector2;
 import h2d.col.Bounds;
-import h2d.col.Point;
 import ecs.component.Component;
 
 class Camera extends Component {
@@ -13,7 +13,7 @@ class Camera extends Component {
    * The y position within the viewport
    */
   public var y:Int;
-  public var scroll:Point;
+  public var scroll:Vector2;
   public var width:Float;
   public var height:Float;
   public var bounds:Bounds

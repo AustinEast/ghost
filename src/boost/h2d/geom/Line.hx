@@ -1,4 +1,4 @@
-package boost.h2d.col.geom;
+package boost.h2d.geom;
 
 import hxmath.math.Vector2;
 

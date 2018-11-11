@@ -1,9 +1,7 @@
 package boost.h2d.component;
 
+import boost.h2d.geom.Shape;
 import boost.util.DataUtil;
-import h2d.col.Bounds;
-import h2d.col.Circle;
-import h2d.col.Polygon;
 import ecs.entity.Entity;
 import ecs.component.Component;
 
@@ -21,19 +19,23 @@ class Collider extends Component {
   /**
    * The X offset of the `Collider` from it's `Transform`.
    */
-  public var dx:Int;
+  public var x:Int;
   /**
    * The Y offset of the `Collider` from it's `Transform`.
    */
-  public var dy:Int;
+  public var y:Int;
   /**
-   * The `Bounds` of the `Collider`.
+   * The `Shape` of the `Collider`.
    */
-  public var bounds:Bounds;
+  public var shape:Shape;
   /**
    * The Collision Group of the `Collider`.
    */
   public var group:String;
+  /**
+   *  Collision Groups the `Collider` collides with.
+   */
+  public var colliding_groups:Array<String>;
   /**
    * Callback Function that is triggered when this `Collider` first collides with another `Collider`.
    */
@@ -47,27 +49,29 @@ class Collider extends Component {
    */
   public var on_exit:Entity->Void;
 
-  public function new(?bounds:Bounds, ?options:ColliderOptions) {
+  public function new(shape:Shape, ?options:ColliderOptions) {
     options = DataUtil.copy_fields(options, defaults);
-    this.bounds = bounds == null ? new Bounds() : bounds;
-    dx = options.offset.x;
-    dy = options.offset.y;
+    x = options.x;
+    y = options.y;
+    this.shape = shape;
     solid = options.solid;
     group = options.group;
+    colliding_groups = options.colliding_groups;
   }
 
   static function get_defaults():ColliderOptions return {
-    offset: {
-      x: 0,
-      y: 0
-    },
+    x: 0,
+    y: 0,
     solid: true,
-    group: 'Default'
+    group: 'Default',
+    colliding_groups: ['Default']
   }
 }
 
 typedef ColliderOptions = {
-  ?offset:{?x:Int, ?y:Int},
+  ?x:Int,
+  ?y:Int,
   ?solid:Bool,
-  ?group:String
+  ?group:String,
+  ?colliding_groups:Array<String>
 }
