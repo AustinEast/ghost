@@ -1,5 +1,6 @@
 package states;
 
+import boost.h2d.geom.Rect;
 import h2d.Tile;
 import boost.GM;
 import boost.h2d.GameObject;
@@ -18,7 +19,7 @@ class SampleState1 extends GameState {
   /**
    * The amount of Entities to spawn.
    */
-  var entity_count:Int = 5000;
+  var entity_count:Int = 40;
   /**
    * Override `init()` to initialize the State.
    */
@@ -26,15 +27,16 @@ class SampleState1 extends GameState {
     // Create a legion of circles!
     for (i in 0...entity_count) {
       // Create a GameObject at a random point on the Screen
-      var c = new GameObject(Math.random() * GM.width, Math.random() * GM.height);
+      var game_object = new GameObject(Math.random() * GM.width, Math.random() * GM.height);
       // Load the GameObject's graphic
-      c.graphic.load(hxd.Res.images.cir);
+      if (i % 2 == 0) game_object.collider.shape = boost.h2d.geom.Circle.get(0, 0, 10); else game_object.collider.shape = Rect.get(0, 0, 8, 8);
+      game_object.graphic.load(hxd.Res.images.cir);
       // Add some motion
-      c.transform.rotation = Math.random() * 360;
-      c.motion.rotational_velocity = 0.01;
-      c.motion.velocity.x = Math.random() * 5;
+      game_object.transform.rotation = Math.random() * 360;
+      game_object.motion.rotational_velocity = 0.01;
+      game_object.motion.velocity.x = Math.random() * 5;
       // Add the GameObject to the State
-      add(c);
+      add(game_object);
     }
     // Add some info text to the UI
     add_ui();

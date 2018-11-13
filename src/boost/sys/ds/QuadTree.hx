@@ -1,5 +1,6 @@
 package boost.sys.ds;
 
+import boost.h2d.geom.Shape;
 import boost.h2d.geom.Rect;
 import boost.util.DestroyUtil;
 import boost.sys.ds.Pool;
@@ -10,7 +11,7 @@ import boost.sys.ds.Pool;
  */
 class QuadTree extends Rect implements IPooled {
   public static var max_depth:Int = 5;
-  public static var max_objects:Int = 15;
+  public static var max_objects:Int = 5;
   public static var pool(get, never):IPool<QuadTree>;
   static var _pool = new Pool<QuadTree>(QuadTree);
 
@@ -38,13 +39,12 @@ class QuadTree extends Rect implements IPooled {
   override public function destroy() {
     for (child in children) child.put();
     children = [];
-    DestroyUtil.destroyArray(contents);
-    super.destroy();
+    contents = [];
   }
 
   public function insert(data:QuadTreeData) {
     // If the new data does not intersect this node, stop.
-    if (!data.rect.overlaps(this)) return;
+    if (!data.shape.overlaps(this)) return;
     // If the node is a leaf and contains more than the maximum allowed, split it.
     if (leaf && contents.length + 1 > max_objects) split();
     // If the node is still a leaf, push the data to it.
@@ -52,28 +52,49 @@ class QuadTree extends Rect implements IPooled {
     if (leaf) contents.push(data); else for (child in children) child.insert(data);
   }
 
-  public function remove(data:QuadTreeData) {
+  public function remove(id:Int) {
     if (leaf) {
-      var items = contents.filter((d) -> d.id == data.id);
-      for (item in items) contents.remove(item);
-    } else for (child in children) child.remove(data);
+      var items = contents.filter((d) -> d.id == id);
+      if (items != null) for (item in items) contents.remove(item);
+    } else for (child in children) child.remove(id);
     shake();
   }
 
   public function update(data:QuadTreeData) {
-    remove(data);
+    remove(data.id);
     insert(data);
+  }
+
+  public function query(shape:Shape):Array<QuadTreeData> {
+    var result:Array<QuadTreeData> = [];
+    if (!overlaps(shape)) return result;
+    if (leaf) {
+      for (data in contents) if (data.shape.overlaps(shape)) result.push(data);
+    } else {
+      for (child in children) {
+        var recurse = child.query(shape);
+        if (recurse.length > 0) {
+          result = result.concat(recurse);
+        }
+      }
+    }
+
+    return result;
   }
 
   function shake() {
     if (!leaf) {
       var len = count;
-      if (len == 0) clear_children(); else if (len < max_objects) {
+      if (len == 0) {
+        clear_children();
+      } else if (len < max_objects) {
         var nodes = new List<QuadTree>();
         nodes.push(this);
         while (nodes.length > 0) {
-          var node = nodes.last();
-          if (node.leaf) for (data in node.contents) contents.push(data); else for (child in node.children) nodes.push(child);
+          var node = nodes.first();
+          if (node.leaf) {
+            for (data in node.contents) contents.push(data);
+          } else for (child in node.children) nodes.add(child);
           nodes.pop();
         }
         clear_children();
@@ -83,49 +104,32 @@ class QuadTree extends Rect implements IPooled {
 
   function split() {
     if (depth + 1 >= max_depth) return;
+    var w = width;
+    var h = height;
+    var xw = w * 0.5;
+    var xh = h * 0.5;
 
-    var w = width * 0.5;
-    var h = height * 0.5;
-    var m = min;
-
-    for (i in 0...3) {
+    for (i in 0...4) {
       switch (i) {
         case 0:
-          children.push(get(m.x, m.y, w, h));
+          children.push(get(x - xw, y - xh, xw, xh));
         case 1:
-          children.push(get(x, m.y, w, h));
+          children.push(get(x + xw, y - xh, xw, xh));
         case 2:
-          children.push(get(x, y, w, h));
+          children.push(get(x - xw, y + xh, xw, xh));
         case 3:
-          children.push(get(m.x, y, w, h));
+          children.push(get(x + xw, y + xh, xw, xh));
       }
       children[i].depth = depth + 1;
-    }
-    for (i in 0...contents.length) {
-      children[i].insert(contents[i]);
+      for (j in 0...contents.length) {
+        children[i].insert(contents[j]);
+      }
     }
     contents = [];
   }
 
   function reset() {
     if (leaf) for (data in contents) data.flag = false; else for (child in children) child.reset();
-  }
-
-  function query(rect:Rect):Array<QuadTreeData> {
-    var result:Array<QuadTreeData> = [];
-    if (overlaps(rect)) return result;
-    if (leaf) {
-      for (data in contents) if (data.rect.overlaps(rect)) result.push(data);
-    } else {
-      for (child in children) {
-        var recurse = child.query(rect);
-        if (recurse.length > 0) {
-          result = result.concat(recurse);
-        }
-      }
-    }
-
-    return result;
   }
 
   function clear_children() {
@@ -136,10 +140,8 @@ class QuadTree extends Rect implements IPooled {
   function get_count() {
     reset();
     // Initialize the count with this node's content's length
-    var count = contents.length;
-    for (data in contents) {
-      data.flag = true;
-    }
+    var num = contents.length;
+    for (data in contents) data.flag = true;
 
     // Create a list of nodes to process and push the current tree to it.
     var nodes = new List<QuadTree>();
@@ -151,19 +153,19 @@ class QuadTree extends Rect implements IPooled {
     // Else push this node's children to the end of the node list.
     // Finally, remove the node from the list.
     while (nodes.length > 0) {
-      var node = nodes.last();
+      var node = nodes.first();
       if (node.leaf) {
         for (data in node.contents) {
           if (!data.flag) {
-            count += 1;
+            num += 1;
             data.flag = true;
           }
         }
-      } else for (child in children) nodes.push(child);
+      } else for (child in node.children) nodes.add(child);
       nodes.pop();
     }
     reset();
-    return count;
+    return num;
   }
 
   function get_leaf() return children.length == 0;
@@ -179,20 +181,20 @@ class QuadTreeData implements IDestroyable {
   /**
    * Bounds of the Entity Data.
    */
-  public var rect:Rect;
+  public var shape:Shape;
   /**
    * Helper flag to check if this Data has been counted during queries.
    */
   public var flag:Bool;
 
-  public function new(id:Int, rect:Rect) {
+  public function new(id:Int, shape:Shape) {
     this.id = id;
-    this.rect = rect;
+    this.shape = shape;
     flag = false;
   }
 
   public function destroy() {
-    rect.destroy();
-    rect = null;
+    // shape.destroy();
+    // shape = null;
   }
 }

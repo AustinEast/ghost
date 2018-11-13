@@ -1,5 +1,6 @@
 package boost.h2d.geom;
 
+import h2d.Graphics;
 import boost.sys.ds.Pool;
 import hxmath.math.Vector2;
 
@@ -43,17 +44,13 @@ class Circle extends Shape implements IPooled {
     return this;
   }
 
-  public inline function load(circle:Circle):Circle {
-    return set(circle.x, circle.y, circle.radius);
-  }
+  public inline function load(circle:Circle):Circle return set(circle.x, circle.y, circle.radius);
 
-  public inline function to_rect():Rect {
-    return Rect.get(x, y, radius * 2, radius * 2);
-  }
+  public inline function to_rect():Rect return Rect.get(x, y, radius * 2, radius * 2);
 
-  public function destroy() {
-    position = null;
-  }
+  public function destroy() position = null;
+
+  override inline function draw_debug(dg:Graphics):Void dg.drawCircle(x, y, radius);
 
   override function contains(v:Vector2):Bool return this.circle_contains(v);
 
@@ -65,8 +62,16 @@ class Circle extends Shape implements IPooled {
 
   override inline function collide_rect(r:Rect):Null<Collision> return r.rect_and_circle(this);
 
-  override inline function collide_circle(c:Circle):Null<Collision> return c.circle_and_circle(this);
+  override inline function collide_circle(c:Circle):Null<Collision> return c.circle_and_circle(this, true);
 
   // getters
   static function get_pool():IPool<Circle> return _pool;
+
+  override inline function get_top():Float return y - radius;
+
+  override inline function get_bottom():Float return y + radius;
+
+  override inline function get_left():Float return x - radius;
+
+  override inline function get_right():Float return x + radius;
 }

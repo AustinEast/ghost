@@ -1,6 +1,6 @@
 package states;
 
-import boost.h2d.component.Animator.AnimationDirection;
+import boost.h2d.component.Animator.;
 import h2d.Bitmap;
 import h2d.Tile;
 import h2d.Text;
@@ -16,9 +16,9 @@ using boost.h2d.ext.ObjectExt;
  */
 class SampleState2 extends GameState {
   /**
-   * The Animated Entity we are controlling.
+   * The Animator we are controlling.
    */
-  var target:GameObject;
+  var target_animator:Animator;
   /**
    * Cursor to show Target Entity Animation position.
    */
@@ -36,15 +36,20 @@ class SampleState2 extends GameState {
    */
   override public function init() {
     // Create the target animated GameObject
-    target = new GameObject(GM.width * 0.5, GM.height * 0.25);
+    var game_object = new GameObject(GM.width * 0.5, GM.height * 0.25);
     // Load the GameObject's graphic
     // Passing in four arguments:
     // * the desired Image file
     // * flag that the image is a Sprite Sheet
     // * the width of each Sprite Sheet cell
     // * the height of each Sprite Sheet cell
-    target.graphic.load(hxd.Res.images.baddegg, true, 180, 96);
-    // Add an animation to the GameObject's graphic
+    game_object.graphic.load(hxd.Res.images.baddegg, true, 180, 96);
+    // Add the Target Entity to the State
+    add(game_object);
+
+    // Get a reference the GameObject's Animator so we can manipulate it
+    target_animator = game_object.animator;
+    // Add an animation to the GameObject's Animator
     // Passing in six arguments:
     // * the animation's name
     // * the frames of the GameObject's graphic that the animation plays
@@ -52,11 +57,10 @@ class SampleState2 extends GameState {
     // * flag that the animation is looped
     // * how many seconds to delay the animation between loops
     // * the direction the animation should play
-    target.animator.add('egg-crack', [0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], 10, true, 2, FORWARD);
+    target_animator.add('egg-crack', [0, 0, 0, 0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], 10, true, 2, FORWARD);
     // Play the animation
-    target.animator.play('egg-crack');
-    // Add the Target Entity to the State
-    add(target);
+    target_animator.play('egg-crack');
+
     // Add the UI Elements
     add_ui();
   }
@@ -68,7 +72,7 @@ class SampleState2 extends GameState {
   override public function update(dt:Float) {
     super.update(dt);
 
-    var pos = target.animator.index / (target.animator.current.frames.length - 1);
+    var pos = target_animator.index / (target_animator.current.frames.length - 1);
     cursor.x = Math.lerp(2, cursor_bg.tile.width - cursor.tile.width - 2, pos);
   }
 
@@ -101,8 +105,8 @@ class SampleState2 extends GameState {
   }
 
   function set_animation_direction(anim_dir:AnimationDirection) {
-    target.animator.members.get('egg-crack').direction = anim_dir;
-    target.animator.play('egg-crack', true);
+    target_animator.members.get('egg-crack').direction = anim_dir;
+    target_animator.play('egg-crack', true);
     direction_text.text = 'Animation Direction: $anim_dir';
   }
 }

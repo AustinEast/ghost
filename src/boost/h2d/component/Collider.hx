@@ -1,5 +1,6 @@
 package boost.h2d.component;
 
+import boost.sys.ds.QuadTree.QuadTreeData;
 import boost.h2d.geom.Shape;
 import boost.util.DataUtil;
 import ecs.entity.Entity;
@@ -48,6 +49,9 @@ class Collider extends Component {
    * Callback Function that is triggered when this `Collider` ends it's collision with another `Collider`.
    */
   public var on_exit:Entity->Void;
+
+  @:allow(boost.h2d.system.CollisionSystem)
+  var quadtree_data:QuadTreeData;
 
   public function new(shape:Shape, ?options:ColliderOptions) {
     options = DataUtil.copy_fields(options, defaults);

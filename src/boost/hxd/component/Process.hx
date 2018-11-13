@@ -12,9 +12,9 @@ class Process extends Component {
    * The Task to be Processed.
    * This is a function with a `Float` parameter, so the time elapsed since the last update frame (dt) can be passed in.
    *
-   * Example: task = (dt) -> trace('elapsed: $dt');
+   * Example: process.task = (dt) -> trace('elapsed: $dt');
    */
-  public var task:Float->Void;
+  public var task:Null<Float->Void>;
   /**
    * Flag to set whether this Process will remain active between Processor loops.
    */

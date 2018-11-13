@@ -22,6 +22,8 @@ class Polygon extends Shape {
     this.rotation = rotation;
   }
 
+  public inline function to_rect():Rect return Rect.get(x, y);
+
   public function from_rect() {}
 
   public function from_circle(sub_divisions:Int = 3) {}

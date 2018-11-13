@@ -1,20 +1,24 @@
 package systems;
 
-import boost.GameState;
+import boost.State;
 import boost.GM;
 import boost.hxd.component.States;
 import hxd.Key;
 import ecs.node.Node;
 import ecs.Engine;
 import ecs.system.System;
-import states.*;
 /**
  * System for swapping out the different Sample GameStates.
  */
 class SampleSwapperSystem<Event> extends System<Event> {
   @:nodes var nodes:Node<States>;
-  var samples:Array<Class<GameState>> = [SampleState3, SampleState1, SampleState2];
+  var samples:Array<Class<State>>;
   var current:Int = 0;
+
+  public function new(samples:Array<Class<State>>) {
+    super();
+    this.samples = samples;
+  }
 
   override function update(dt:Float) {
     for (node in nodes) {

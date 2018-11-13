@@ -7,6 +7,8 @@ import ecs.component.Component;
 class Transform extends Component {
   /**
    * Default Transform Options
+   *
+   * TODO: Update to use `Vector2` (see geom shapes)
    */
   public static var defaults(get, null):TransformOptions;
 

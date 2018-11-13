@@ -1,80 +1,46 @@
 package boost.h2d;
 
+import boost.h2d.component.Collider;
 import boost.h2d.component.Motion;
 import boost.h2d.component.Transform;
 import boost.h2d.component.Animator;
 import boost.h2d.component.Graphic;
 import boost.hxd.component.Process;
+import boost.h2d.geom.Rect;
 import ecs.entity.Entity;
 /**
- * GameObjects are Entities preconfigured with transform, physics, and graphic Components.
- * Useful as a starting place for creating  Entities for a GameState.
+ * GameObjects are `Entities` preconfigured with a transform and an update loop provided by the `Transform` and  `Process` components added to it.
+ *
+ * helper functions to quickly create and reference `Motion`, `Collision`, `Graphic`, and `Animator` components are also available to use.
+ *
+ * Useful as a starting place while creating Entities for a GameState.
  */
-class GameObject extends Entity {
-  /**
-   * The GameObject's x position.
-   * alias for `transform.x`.
-   */
-  public var x(get, set):Float;
-  /**
-   * The GameObject's y position.
-   * Alias for `transform.y`.
-   */
-  public var y(get, set):Float;
-  /**
-   * The GameObject's width.
-   * Alias for `collider.width`.
-   *
-   * Not Implemented!
-   */
-  public var width(null, null):Float;
-  /**
-   * The GameObject's height.
-   * Alias for `collider.height`.
-   *
-   * Not Implemented!
-   */
-  public var height(null, null):Float;
-  /**
-   * The GameObject's update function.
-   * Alias for `process.task`.
-   *
-   * Useful for running logic on a GameObject every update frame without needing to create a new `System`.
-   */
-  public var update(get, set):Float->Void;
-  /**
-   * The GameObject's kill function.
-   * Hides this GameObject's graphic and stops it's update function.
-   *
-   * Note that by default this doesn't destroy the GameObject or stop this GameObject's other `Component`s from interacting with `System`s.
-   */
-  public var kill:Void->Void;
-  /**
-   * The GameObject's revive function.
-   * Shows this GameObject's graphic and activates it's update function.
-   */
-  public var revive:Void->Void;
+abstract GameObject(Entity) from Entity to Entity {
   /**
    * The GameObject's Transform Component.
    */
-  public var transform:Transform;
+  public var transform(get, never):Transform;
   /**
    * The GameObject's Motion Component.
    */
-  public var motion:Motion;
+  public var motion(get, never):Motion;
+  /**
+   * The GameObject's Collider Component.
+   */
+  public var collider(get, never):Collider;
   /**
    * The GameObject's Graphic Component.
    */
-  public var graphic:Graphic;
+  public var graphic(get, never):Graphic;
   /**
    * The GameObject's Animator Component.
    */
-  public var animator:Animator;
+  public var animator(get, never):Animator;
   /**
    * The GameObject's Process Component.
    * Drives the `update` function.
    */
-  public var process:Process;
+  public var process(get, never):Process;
   /**
    * Creates a new GameObject.
    * @param x The x position of the GameObject.
@@ -83,41 +49,80 @@ class GameObject extends Entity {
    * @param name The name of the GameObject.
    */
   public function new(x:Float = 0, y:Float = 0, ?update:Float->Void, ?name:String) {
-    super(name);
-    transform = new Transform({x: x, y: y});
-    motion = new Motion();
-    graphic = new Graphic();
-    animator = new Animator();
-    process = new Process(update, {loop: true});
+    this = new Entity(name);
 
-    this.add(transform);
-    this.add(motion);
-    this.add(graphic);
-    this.add(animator);
-    this.add(process);
-
-    this.kill = () -> {
-      graphic.visible = false;
-      process.active = false;
-    }
-
-    this.revive = () -> {
-      graphic.visible = true;
-      process.active = true;
-    }
+    this.add(new Transform({x: x, y: y}));
+    this.add(new Process(update, {loop: true}));
   }
 
-  // getters
-  function get_x():Float return transform.x;
+  function get_transform():Transform {
+    var t = this.get(Transform);
+    if (t == null) {
+      t = new Transform();
+      this.add(t);
+    }
+    return t;
+  }
 
-  function get_y():Float return transform.y;
+  function get_motion():Motion {
+    var m = this.get(Motion);
+    if (m == null) {
+      m = new Motion();
+      this.add(m);
+    }
+    return m;
+  }
 
-  function get_update():Float->Void return process.task;
+  function get_graphic():Graphic {
+    var g = this.get(Graphic);
+    if (g == null) {
+      g = new Graphic();
+      this.add(g);
+    }
+    return g;
+  }
 
-  // setters
-  function set_x(value:Float):Float return transform.x = value;
+  function get_animator():Animator {
+    var a = this.get(Animator);
+    if (a == null) {
+      a = new Animator();
+      this.add(a);
+    }
+    return a;
+  }
 
-  function set_y(value:Float):Float return transform.y = value;
+  function get_collider():Collider {
+    var c = this.get(Collider);
+    if (c == null) {
+      // When creating a new collider, check if there is a graphic to base the bounds on.
+      // Otherwise just create a 16x16 rectangle.
+      var g = graphic;
+      c = new Collider(Rect.get(0, 0, g == null ? 16 : g.width, g == null ? 16 : g.height));
+      this.add(c);
+    }
+    return c;
+  }
 
-  function set_update(value:Float->Void):Float->Void return process.task = value;
+  function get_process():Process {
+    var p = this.get(Process);
+    if (p == null) {
+      p = new Process(null);
+      this.add(p);
+    }
+    return p;
+  }
+
+  public function kill() {
+    var g = this.get(Graphic);
+    var p = this.get(Process);
+    if (g != null) g.visible = false;
+    if (p != null) p.active = false;
+  }
+
+  public function revive() {
+    var g = this.get(Graphic);
+    var p = this.get(Process);
+    if (g != null) g.visible = true;
+    if (p != null) p.active = true;
+  }
 }

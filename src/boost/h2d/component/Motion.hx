@@ -21,7 +21,8 @@ class Motion extends Component {
   public var rotational_drag:Float;
   public var elasticity:Float;
   public var mass(default, set):Float;
-  public var inv_mass(default, null):Float public var gravity_scale:Float;
+  public var inv_mass(default, null):Float;
+  public var gravity_scale:Float;
   public var kinematic:Bool;
 
   public function new(?options:MotionOptions) {

@@ -1,5 +1,6 @@
 package boost;
 
+import h2d.Graphics;
 import boost.sys.Event;
 import ecs.entity.Entity;
 import ecs.Engine;
@@ -31,8 +32,8 @@ class GameState extends State {
    */
   public function init_systems() {
     ecs.systems.add(new boost.hxd.system.ProcessSystem());
+    ecs.systems.add(new boost.h2d.system.CollisionSystem({debug: {quadtree: true, colliders: true}}, new Graphics(local2d)));
     ecs.systems.add(new boost.h2d.system.ArcadeSystem());
-    ecs.systems.add(new boost.h2d.system.CollisionSystem());
     ecs.systems.add(new boost.h2d.system.RenderSystem(local2d));
     ecs.systems.add(new boost.h2d.system.AnimationSystem());
   }

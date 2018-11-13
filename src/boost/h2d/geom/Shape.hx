@@ -1,5 +1,6 @@
 package boost.h2d.geom;
 
+import h2d.Graphics;
 import hxmath.math.Vector2;
 
 using boost.h2d.Collisions;
@@ -22,6 +23,8 @@ class Shape {
   public static inline function rect_from_circle(c:Circle):Rect return c.to_rect();
 
   public function new(x:Float = 0, y:Float = 0) position = new Vector2(x, y);
+
+  public function draw_debug(dg:Graphics):Void dg.drawRect(x, y, 1, 1);
 
   public function scale(v:Float) {}
 

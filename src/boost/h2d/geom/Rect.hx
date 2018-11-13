@@ -1,5 +1,6 @@
 package boost.h2d.geom;
 
+import h2d.Graphics;
 import boost.sys.ds.Pool;
 import hxmath.math.MathUtil;
 import hxmath.math.Vector2;
@@ -19,6 +20,8 @@ class Rect extends Shape implements IPooled {
 
   public var width(get, set):Float;
   public var height(get, set):Float;
+  public var full_width(get, set):Float;
+  public var full_height(get, set):Float;
   public var min(get, null):Vector2;
   public var max(get, null):Vector2;
   public var size:Vector2;
@@ -57,41 +60,56 @@ class Rect extends Shape implements IPooled {
   }
 
   public inline function load(rect:Rect):Rect {
-    position.set(rect.x, rect.y);
-    size.set(rect.width, rect.height);
+    position = rect.position;
+    size = rect.size;
     return this;
   }
 
-  public function destroy() {
-    position = null;
-    size = null;
-  }
+  public function destroy() {}
+
+  override inline function draw_debug(dg:Graphics):Void dg.drawRect(left, top, full_width, full_height);
 
   override inline function contains(p:Vector2):Bool return this.rect_contains(p);
 
   override inline function intersects(l:Line):Null<Intersection> return this.rect_intersects(l);
 
-  override inline function overlaps(s:Shape):Bool return collides(s) != null;
+  override inline function overlaps(s:Shape):Bool return s.collides(this) != null;
 
   override inline function collides(s:Shape):Null<Collision> return s.collide_rect(this);
 
   override inline function collide_rect(r:Rect):Null<Collision> return r.rect_and_rect(this);
 
-  override inline function collide_circle(c:Circle):Null<Collision> return c.circle_and_rect(this);
+  override inline function collide_circle(c:Circle):Null<Collision> return this.rect_and_circle(c);
 
   // getters
   static function get_pool():IPool<Rect> return _pool;
 
-  function get_width():Float return size.x;
+  inline function get_width():Float return size.x;
 
-  function get_height():Float return size.y;
+  inline function get_height():Float return size.y;
 
-  function get_min():Vector2 return new Vector2(Math.min(x, x + width), Math.min(y, y + height));
+  inline function get_full_width():Float return size.x * 2;
 
-  function get_max():Vector2 return new Vector2(Math.max(x, x + width), Math.max(y, y + height));
+  inline function get_full_height():Float return size.y * 2;
 
-  // getters
-  function set_width(value:Float):Float return size.x = value;
+  function get_min():Vector2 return new Vector2(left, top);
 
-  function set_height(value:Float):Float return size.y = value;
+  function get_max():Vector2 return new Vector2(bottom, right);
+
+  override inline function get_top():Float return y - height;
+
+  override inline function get_bottom():Float return y + height;
+
+  override inline function get_left():Float return x - width;
+
+  override inline function get_right():Float return x + width;
+
+  // setters
+  inline function set_width(value:Float):Float return size.x = value;
+
+  inline function set_height(value:Float):Float return size.y = value;
+
+  inline function set_full_width(value:Float):Float return size.x = value * 0.5;
+
+  inline function set_full_height(value:Float):Float return size.y = value * 0.5;
 }
