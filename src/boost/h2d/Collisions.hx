@@ -114,9 +114,11 @@ class Collisions {
     var n = c.position - r.position;
     // Closest point on A to center of B
     var closest = n.clone();
+    var ex = r.right - r.left;
+    var ey = r.top - r.bottom;
     // Clamp point to edges of the AABB
-    closest.x = closest.x.clamp(r.left, r.right);
-    closest.y = closest.y.clamp(r.top, r.bottom);
+    closest.x = closest.x.clamp(-ex, ex);
+    closest.y = closest.y.clamp(-ey, ey);
     var inside = false;
 
     // Circle is inside the AABB, so we need to clamp the circle's center
@@ -126,10 +128,10 @@ class Collisions {
       // Find closest axis
       if (Math.abs(n.x) > Math.abs(n.y)) {
         // Clamp to closest extent
-        if (closest.x > 0) closest.x = r.right; else closest.x = r.left;
+        closest.x = closest.x > 0 ? ex : -ex;
       } else {
         // Clamp to closest extent
-        if (closest.y > 0) closest.y = r.bottom; else closest.y = r.top;
+        closest.y = closest.y > 0 ? ey : -ey;
       }
     }
 
