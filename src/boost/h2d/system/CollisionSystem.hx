@@ -81,7 +81,7 @@ class CollisionSystem extends System<Event> {
 
   function add_collider(id:Int, collider:Collider) {
     collider.quadtree_data = new QuadTreeData(id, collider.shape);
-    quadtree.insert(collider.quadtree_data);
+    quadtree.update(collider.quadtree_data);
   }
 
   function remove_collider(id:Int) {
@@ -98,30 +98,23 @@ class CollisionSystem extends System<Event> {
     debug_graphic.clear();
     debug_graphic.beginFill(0x00FF00, 0.5);
     debug_graphic.lineStyle(1, 0xFF00FF);
+    for (node in statics) {
+      if (node.transform.dirty) update_collider(node.transform, node.collider);
+      node.collider.shape.draw_debug(debug_graphic);
+    }
     for (node in dynamics) {
-      var collider = node.collider;
-      var transform = node.transform;
-      collider.shape.position.set(transform.x, transform.y);
-      collider.quadtree_data.shape = collider.shape;
-      quadtree.update(collider.quadtree_data);
-
-      collider.shape.draw_debug(debug_graphic);
-      // for (node2 in dynamics) {
-      // var shape_col = differ.Collision.shapeWithShape(node.collider.shape, node2.collider.shape);
-      // if (shape_col != null) {
-      // If not static or kinematic, separate
-      // if ()
-
-      // if has motion component, do the velocity stuff
-
-      // Send the other entity back to the tested entities for callbacks
-      // node.entity.
-      // 	}
-      // }
+      update_collider(node.transform, node.collider);
+      node.collider.shape.draw_debug(debug_graphic);
     }
     draw_quadtree(quadtree);
-    // quadtree.draw_debug(debug_graphic);
     debug_graphic.endFill();
+  }
+
+  inline function update_collider(t:Transform, c:Collider) {
+    // TODO: DONT MOVE COLLIDER SHAPE, JUST TRANSFORM
+    c.shape.position.set(t.x, t.y);
+    c.quadtree_data.shape = c.shape;
+    quadtree.update(c.quadtree_data);
   }
 
   static function get_defaults() return {

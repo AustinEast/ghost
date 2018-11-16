@@ -17,6 +17,15 @@ class ScreenWrapperSystem<Event> extends System<Event> {
       if (node.transform.x > GM.width + node.graphic.width) {
         node.transform.x = -node.graphic.width;
       }
+      if (node.transform.x < -node.graphic.width) {
+        node.transform.x = GM.width + node.graphic.width;
+      }
+      if (node.transform.y > GM.height + node.graphic.height) {
+        node.transform.y = -node.graphic.height;
+      }
+      if (node.transform.y < -node.graphic.height) {
+        node.transform.y = GM.height + node.graphic.height;
+      }
     }
   }
 }

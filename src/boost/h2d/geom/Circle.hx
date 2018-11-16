@@ -56,7 +56,7 @@ class Circle extends Shape implements IPooled {
 
   override function intersects(l:Line):Null<Intersection> return this.circle_intersects(l);
 
-  override inline function overlaps(s:Shape):Bool return collides(s) != null;
+  override inline function overlaps(s:Shape):Bool return s.collides(this) != null;
 
   override inline function collides(s:Shape):Null<Collision> return s.collide_circle(this);
 

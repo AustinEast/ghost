@@ -58,7 +58,7 @@ class Collisions {
           shape2: s2
         };
         // Find out which axis is axis of least penetration
-        if (x_overlap > y_overlap) {
+        if (x_overlap < y_overlap) {
           // Point towards B knowing that n points from A to B
           if (n.x < 0) col.normal = new Vector2(-1, 0); else col.normal = new Vector2(0, 0);
           col.overlap = x_overlap;
@@ -114,8 +114,8 @@ class Collisions {
     var n = c.position - r.position;
     // Closest point on A to center of B
     var closest = n.clone();
-    var ex = r.right - r.left;
-    var ey = r.top - r.bottom;
+    var ex = r.width;
+    var ey = r.height;
     // Clamp point to edges of the AABB
     closest.x = closest.x.clamp(-ex, ex);
     closest.y = closest.y.clamp(-ey, ey);

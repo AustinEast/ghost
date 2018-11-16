@@ -29,7 +29,6 @@ class SampleState1 extends GameState {
       // Create a GameObject at a random point on the Screen
       var game_object = new GameObject(Math.random() * GM.width, Math.random() * GM.height);
       // Load the GameObject's graphic
-      if (i % 2 == 0) game_object.collider.shape = boost.h2d.geom.Circle.get(0, 0, 10); else game_object.collider.shape = Rect.get(0, 0, 8, 8);
       game_object.graphic.load(hxd.Res.images.cir);
       // Add some motion
       game_object.transform.rotation = Math.random() * 360;

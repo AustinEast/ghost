@@ -33,7 +33,7 @@ class GameState extends State {
   public function init_systems() {
     ecs.systems.add(new boost.hxd.system.ProcessSystem());
     ecs.systems.add(new boost.h2d.system.CollisionSystem({debug: {quadtree: true, colliders: true}}, new Graphics(local2d)));
-    ecs.systems.add(new boost.h2d.system.ArcadeSystem());
+    ecs.systems.add(new boost.h2d.system.ArcadeSystem({gravity: {y: 30}}));
     ecs.systems.add(new boost.h2d.system.RenderSystem(local2d));
     ecs.systems.add(new boost.h2d.system.AnimationSystem());
   }

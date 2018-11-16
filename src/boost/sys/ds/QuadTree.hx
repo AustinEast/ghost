@@ -32,6 +32,7 @@ class QuadTree extends Rect implements IPooled {
   public static inline function get(x:Float = 0, y:Float = 0, width:Float = 0, height:Float = 0):QuadTree {
     var qt = _pool.get();
     qt.set(x, y, width, height);
+    qt.clear_children();
     qt.pooled = false;
     return qt;
   }
@@ -93,7 +94,9 @@ class QuadTree extends Rect implements IPooled {
         while (nodes.length > 0) {
           var node = nodes.first();
           if (node.leaf) {
-            for (data in node.contents) contents.push(data);
+            for (data in node.contents) {
+              if (contents.indexOf(data) == -1) contents.push(data);
+            }
           } else for (child in node.children) nodes.add(child);
           nodes.pop();
         }
@@ -133,7 +136,11 @@ class QuadTree extends Rect implements IPooled {
   }
 
   function clear_children() {
-    for (child in children) child.put();
+    for (child in children) {
+      child.contents = [];
+      child.clear_children();
+      child.put();
+    }
     children = [];
   }
 
