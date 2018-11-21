@@ -1,7 +1,6 @@
 package states;
 
 import systems.ScreenWrapperSystem;
-import boost.h2d.geom.Rect;
 import h2d.Graphics;
 import h2d.Tile;
 import boost.GM;
@@ -20,7 +19,7 @@ class SampleState3 extends GameState {
   /**
    * The amount of Entities to spawn.
    */
-  var entity_count:Int = 20;
+  var entity_count:Int = 100;
   /**
    * Debug Graphic
    */
@@ -29,6 +28,9 @@ class SampleState3 extends GameState {
    * Override `init()` to initialize the State.
    */
   override public function init() {
+    // Set the State's Gravity
+    physics.gravity.y = 20;
+
     var game_object = new GameObject(GM.width * 0.5, GM.height - 10);
     game_object.graphic.make(GM.width - 10, 8);
     game_object.collider;

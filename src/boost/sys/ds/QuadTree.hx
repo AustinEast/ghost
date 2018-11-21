@@ -2,7 +2,6 @@ package boost.sys.ds;
 
 import boost.h2d.geom.Shape;
 import boost.h2d.geom.Rect;
-import boost.util.DestroyUtil;
 import boost.sys.ds.Pool;
 /**
  * Simple QuadTree implementation to assist with broad-phase 2D collisions.
@@ -45,7 +44,7 @@ class QuadTree extends Rect implements IPooled {
 
   public function insert(data:QuadTreeData) {
     // If the new data does not intersect this node, stop.
-    if (!data.shape.overlaps(this)) return;
+    if (!data.bounds.overlaps(this)) return;
     // If the node is a leaf and contains more than the maximum allowed, split it.
     if (leaf && contents.length + 1 > max_objects) split();
     // If the node is still a leaf, push the data to it.
@@ -53,16 +52,13 @@ class QuadTree extends Rect implements IPooled {
     if (leaf) contents.push(data); else for (child in children) child.insert(data);
   }
 
-  public function remove(id:Int) {
-    if (leaf) {
-      var items = contents.filter((d) -> d.id == id);
-      if (items != null) for (item in items) contents.remove(item);
-    } else for (child in children) child.remove(id);
+  public function remove(data:QuadTreeData) {
+    leaf ? contents.remove(data) : for (child in children) child.remove(data);
     shake();
   }
 
   public function update(data:QuadTreeData) {
-    remove(data.id);
+    remove(data);
     insert(data);
   }
 
@@ -70,7 +66,7 @@ class QuadTree extends Rect implements IPooled {
     var result:Array<QuadTreeData> = [];
     if (!overlaps(shape)) return result;
     if (leaf) {
-      for (data in contents) if (data.shape.overlaps(shape)) result.push(data);
+      for (data in contents) if (data.bounds.overlaps(shape)) result.push(data);
     } else {
       for (child in children) {
         var recurse = child.query(shape);
@@ -107,21 +103,20 @@ class QuadTree extends Rect implements IPooled {
 
   function split() {
     if (depth + 1 >= max_depth) return;
-    var w = width;
-    var h = height;
-    var xw = w * 0.5;
-    var xh = h * 0.5;
+
+    var xw = ex * 0.5;
+    var xh = ey * 0.5;
 
     for (i in 0...4) {
       switch (i) {
         case 0:
-          children.push(get(x - xw, y - xh, xw, xh));
+          children.push(get(x - xw, y - xh, ex, ey));
         case 1:
-          children.push(get(x + xw, y - xh, xw, xh));
+          children.push(get(x + xw, y - xh, ex, ey));
         case 2:
-          children.push(get(x - xw, y + xh, xw, xh));
+          children.push(get(x - xw, y + xh, ex, ey));
         case 3:
-          children.push(get(x + xw, y + xh, xw, xh));
+          children.push(get(x + xw, y + xh, ex, ey));
       }
       children[i].depth = depth + 1;
       for (j in 0...contents.length) {
@@ -180,28 +175,17 @@ class QuadTree extends Rect implements IPooled {
   static function get_pool():IPool<QuadTree> return _pool;
 }
 
-class QuadTreeData implements IDestroyable {
+typedef QuadTreeData = {
   /**
    * The ID of the Entity Data.
    */
-  public var id:Int;
+  id:Int,
   /**
    * Bounds of the Entity Data.
    */
-  public var shape:Shape;
+  bounds:Rect,
   /**
    * Helper flag to check if this Data has been counted during queries.
    */
-  public var flag:Bool;
-
-  public function new(id:Int, shape:Shape) {
-    this.id = id;
-    this.shape = shape;
-    flag = false;
-  }
-
-  public function destroy() {
-    // shape.destroy();
-    // shape = null;
-  }
+  ?flag:Bool
 }

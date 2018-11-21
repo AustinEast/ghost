@@ -1,5 +1,6 @@
 package boost.hxd.component;
 
+import ecs.entity.EntityCollection;
 import ecs.component.Component;
 /**
  * Ignore Me
@@ -7,6 +8,10 @@ import ecs.component.Component;
 class State extends Component {
   public var local2d:h2d.Object;
   public var local3d:h3d.scene.Object;
+  public var entities:EntityCollection;
+  public var create:Void->Void;
+  public var update:Float->Void;
+  public var destroy:Void->Void;
 
   public function new(?local2d:h2d.Object, ?local3d:h3d.scene.Object) {
     this.local2d = local2d == null ? new h2d.Object() : local2d;

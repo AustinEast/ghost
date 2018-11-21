@@ -20,25 +20,25 @@ class Shape {
 
   public static inline function circle(?x:Float, ?y:Float, ?radius:Float) return Circle.get(x, y, radius);
 
-  public static inline function rect_from_circle(c:Circle):Rect return c.to_rect();
-
   public function new(x:Float = 0, y:Float = 0) position = new Vector2(x, y);
 
-  public function draw_debug(dg:Graphics):Void dg.drawRect(x, y, 1, 1);
+  public function to_aabb(?rect:Rect) return rect == null ? Rect.get(x, y, 0, 0) : rect.set(x, y, 0, 0);
+
+  public function draw_debug(dg:Graphics, x:Float = 0, y:Float = 0):Void dg.drawRect(this.x + x, this.y + y, 1, 1);
 
   public function scale(v:Float) {}
 
   public function contains(v:Vector2):Bool return position == v;
 
-  public function intersects(l:Line):Null<Intersection> return null;
+  public function intersects(l:Line):Null<IntersectionData> return null;
 
   public function overlaps(s:Shape):Bool return contains(s.position);
 
-  public function collides(s:Shape):Null<Collision> return null;
+  public function collides(s:Shape):Null<CollisionData> return null;
 
-  function collide_rect(r:Rect):Null<Collision> return null;
+  function collide_rect(r:Rect):Null<CollisionData> return null;
 
-  function collide_circle(c:Circle):Null<Collision> return null;
+  function collide_circle(c:Circle):Null<CollisionData> return null;
 
   // getters
   function get_x():Float return position.x;

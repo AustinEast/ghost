@@ -28,16 +28,16 @@ class ArcadeSystem extends System<Event> {
       var transform = node.transform;
       var motion = node.motion;
 
+      // Apply Gravity
+      if (!motion.kinematic) {
+        motion.velocity.x += gravity.x * dt;
+        motion.velocity.y += gravity.y * dt;
+      }
+
       // Apply Velocity
       transform.x += motion.velocity.x * dt;
       transform.y += motion.velocity.y * dt;
       transform.rotation += motion.rotational_velocity * dt;
-
-      // Apply Gravity
-      if (!motion.kinematic) {
-        transform.x += gravity.x * dt;
-        transform.y += gravity.y * dt;
-      }
 
       // Apply Drag
     }

@@ -1,9 +1,9 @@
 package states;
 
-import boost.h2d.geom.Rect;
 import h2d.Tile;
 import boost.GM;
 import boost.h2d.GameObject;
+import boost.util.RandomUtil;
 import boost.GameState;
 import systems.ScreenWrapperSystem;
 
@@ -19,7 +19,7 @@ class SampleState1 extends GameState {
   /**
    * The amount of Entities to spawn.
    */
-  var entity_count:Int = 40;
+  var entity_count:Int = 5000;
   /**
    * Override `init()` to initialize the State.
    */
@@ -33,7 +33,7 @@ class SampleState1 extends GameState {
       // Add some motion
       game_object.transform.rotation = Math.random() * 360;
       game_object.motion.rotational_velocity = 0.01;
-      game_object.motion.velocity.x = Math.random() * 5;
+      game_object.motion.velocity.x = Math.random() * 45 * (RandomUtil.chance() == true ? 1 : -1);
       // Add the GameObject to the State
       add(game_object);
     }

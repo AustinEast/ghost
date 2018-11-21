@@ -97,7 +97,7 @@ abstract GameObject(Entity) from Entity to Entity {
       // When creating a new collider, check if there is a graphic to base the bounds on.
       // Otherwise just create a 16x16 rectangle.
       var g = graphic;
-      c = new Collider(Rect.get(0, 0, g == null ? 16 : g.width * 0.5, g == null ? 16 : g.height * 0.5));
+      c = new Collider(Rect.get(0, 0, g == null ? 5 : g.width, g == null ? 5 : g.height));
       this.add(c);
     }
     return c;

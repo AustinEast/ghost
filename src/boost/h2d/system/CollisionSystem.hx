@@ -1,34 +1,27 @@
 package boost.h2d.system;
 
-import ecs.node.NodeBase;
-import ecs.node.NodeList;
-import ecs.node.TrackingNodeList;
-import h2d.Graphics;
+import boost.h2d.Collisions;
 import boost.h2d.component.Transform;
 import boost.h2d.component.Collider;
 import boost.h2d.component.Motion;
-import boost.h2d.geom.Rect;
-import boost.sys.Event;
-import boost.sys.ds.QuadTree;
+import boost.h2d.node.Static;
 import boost.util.DataUtil;
 import ecs.Engine;
-import ecs.node.Node;
-import ecs.system.System;
-import tink.CoreApi.CallbackLink;
+import ecs.event.EventFactory;
+import ecs.node.*;
+import ecs.system.FixedUpdateSystem;
+import h2d.Graphics;
 
-class CollisionSystem extends System<Event> {
+using tink.CoreApi;
+
+class CollisionSystem<Event> extends FixedUpdateSystem<Event> {
+  var factory:EventFactory<Event, CollisionData>;
   var statics:NodeList<Static>;
   @:nodes var dynamics:Node<Transform, Collider, Motion>;
 
   public static var defaults(get, null):CollisionOptions;
 
-  public var world:Rect;
-  public var debug_colliders:Bool;
-  public var debug_quadtree:Bool;
-  /**
-   * QuadTree Structure to perform broad-phase overlap checks.
-   */
-  var quadtree:QuadTree;
+  public var debug:Bool;
   /**
    * Store of the Collisions from the previous frame.
    * Used to determine if an overlap from the current frame should trigger the enter, stay, or exit callback in an entity.
@@ -47,14 +40,11 @@ class CollisionSystem extends System<Event> {
    */
   var debug_graphic:Graphics;
 
-  public function new(?options:CollisionOptions, ?debug_graphic:Graphics) {
+  public function new(factory, ?options:CollisionOptions, ?debug_graphic:Graphics) {
     super();
     options = DataUtil.copy_fields(options, defaults);
 
-    quadtree = QuadTree.get(options.world.x + (options.world.width * 0.5),
-      options.world.y + (options.world.height * 0.5),
-      options.world.width * 0.5,
-      options.world.height * 0.5);
+    this.factory = factory;
     this.debug_graphic = debug_graphic == null ? new Graphics() : debug_graphic;
   }
 
@@ -62,101 +52,46 @@ class CollisionSystem extends System<Event> {
     super.onAdded(engine);
 
     statics = new TrackingNodeList(engine, Static.new, entity -> entity.has(Transform) && entity.has(Collider) && !entity.has(Motion));
-    for (node in statics) add_collider(node.entity.id, node.collider);
-    for (node in dynamics) add_collider(node.entity.id, node.collider);
-    listeners = [
-      statics.nodeAdded.handle((node) -> add_collider(node.entity.id, node.collider)),
-      statics.nodeRemoved.handle((node) -> remove_collider(node.entity.id)),
-      dynamics.nodeAdded.handle((node) -> add_collider(node.entity.id, node.collider)),
-      dynamics.nodeRemoved.handle((node) -> remove_collider(node.entity.id)),
-    ];
+    listeners = [];
   }
 
   override function onRemoved(engine:Engine<Event>) {
     super.onRemoved(engine);
-    quadtree.put();
     listeners.dissolve();
     listeners = null;
-  }
-
-  function add_collider(id:Int, collider:Collider) {
-    collider.quadtree_data = new QuadTreeData(id, collider.shape);
-    quadtree.update(collider.quadtree_data);
-  }
-
-  function remove_collider(id:Int) {
-    quadtree.remove(id);
-  }
-
-  function draw_quadtree(q:QuadTree) for (child in q.children) {
-    child.draw_debug(debug_graphic);
-    draw_quadtree(child);
   }
 
   override function update(dt:Float) {
     // TODO: Add in broad phase collision check
     debug_graphic.clear();
-    debug_graphic.beginFill(0x00FF00, 0.5);
-    debug_graphic.lineStyle(1, 0xFF00FF);
-    for (node in statics) {
-      if (node.transform.dirty) update_collider(node.transform, node.collider);
-      node.collider.shape.draw_debug(debug_graphic);
+    if (debug) {
+      debug_graphic.beginFill(0x00FF00, 0.5);
+      debug_graphic.lineStyle(1, 0xFF00FF);
+      for (node in statics) {
+        node.collider.shape.draw_debug(debug_graphic, node.transform.x, node.transform.y);
+      }
+      for (node in dynamics) {
+        node.collider.shape.draw_debug(debug_graphic, node.transform.x, node.transform.y);
+      }
+      debug_graphic.endFill();
     }
-    for (node in dynamics) {
-      update_collider(node.transform, node.collider);
-      node.collider.shape.draw_debug(debug_graphic);
-    }
-    draw_quadtree(quadtree);
-    debug_graphic.endFill();
   }
 
-  inline function update_collider(t:Transform, c:Collider) {
-    // TODO: DONT MOVE COLLIDER SHAPE, JUST TRANSFORM
-    c.shape.position.set(t.x, t.y);
-    c.quadtree_data.shape = c.shape;
-    quadtree.update(c.quadtree_data);
-  }
-
+  // function resolve(e1:Entity, e2:Entity, cd:CollisionData) {
+  //   // Calculate relative velocity
+  //   var rv = B.velocity - A.velocity // Calculate relative velocity in terms of the normal direction
+  //   var velAlongNormal = DotProduct(rv, normal) // Do not resolve if velocities are separating
+  //   if (velAlongNormal > 0) return;
+  //   // Calculate restitution
+  //   float e = min(A.restitution, B.restitution) // Calculate impulse scalar
+  //   float j = -(1 + e) * velAlongNormal j /= 1 / A.mass + 1 / B.mass // Apply impulse
+  //   Vec2 impulse = j * normal A.velocity -= 1 / A.mass * impulse B.velocity += 1 / B.mass * impulse
+  // }
   static function get_defaults() return {
-    world: {
-      x: 0.,
-      y: 0.,
-      width: GM.width + 0.,
-      height: GM.height + 0.
-    },
-    debug: {
-      colliders: false,
-      quadtree: false
-    }
-  }
-}
-
-class Static extends NodeBase {
-  public var transform:Transform;
-  public var collider:Collider;
-
-  public function new(entity) {
-    this.entity = entity;
-    this.transform = entity.get(Transform);
-    this.collider = entity.get(Collider);
+    debug: false
   }
 }
 
 typedef CollisionOptions = {
-  ?world:{
-    ?x:Float,
-    ?y:Float,
-    ?width:Float,
-    ?height:Float
-  },
-  ?debug:{
-    ?colliders:Bool,
-    ?quadtree:Bool
-  }
-}
-
-typedef CollisionData = {
-  seperation:{
-    x:Int, y:Int
-  }
+  ?debug:Bool
 }

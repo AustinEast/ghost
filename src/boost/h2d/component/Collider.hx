@@ -50,7 +50,7 @@ class Collider extends Component {
    */
   public var on_exit:Entity->Void;
 
-  @:allow(boost.h2d.system.CollisionSystem)
+  @:allow(boost.h2d.system.BroadPhaseSystem)
   var quadtree_data:QuadTreeData;
 
   public function new(shape:Shape, ?options:ColliderOptions) {

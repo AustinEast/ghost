@@ -1,5 +1,6 @@
 package boost;
 
+import h2d.Graphics;
 import boost.hxd.component.Game.GameOptions;
 import boost.sys.Event;
 import boost.util.DestroyUtil;
@@ -57,8 +58,14 @@ class Game extends hxd.App implements IDestroyable {
     game = new Entity("Game");
 
     // Add the initial Systems to the ECS Engine
-    ecs.systems.add(new boost.hxd.system.StateSystem());
+    ecs.systems.add(new boost.hxd.system.StateSystem(),);
     ecs.systems.add(new boost.hxd.system.ScaleSystem());
+    ecs.systems.add(new boost.hxd.system.ProcessSystem());
+    ecs.systems.add(new boost.h2d.system.BroadPhaseSystem(BroadPhaseEvent, {debug: true} new Graphics(s2d)));
+    ecs.systems.add(new boost.h2d.system.CollisionSystem(CollisionEvent, {debug: true}, new Graphics(s2d)));
+    ecs.systems.add(new boost.h2d.system.ArcadeSystem());
+    ecs.systems.add(new boost.h2d.system.RenderSystem(s2d));
+    ecs.systems.add(new boost.h2d.system.AnimationSystem());
 
     // Load the FileSystem
     // If we dont have access to macros, just `initEmbed()`

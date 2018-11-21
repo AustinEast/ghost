@@ -1,5 +1,8 @@
 package boost;
 
+import ecs.system.SystemCollection;
+import ecs.entity.EntityCollection;
+import boost.sys.Event;
 import boost.util.DestroyUtil;
 import h2d.Layers;
 /**
@@ -40,6 +43,9 @@ class State implements IDestroyable {
    * A function that gets called when this state is closed.
    */
   public var close_callback:Void->Void;
+
+  var entities:EntityCollection;
+  var systems:SystemCollection<Event>;
 
   function new() {
     local2d = new Layers();

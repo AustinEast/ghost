@@ -2,7 +2,6 @@ package boost.hxd.system;
 
 import boost.hxd.component.States;
 import boost.hxd.component.Game;
-import boost.sys.Event;
 import boost.util.DestroyUtil;
 import ecs.node.Node;
 import ecs.system.System;
@@ -10,7 +9,7 @@ import tink.CoreApi.CallbackLink;
 /**
  * System for managing the current `State`
  */
-class StateSystem extends System<Event> {
+class StateSystem<Event> extends System<Event> {
   @:nodes var nodes:Node<States, Game>;
   var listeners:CallbackLink;
 

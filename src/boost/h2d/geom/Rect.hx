@@ -18,13 +18,12 @@ class Rect extends Shape implements IPooled {
   public static var pool(get, never):IPool<Rect>;
   static var _pool = new Pool<Rect>(Rect);
 
+  public var ex:Float;
+  public var ey:Float;
   public var width(get, set):Float;
   public var height(get, set):Float;
-  public var full_width(get, set):Float;
-  public var full_height(get, set):Float;
   public var min(get, null):Vector2;
   public var max(get, null):Vector2;
-  public var size:Vector2;
   public var pooled:Bool;
 
   public static inline function get(x:Float = 0, y:Float = 0, width:Float = 1, height:Float = 1):Rect {
@@ -41,9 +40,10 @@ class Rect extends Shape implements IPooled {
     return rect;
   }
 
-  function new(x:Float = 0, y:Float = 0, width:Float = 1, height:Float = 1) {
-    super(x, y);
-    size = new Vector2(width, height);
+  function new() {
+    super();
+    ex = 0;
+    ey = 0;
   }
 
   public inline function put() {
@@ -55,61 +55,63 @@ class Rect extends Shape implements IPooled {
 
   public inline function set(x:Float = 0, y:Float = 0, width:Float = 1, height:Float = 1):Rect {
     position.set(x, y);
-    size.set(width, height);
+    this.width = width;
+    this.height = height;
     return this;
   }
 
   public inline function load(rect:Rect):Rect {
     position = rect.position;
-    size = rect.size;
+    ex = rect.ex;
+    ey = rect.ey;
     return this;
   }
 
   public function destroy() {}
 
-  override inline function draw_debug(dg:Graphics):Void dg.drawRect(left, top, full_width, full_height);
+  override inline function to_aabb(?rect:Rect):Rect return rect == null ? Rect.get(x, y, width, height) : rect.set(x, y, width, height);
+
+  override inline function draw_debug(dg:Graphics, x:Float = 0, y:Float = 0):Void dg.drawRect(left + x, top + y, width, height);
 
   override inline function contains(p:Vector2):Bool return this.rect_contains(p);
 
-  override inline function intersects(l:Line):Null<Intersection> return this.rect_intersects(l);
+  override inline function intersects(l:Line):Null<IntersectionData> return this.rect_intersects(l);
 
   override inline function overlaps(s:Shape):Bool return s.collides(this) != null;
 
-  override inline function collides(s:Shape):Null<Collision> return s.collide_rect(this);
+  override inline function collides(s:Shape):Null<CollisionData> return s.collide_rect(this);
 
-  override inline function collide_rect(r:Rect):Null<Collision> return r.rect_and_rect(this);
+  override inline function collide_rect(r:Rect):Null<CollisionData> return r.rect_and_rect(this);
 
-  override inline function collide_circle(c:Circle):Null<Collision> return this.rect_and_circle(c);
+  override inline function collide_circle(c:Circle):Null<CollisionData> return this.rect_and_circle(c);
 
   // getters
   static function get_pool():IPool<Rect> return _pool;
 
-  inline function get_width():Float return size.x;
+  inline function get_width():Float return ex * 2;
 
-  inline function get_height():Float return size.y;
-
-  inline function get_full_width():Float return size.x * 2;
-
-  inline function get_full_height():Float return size.y * 2;
+  inline function get_height():Float return ey * 2;
 
   function get_min():Vector2 return new Vector2(left, top);
 
   function get_max():Vector2 return new Vector2(bottom, right);
 
-  override inline function get_top():Float return y - height;
+  override inline function get_top():Float return y - ey;
 
-  override inline function get_bottom():Float return y + height;
+  override inline function get_bottom():Float return y + ey;
 
-  override inline function get_left():Float return x - width;
+  override inline function get_left():Float return x - ex;
 
-  override inline function get_right():Float return x + width;
+  override inline function get_right():Float return x + ex;
 
   // setters
-  inline function set_width(value:Float):Float return size.x = value;
+  inline function set_width(value:Float):Float {
+    ex = value * 0.5;
+    return value;
+  }
 
-  inline function set_height(value:Float):Float return size.y = value;
-
-  inline function set_full_width(value:Float):Float return size.x = value * 0.5;
-
-  inline function set_full_height(value:Float):Float return size.y = value * 0.5;
+  inline function set_height(value:Float):Float {
+    ey = value * 0.5;
+    return value;
+  }
 }
