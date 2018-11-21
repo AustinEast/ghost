@@ -1,10 +1,10 @@
 package boost;
 
-import boost.hxd.component.Game;
-import boost.hxd.component.Engine;
+import boost.Game;
 import boost.hxd.component.States;
 import boost.util.Log;
 import ecs.entity.Entity;
+import h3d.Engine;
 import hxd.Window;
 /**
  * Game Manager (GM).
@@ -69,7 +69,7 @@ class GM {
    * @param state The new State to load.
    * @param close_others If false, other open states will not be closed.
    */
-  public static function load_state(state:State, close_others:Bool = true) {
+  public static function load_state(state:GameState, close_others:Bool = true) {
     if (close_others) for (state in states.active) state.close();
     states.requested.push(state);
   }
@@ -98,10 +98,10 @@ class GM {
    * @param game_entity the Game Entity.
    */
   @:allow(boost.Game.init)
-  static function init(game_entity:Entity):Void {
-    game = game_entity.get(Game);
-    engine = game_entity.get(Engine);
-    states = game_entity.get(States);
+  static function init(game:Game, engine:Engine, entity:Entity):Void {
+    GM.game = game;
+    GM.engine = engine;
+    states = entity.get(States);
 
     // Init other properties
     // TODO: See if we can migrate these to Game Components
@@ -124,11 +124,11 @@ class GM {
 
   static function get_height() return game.height;
 
-  static function get_background_color() return engine.background_color;
+  static function get_background_color() return engine.backgroundColor;
 
   static function get_fps() return engine.fps;
 
   // setters
   // static function set_framerate(value:Int) return game.framerate = value;
-  static function set_background_color(value:Int) return engine.background_color = value;
+  static function set_background_color(value:Int) return engine.backgroundColor = value;
 }

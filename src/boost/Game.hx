@@ -1,7 +1,8 @@
 package boost;
 
+import boost.util.DataUtil;
+import h2d.Mask;
 import h2d.Graphics;
-import boost.hxd.component.Game.GameOptions;
 import boost.sys.Event;
 import boost.util.DestroyUtil;
 import ecs.component.Component;
@@ -16,13 +17,37 @@ import hxd.App;
  */
 class Game extends hxd.App implements IDestroyable {
   /**
-   * ECS Engine.
+   * Default Game Options.
    */
-  var ecs:ecs.Engine<Event>;
+  public static var defaults(get, null):GameOptions;
   /**
-   * The Game Entity.
+   * The name of the Game.
    */
-  var game:Entity;
+  public var name:String;
+  /**
+   * The version of the Game.
+   */
+  public var version:String;
+  /**
+   * The width of the screen in game pixels.
+   */
+  public var width(default, null):Int;
+  /**
+   * The height of the screen in game pixels.
+   */
+  public var height(default, null):Int;
+  /**
+   * The target framerate.
+   */
+  public var framerate:Int;
+  /**
+   * A Mask to constrain the root 2D Scene to the Game's width/height. Eventually will be replaced by camera system
+   */
+  public var root2d(default, null):Mask;
+  /**
+   * Flag to check if a game resize is requested.
+   */
+  public var resized:Bool;
   /**
    * Age of the Game (in Seconds).
    */
@@ -33,39 +58,36 @@ class Game extends hxd.App implements IDestroyable {
    */
   public var on_init:Void->Void;
   /**
-   * Temporary store of options to pass into the Game Component on `init()`.
+   * ECS Engine.
    */
-  var options:GameOptions;
+  var ecs:ecs.Engine<Event>;
+  /**
+   * The Game Entity.
+   */
+  var entity:Entity;
   /**
    * Temporary store of initial_state to pass into the Game Component on `init()`.
    */
-  var initial_state:Class<State>;
+  var initial_state:Class<GameState>;
   /**
    * Creates a new Game and Initial State.
    * @param initial_state The Initial State the Game will load.
    * @param filesystem The type of FileSystem to initialize.
    * @param options Optional Parameters to configure the Game.
    */
-  public function new(initial_state:Class<State>, filesystem:FileSystemOptions = EMBED, ?options:GameOptions) {
+  public function new(initial_state:Class<GameState>, filesystem:FileSystemOptions = EMBED, ?options:GameOptions) {
     super();
 
+    options = DataUtil.copy_fields(options, Game.defaults);
+    name = options.name;
+    version = options.version;
+    width = options.width <= 0 ? engine.width : options.width;
+    height = options.height <= 0 ? engine.height : options.height;
+    framerate = options.framerate;
+    resized = false;
+
     this.initial_state = initial_state;
-    this.options = options;
     this.age = 0;
-
-    // Create the ECS Engine and Game Entity
-    ecs = new ecs.Engine();
-    game = new Entity("Game");
-
-    // Add the initial Systems to the ECS Engine
-    ecs.systems.add(new boost.hxd.system.StateSystem(),);
-    ecs.systems.add(new boost.hxd.system.ScaleSystem());
-    ecs.systems.add(new boost.hxd.system.ProcessSystem());
-    ecs.systems.add(new boost.h2d.system.BroadPhaseSystem(BroadPhaseEvent, {debug: true} new Graphics(s2d)));
-    ecs.systems.add(new boost.h2d.system.CollisionSystem(CollisionEvent, {debug: true}, new Graphics(s2d)));
-    ecs.systems.add(new boost.h2d.system.ArcadeSystem());
-    ecs.systems.add(new boost.h2d.system.RenderSystem(s2d));
-    ecs.systems.add(new boost.h2d.system.AnimationSystem());
 
     // Load the FileSystem
     // If we dont have access to macros, just `initEmbed()`
@@ -84,20 +106,42 @@ class Game extends hxd.App implements IDestroyable {
   }
 
   override public function init() {
+    root2d = new Mask(width, height, s2d);
+    // Create the ECS Engine and Game Entity
+    ecs = new ecs.Engine();
+    entity = new Entity("Game");
     // Add our game components, then add the game entity to the ECS Engine
-    game.add(new boost.hxd.component.Game(s2d, s3d, engine, options));
-    game.add(new boost.hxd.component.States(initial_state));
-    game.add(new boost.hxd.component.Engine(engine));
-    ecs.entities.add(game);
+    entity.add(new boost.hxd.component.States(initial_state));
+    ecs.entities.add(entity);
 
     // Init the Game Manager
-    GM.init(game);
-
-    // Call a resize event for good measure
-    onResize();
+    GM.init(this, engine, entity);
+    /**
+     * Add the initial Systems to the ECS Engine
+     *
+     * Default System update order:
+     * - Input
+     * - Game Logic
+     * - Broad-phase Collisions
+     * - Narrow-phase Collision
+     * - Physics
+     * - Rendering
+     * - Animation
+    **/
+    ecs.systems.add(new boost.hxd.system.StateSystem(this));
+    ecs.systems.add(new boost.hxd.system.ScaleSystem(this, engine));
+    ecs.systems.add(new boost.hxd.system.ProcessSystem());
+    ecs.systems.add(new boost.h2d.system.BroadPhaseSystem(BroadPhaseEvent, {debug: true}, new Graphics(root2d)));
+    ecs.systems.add(new boost.h2d.system.CollisionSystem(CollisionEvent, {debug: true}, new Graphics(root2d)));
+    ecs.systems.add(new boost.h2d.system.PhysicsSystem({gravity: {y: 20}}));
+    ecs.systems.add(new boost.h2d.system.RenderSystem(root2d));
+    ecs.systems.add(new boost.h2d.system.AnimationSystem());
 
     // Call the callback function if it's set
     if (on_init != null) on_init();
+
+    // Call a resize event for good measure
+    onResize();
   }
 
   @:dox(hide) @:noCompletion
@@ -110,7 +154,7 @@ class Game extends hxd.App implements IDestroyable {
   @:dox(hide) @:noCompletion
   override public function onResize() {
     super.onResize();
-    GM.game.resized = true;
+    resized = true;
   }
   /**
    * Adds a `System` to the Game.
@@ -123,12 +167,28 @@ class Game extends hxd.App implements IDestroyable {
    * Useful for adding custom game-wide functionality that persists between states.
    * @param component `Component to add.
    */
-  public function add_component(component:Component) game.add(component);
+  public function add_component(component:Component) entity.add(component);
 
   public function destroy() {
     ecs.destroy();
     dispose();
   }
+
+  static function get_defaults() return {
+    name: "Boost App",
+    version: "0.0.0",
+    width: 0,
+    height: 0,
+    framerate: 60
+  }
+}
+
+typedef GameOptions = {
+  ?name:String,
+  ?version:String,
+  ?width:Int,
+  ?height:Int,
+  ?framerate:Int
 }
 
 @:enum

@@ -6,9 +6,9 @@ import hxd.res.Image;
 import boost.util.Color;
 import ecs.component.Component;
 
-class Graphic extends Component {
+class Sprite extends Component {
   /**
-   * Array of Tiles that this `Graphic` can display.
+   * Array of Tiles that this `Sprite` can display.
    * Each Tile can be thought of as a frame of an animation.
    */
   public var frames:Array<Tile>;
@@ -17,26 +17,26 @@ class Graphic extends Component {
    */
   public var current_frame:Int;
   /**
-   * Flag to set if this `Graphic` will be displayed.
+   * Flag to set if this `Sprite` will be displayed.
    * Alias for `bitmap.visible`.
    */
   public var visible(get, set):Bool;
   /**
-   * Width of the `Graphic`. Can change depending on the current frame.
+   * Width of the `Sprite`. Can change depending on the current frame.
    * Alias for `bitmap.tile.width`.
    */
   public var width(get, null):Int;
   /**
-   * Height of the `Graphic`. Can change depending on the current frame.
+   * Height of the `Sprite`. Can change depending on the current frame.
    * Alias for `bitmap.tile.height`.
    */
   public var height(get, null):Int;
   /**
-   * The X offset of the `Graphic` from it's `Transform`.
+   * The X offset of the `Sprite` from it's `Transform`.
    */
   public var dx(default, set):Int;
   /**
-   * The Y offset of the `Graphic` from it's `Transform`.
+   * The Y offset of the `Sprite` from it's `Transform`.
    */
   public var dy(default, set):Int;
   public var bitmap:Bitmap;
@@ -72,10 +72,10 @@ class Graphic extends Component {
   }
   /**
    * Creates a Colored Rectangle to be displayed by the Entity.
-   * @param width Width of the Graphic.
-   * @param height Height of the Graphic.
-   * @param color Color of the Graphic.
-   * @param alpha Alpha of the Graphic.
+   * @param width Width of the Sprite.
+   * @param height Height of the Sprite.
+   * @param color Color of the Sprite.
+   * @param alpha Alpha of the Sprite.
    */
   public function make(width:Int, height:Int, color:Int = Color.WHITE, alpha:Float = 1) {
     clear_frames();
@@ -85,7 +85,7 @@ class Graphic extends Component {
     center_offset();
   }
   /**
-   * Centers the Graphic's offset.
+   * Centers the Sprite's offset.
    */
   public function center_offset() {
     dx = -Math.floor(width * 0.5);

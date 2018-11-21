@@ -4,7 +4,7 @@ import boost.h2d.component.Collider;
 import boost.h2d.component.Motion;
 import boost.h2d.component.Transform;
 import boost.h2d.component.Animator;
-import boost.h2d.component.Graphic;
+import boost.h2d.component.Sprite;
 import boost.hxd.component.Process;
 import boost.h2d.geom.Rect;
 import ecs.entity.Entity;
@@ -31,7 +31,7 @@ abstract GameObject(Entity) from Entity to Entity {
   /**
    * The GameObject's Graphic Component.
    */
-  public var graphic(get, never):Graphic;
+  public var sprite(get, never):Sprite;
   /**
    * The GameObject's Animator Component.
    */
@@ -73,13 +73,13 @@ abstract GameObject(Entity) from Entity to Entity {
     return m;
   }
 
-  function get_graphic():Graphic {
-    var g = this.get(Graphic);
-    if (g == null) {
-      g = new Graphic();
-      this.add(g);
+  function get_sprite():Sprite {
+    var s = this.get(Sprite);
+    if (s == null) {
+      s = new Sprite();
+      this.add(s);
     }
-    return g;
+    return s;
   }
 
   function get_animator():Animator {
@@ -96,8 +96,8 @@ abstract GameObject(Entity) from Entity to Entity {
     if (c == null) {
       // When creating a new collider, check if there is a graphic to base the bounds on.
       // Otherwise just create a 16x16 rectangle.
-      var g = graphic;
-      c = new Collider(Rect.get(0, 0, g == null ? 5 : g.width, g == null ? 5 : g.height));
+      var s = sprite;
+      c = new Collider(Rect.get(0, 0, s == null ? 5 : s.width, s == null ? 5 : s.height));
       this.add(c);
     }
     return c;
@@ -113,16 +113,16 @@ abstract GameObject(Entity) from Entity to Entity {
   }
 
   public function kill() {
-    var g = this.get(Graphic);
+    var s = this.get(Sprite);
     var p = this.get(Process);
-    if (g != null) g.visible = false;
+    if (s != null) s.visible = false;
     if (p != null) p.active = false;
   }
 
   public function revive() {
-    var g = this.get(Graphic);
+    var s = this.get(Sprite);
     var p = this.get(Process);
-    if (g != null) g.visible = true;
+    if (s != null) s.visible = true;
     if (p != null) p.active = true;
   }
 }

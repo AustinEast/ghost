@@ -1,7 +1,7 @@
 package boost.h2d.system;
 
 import h3d.Matrix;
-import boost.h2d.component.Graphic;
+import boost.h2d.component.Sprite;
 import boost.h2d.component.Object;
 import boost.h2d.component.Transform;
 import boost.sys.Event;
@@ -17,7 +17,7 @@ import tink.CoreApi.CallbackLink;
  */
 class RenderSystem extends System<Event> {
   @:nodes var objects:Node<Transform, Object>;
-  @:nodes var graphics:Node<Transform, Graphic>;
+  @:nodes var sprites:Node<Transform, Sprite>;
 
   public static var defaults(get, null):DisplayOptions;
   /**
@@ -39,12 +39,12 @@ class RenderSystem extends System<Event> {
   override function onAdded(engine:Engine<Event>) {
     super.onAdded(engine);
     for (node in objects) add_object(node.object.object);
-    for (node in graphics) add_object(node.graphic.bitmap);
+    for (node in sprites) add_object(node.sprite.bitmap);
     listeners = [
       objects.nodeAdded.handle((node) -> add_object(node.object.object)),
       objects.nodeRemoved.handle((node) -> remove_object(node.object.object)),
-      graphics.nodeAdded.handle((node) -> add_object(node.graphic.bitmap)),
-      graphics.nodeRemoved.handle((node) -> remove_object(node.graphic.bitmap)),
+      sprites.nodeAdded.handle((node) -> add_object(node.sprite.bitmap)),
+      sprites.nodeRemoved.handle((node) -> remove_object(node.sprite.bitmap)),
     ];
   }
 
@@ -60,7 +60,7 @@ class RenderSystem extends System<Event> {
 
   override function update(dt:Float) {
     for (node in objects) if (node.transform.dirty) update_object(node.transform, node.object.object);
-    for (node in graphics) if (node.transform.dirty) update_object(node.transform, node.graphic.bitmap);
+    for (node in sprites) if (node.transform.dirty) update_object(node.transform, node.sprite.bitmap);
   }
 
   function update_object(t:Transform, o:h2d.Object) {

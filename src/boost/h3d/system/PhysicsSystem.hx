@@ -6,4 +6,4 @@ import ecs.system.System;
  * System for providing simple "Arcadey" 3D physics.
  * TODO
  */
-class ArcadeSystem extends System<Event> {}
+class PhysicsSystem extends System<Event> {}

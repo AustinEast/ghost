@@ -1,7 +1,7 @@
 package boost.h2d.system;
 
 import boost.h2d.component.Animator;
-import boost.h2d.component.Graphic;
+import boost.h2d.component.Sprite;
 import boost.sys.Event;
 import ecs.node.Node;
 import ecs.Engine;
@@ -10,19 +10,19 @@ import ecs.system.System;
  * System for handling 2D Animations.
  */
 class AnimationSystem extends System<Event> {
-  @:nodes var nodes:Node<Graphic, Animator>;
+  @:nodes var nodes:Node<Sprite, Animator>;
 
   override function update(dt:Float) {
     for (node in nodes) {
-      var g = node.graphic;
+      var s = node.sprite;
       var a = node.animator;
 
-      if (a.current != null && a.delay != 0 && !a.paused) update_animation(dt, g, a);
-      g.bitmap.tile = g.frames[g.current_frame];
+      if (a.current != null && a.delay != 0 && !a.paused) update_animation(dt, s, a);
+      s.bitmap.tile = s.frames[s.current_frame];
     }
   }
 
-  function update_animation(dt:Float, g:Graphic, a:Animator) {
+  function update_animation(dt:Float, s:Sprite, a:Animator) {
     a.timer += dt;
     if (a.current.looped && a.finished && a.timer > a.delay) {
       a.finished = false;
@@ -45,7 +45,7 @@ class AnimationSystem extends System<Event> {
             a.reversed = true;
           }
       }
-      g.current_frame = a.current.frames[a.index];
+      s.current_frame = a.current.frames[a.index];
     }
   }
 

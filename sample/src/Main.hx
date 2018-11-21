@@ -2,12 +2,12 @@ package;
 
 import boost.GM;
 import boost.Game;
-import boost.State;
+import boost.GameState;
 import states.*;
 import systems.SampleSwapperSystem;
 
 class Main {
-  var sample_states:Array<Class<State>> = [SampleState3, SampleState2, SampleState1];
+  var sample_states:Array<Class<GameState>> = [SampleState3, SampleState2, SampleState1];
 
   static function main() {
     new Main();

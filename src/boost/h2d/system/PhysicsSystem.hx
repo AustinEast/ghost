@@ -10,14 +10,14 @@ import ecs.system.System;
 /**
  * System for providing simple "Arcadey" 2D physics.
  */
-class ArcadeSystem extends System<Event> {
+class PhysicsSystem extends System<Event> {
   @:nodes var nodes:Node<Transform, Motion>;
 
-  public static var defaults(get, null):ArcadeOptions;
+  public static var defaults(get, null):PhysicsOptions;
 
   public var gravity:Point;
 
-  public function new(?options:ArcadeOptions) {
+  public function new(?options:PhysicsOptions) {
     super();
     options = DataUtil.copy_fields(options, defaults);
     gravity = new Point(options.gravity.x, options.gravity.y);
@@ -51,7 +51,7 @@ class ArcadeSystem extends System<Event> {
   }
 }
 
-typedef ArcadeOptions = {
+typedef PhysicsOptions = {
   ?gravity:{
     ?x:Float,
     ?y:Float

@@ -1,7 +1,8 @@
 package boost.hxd.system;
 
+import boost.Game;
 import boost.hxd.component.States;
-import boost.hxd.component.Game;
+import boost.sys.Event;
 import boost.util.DestroyUtil;
 import ecs.node.Node;
 import ecs.system.System;
@@ -9,12 +10,14 @@ import tink.CoreApi.CallbackLink;
 /**
  * System for managing the current `State`
  */
-class StateSystem<Event> extends System<Event> {
-  @:nodes var nodes:Node<States, Game>;
+class StateSystem extends System<Event> {
+  @:nodes var nodes:Node<States>;
   var listeners:CallbackLink;
+  var game:Game;
 
-  public function new() {
+  public function new(game:Game) {
     super();
+    this.game = game;
   }
 
   override function update(dt:Float) {
@@ -22,7 +25,7 @@ class StateSystem<Event> extends System<Event> {
       var states = node.states;
       if (states.reset) reset(states);
       for (state in states.requested) {
-        add(state, node.game);
+        add(state);
         states.active.push(state);
       }
       states.requested = [];
@@ -38,17 +41,16 @@ class StateSystem<Event> extends System<Event> {
     }
   }
 
-  function add(state:State, game:Game) {
+  function add(state:GameState) {
     GM.log.info('Initializing State: ${Type.getClassName(Type.getClass(state))}');
-    state.attach(game.mask2d, game.s3d);
-    if (Std.is(state, GameState)) cast(state, GameState).init_systems();
-    state.init();
+    state.attach(engine);
+    state.create();
     state.age = 0;
     // Trigger a scale event for the new state
     game.resized = true;
   }
 
-  function remove(state:State) {
+  function remove(state:GameState) {
     GM.log.info('Destroying State: ${Type.getClassName(Type.getClass(state))}');
     state.close_callback();
     DestroyUtil.destroy(state);

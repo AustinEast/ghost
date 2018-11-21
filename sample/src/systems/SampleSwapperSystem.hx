@@ -1,6 +1,6 @@
 package systems;
 
-import boost.State;
+import boost.GameState;
 import boost.GM;
 import boost.hxd.component.States;
 import hxd.Key;
@@ -12,10 +12,10 @@ import ecs.system.System;
  */
 class SampleSwapperSystem<Event> extends System<Event> {
   @:nodes var nodes:Node<States>;
-  var samples:Array<Class<State>>;
+  var samples:Array<Class<GameState>>;
   var current:Int = 0;
 
-  public function new(samples:Array<Class<State>>) {
+  public function new(samples:Array<Class<GameState>>) {
     super();
     this.samples = samples;
   }

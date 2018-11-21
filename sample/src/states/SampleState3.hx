@@ -27,12 +27,12 @@ class SampleState3 extends GameState {
   /**
    * Override `init()` to initialize the State.
    */
-  override public function init() {
+  override public function create() {
     // Set the State's Gravity
-    physics.gravity.y = 20;
+    // physics.gravity.y = 20;
 
     var game_object = new GameObject(GM.width * 0.5, GM.height - 10);
-    game_object.graphic.make(GM.width - 10, 8);
+    game_object.sprite.make(GM.width - 10, 8);
     game_object.collider;
     add(game_object);
 
@@ -40,7 +40,7 @@ class SampleState3 extends GameState {
       // Create a GameObject at a random point on the Screen
       game_object = new GameObject(Math.random() * GM.width, Math.random() * GM.height * 0.5);
       // Load the GameObject's graphic
-      game_object.graphic.load(hxd.Res.images.cir);
+      game_object.sprite.load(hxd.Res.images.cir);
       game_object.collider;
       // Add some motion
       game_object.motion;
@@ -48,15 +48,11 @@ class SampleState3 extends GameState {
       add(game_object);
     }
 
+    // Add the custom ScreenWrapper system.
+    add_system(new ScreenWrapperSystem());
+
     // Add some info text to the UI
     add_ui();
-  }
-  /**
-   * Override `init_systems()` to add the custom ScreenWrapper system.
-   */
-  override function init_systems() {
-    super.init_systems();
-    ecs.systems.add(new ScreenWrapperSystem());
   }
   /**
    * Override `update()` to run logic every frame.
@@ -65,23 +61,23 @@ class SampleState3 extends GameState {
    */
   override public function update(dt:Float) {
     super.update(dt);
-    fps.text = 'FPS: ${GM.fps}';
+    // fps.text = 'FPS: ${GM.fps}';
   }
 
   function add_ui() {
-    var menu = ui.add_flow(0, 0, {
-      background: Tile.fromColor(0x000000, 5, 5, 0.8),
-      vertical: true,
-      align: {
-        vertical: Middle
-      },
-      padding: {
-        bottom: 2,
-        left: 2,
-        right: 2
-      }
-    });
-    fps = menu.add_text();
-    menu.add_text('Entities: $entity_count');
+    // var menu = ui.add_flow(0, 0, {
+    //   background: Tile.fromColor(0x000000, 5, 5, 0.8),
+    //   vertical: true,
+    //   align: {
+    //     vertical: Middle
+    //   },
+    //   padding: {
+    //     bottom: 2,
+    //     left: 2,
+    //     right: 2
+    //   }
+    // });
+    // fps = menu.add_text();
+    // menu.add_text('Entities: $entity_count');
   }
 }

@@ -1,32 +1,32 @@
 package boost.hxd.system;
 
-import boost.hxd.component.Engine;
-import boost.hxd.component.Game;
+import boost.Game;
 import boost.sys.Event;
-import ecs.node.Node;
 import ecs.system.System;
+import h3d.Engine;
 /**
  * System for scaling the Viewport to maintain the ratio defined in the Game's options parameter
  */
 class ScaleSystem extends System<Event> {
-  @:nodes var nodes:Node<Engine, Game>;
+  var game:Game;
+  var heaps:Engine;
+
+  public function new(game:Game, engine:Engine) {
+    super();
+    this.game = game;
+    this.heaps = engine;
+  }
 
   override function update(dt:Float) {
-    for (node in nodes) {
-      if (node.game.resized) {
-        var e = node.engine;
-        var g = node.game;
+    if (game.resized) {
+      var scaleFactorX:Float = heaps.width / game.width;
+      var scaleFactorY:Float = heaps.height / game.height;
+      var scaleFactor:Float = Math.min(scaleFactorX, scaleFactorY);
+      if (scaleFactor < 1) scaleFactor = 1;
 
-        var scaleFactorX:Float = e.width / g.width;
-        var scaleFactorY:Float = e.height / g.height;
-        var scaleFactor:Float = Math.min(scaleFactorX, scaleFactorY);
-        if (scaleFactor < 1) scaleFactor = 1;
+      game.root2d.setScale(scaleFactor);
+      game.root2d.setPosition(heaps.width * 0.5 - (game.width * scaleFactor) * 0.5, heaps.height * 0.5 - (game.height * scaleFactor) * 0.5);
 
-        g.mask2d.setScale(scaleFactor);
-        g.mask2d.setPosition(e.width * 0.5 - (g.width * scaleFactor) * 0.5, e.height * 0.5 - (g.height * scaleFactor) * 0.5);
-
-        g.resized = false;
-      }
+      game.resized = false;
     }
   }
-}

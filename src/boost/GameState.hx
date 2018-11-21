@@ -1,109 +1,121 @@
 package boost;
 
-import boost.h2d.system.BroadPhaseSystem;
-import boost.sys.Event;
-import boost.h2d.system.*;
-import boost.hxd.system.*;
+import ecs.system.System;
 import ecs.entity.Entity;
 import ecs.Engine;
-import h2d.Graphics;
+import ecs.state.EngineState.SystemInfo;
+import ecs.system.SystemCollection;
+import ecs.entity.EntityCollection;
+import boost.sys.Event;
+import boost.util.DestroyUtil;
 /**
- * A State of the `Game` preconfigured with it's own Entity-Component-System (ECS) Engine and some default Systems to handle Rendering and Physics.
- * If use of the ECS Engine and the default Systems aren't desired, it is recommended to Extend the `State` class instead.
+ * The Base "State" of a `Game`. States are used to organize a Game's different views.
+ * For example, a simple Game could be organized to have a State for each of theses views: Main Menu, GamePlay, Game Over Screen.
+ * If use of the ECS Engine and default Systems are desired, it is recommended to Extend the `GameState` class instead.
  *
- * Extend this class to access and override the `init()`, `init_systems()`, `update()`, and `destroy()` functions in order to construct/manage the State.
+ * Extend this class to access and override the `init()`, `update()`, and `destroy()` functions in order to construct/manage the State.
  */
-class GameState extends State {
+class GameState implements IDestroyable {
   /**
-   * This State's ECS Engine instance.
+   * How fast or slow time should pass in this State; default is `1.0`.
    */
-  // public var ecs(default, null):Engine<Event>;
+  public var time_scale:Float;
   /**
-   * This State's Renderer System.
+   * Age of the State (in Seconds).
    */
-  // public var renderer(default, null):RenderSystem;
+  @:allow(boost.hxd.system.StateSystem)
+  public var age(default, null):Float;
   /**
-   * This State's Collision System.
+   * When the State is marked as closed, it is destroyed after this update cycle.
    */
-  // public var collisions(default, null):CollisionSystem<Event>;
+  public var closed:Bool;
   /**
-   * This State's Physics System.
+   * A function that gets called when this state is closed.
    */
-  // public var physics(default, null):ArcadeSystem;
-  /**
-   * Creates the State and it's ECS Engine.
-   */
+  public var close_callback:Void->Void;
+
+  var engine:Engine<Event>;
+  @:dox(hide) @:noCompletion
+  var entities:EntityCollection;
+  @:dox(hide) @:noCompletion
+  var systems:SystemCollection<Event>;
+
   function new() {
-    super();
-    // ecs = new Engine<Event>();
+    age = 0;
+    time_scale = 1;
+    closed = false;
+    close_callback = () -> {};
   }
   /**
    * Override this to add initialization logic.
-   * This is a good place to add this State's Entities.
    */
-  override public function init() {}
-  /**
-   * Override this to customize the default ECS Systems for the GameState.
-   *
-   * Default System update order:
-   * - Input
-   * - Game Logic
-   * - Broad-phase Collisions
-   * - Narrow-phase Collision
-   * - Physics
-   * - Rendering
-   * - Animation
-   *
-   * TODO:
-   * - Make it easier to edit default systems
-   * - See if separating rendering logic to a different thread is possible
-   */
-  public function init_systems() {
-    // renderer = new RenderSystem(local2d);
-    // collisions = new CollisionSystem(CollisionEvent, {debug: true}, new Graphics(local2d));
-    // physics = new ArcadeSystem();
-
-    // ecs.systems.add(new ProcessSystem());
-    // ecs.systems.add(new BroadPhaseSystem(BroadPhaseEvent, {debug: true} new Graphics(local2d)));
-    // ecs.systems.add(collisions);
-    // ecs.systems.add(physics);
-    // ecs.systems.add(renderer);
-    // ecs.systems.add(new AnimationSystem());
-  }
+  public function create() {}
   /**
    * Override this to run logic every frame.
-   * This also updates the ECS Engine.
    * @param dt Time elapsed since last frame.
    */
-  override public function update(dt:Float) {
-    super.update(dt);
-    // ecs.update(dt);
-  }
+  public function update(dt:Float) {}
   /**
-   * Override this to run cleanup logic when closing the state.
+   * Marks the State as closed.
    */
-  override public function destroy() {
-    // ecs.destroy();
-    super.destroy();
-  }
+  public function close() closed = true;
   /**
    * Adds an Entity to the State.
-   * Alias for `ecs.entities.add()`.
    * @param entity The Entity to add.
    * @return The added Entity. Useful for chaining.
    */
   public function add(entity:Entity):Entity {
-    // ecs.entities.add(entity);
+    entities.add(entity);
+    engine.entities.add(entity);
     return entity;
   }
   /**
    * Removes an Entity from the State.
-   * Alias for `ecs.entities.remove()`.
    * @param entity The Entity to remove.
    * @return The removed Entity. Useful for chaining.
    */
   public function remove(entity:Entity):Entity {
-    // ecs.entities.remove(entity);
+    entities.remove(entity);
+    engine.entities.remove(entity);
     return entity;
+  }
+  /**
+   * Adds an System to the State.
+   *
+   * TODO: ENABLE ADDING SYSTEM IN POSITION BASED ON ENUM
+   *
+   * @param system The System to add.
+   * @return The added System. Useful for chaining.
+   */
+  public function add_system(system:System<Event>):System<Event> {
+    systems.add(system);
+    engine.systems.add(system);
+    return system;
+  }
+  /**
+   * Removes an System from the State.
+   * @param system The System to remove.
+   * @return The removed System. Useful for chaining.
+   */
+  public function remove_system(system:System<Event>):System<Event> {
+    systems.remove(system);
+    engine.systems.remove(system);
+    return system;
+  }
+  /**
+   * Override this to run cleanup logic when closing the state.
+   */
+  public function destroy() {
+    for (entity in entities) engine.entities.remove(entity);
+    for (system in systems) engine.systems.remove(system);
+    entities.destroy();
+    systems.destroy();
+  }
+
+  @:allow(boost.hxd.system.StateSystem)
+  function attach(engine:Engine<Event>) {
+    this.engine = engine;
+    entities = new EntityCollection();
+    systems = new SystemCollection<Event>(engine);
   }
 }
