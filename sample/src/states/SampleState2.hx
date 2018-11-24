@@ -1,16 +1,16 @@
 package states;
 
-import boost.h2d.component.Animator.;
+import ghost.h2d.component.Animator.;
 import h2d.Bitmap;
 import h2d.Tile;
 import h2d.Text;
-import boost.util.Color;
-import boost.GM;
-import boost.h2d.GameObject;
-import boost.GameState;
+import ghost.util.Color;
+import ghost.GM;
+import ghost.h2d.GameObject;
+import ghost.GameState;
 import hxd.Math;
 
-using boost.h2d.ext.ObjectExt;
+using ghost.h2d.ext.ObjectExt;
 /**
  * Sample State 2 - 2D Animations.
  */

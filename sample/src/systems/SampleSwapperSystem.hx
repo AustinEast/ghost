@@ -1,8 +1,8 @@
 package systems;
 
-import boost.GameState;
-import boost.GM;
-import boost.hxd.component.States;
+import ghost.GameState;
+import ghost.GM;
+import ghost.hxd.component.States;
 import hxd.Key;
 import ecs.node.Node;
 import ecs.Engine;

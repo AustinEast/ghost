@@ -7,7 +7,7 @@
 -lib heaps
 -lib ecs
 -lib hxmath
--lib boostlib
+-lib ghost
 # defines
 -dce full
 -D standalone

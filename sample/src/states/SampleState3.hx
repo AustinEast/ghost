@@ -1,13 +1,14 @@
 package states;
 
+import ghost.h2d.geom.Shape;
 import systems.ScreenWrapperSystem;
 import h2d.Graphics;
 import h2d.Tile;
-import boost.GM;
-import boost.h2d.GameObject;
-import boost.GameState;
+import ghost.GM;
+import ghost.h2d.GameObject;
+import ghost.GameState;
 
-using boost.h2d.ext.ObjectExt;
+using ghost.h2d.ext.ObjectExt;
 /**
  * Sample State 3 - Collision
  */
@@ -40,8 +41,8 @@ class SampleState3 extends GameState {
       // Create a GameObject at a random point on the Screen
       game_object = new GameObject(Math.random() * GM.width, Math.random() * GM.height * 0.5);
       // Load the GameObject's graphic
-      game_object.sprite.load(hxd.Res.images.cir);
-      game_object.collider;
+      // game_object.sprite.load(hxd.Res.images.cir);
+      game_object.collider.shape = i % 2 == 0 ? Shape.square(0, 0, 16) : Shape.square(0, 0, 16);
       // Add some motion
       game_object.motion;
       // Add the GameObject to the State

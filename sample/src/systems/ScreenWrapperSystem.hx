@@ -1,8 +1,8 @@
 package systems;
 
-import boost.GM;
-import boost.h2d.component.Transform;
-import boost.h2d.component.Sprite;
+import ghost.GM;
+import ghost.h2d.component.Transform;
+import ghost.h2d.component.Sprite;
 import ecs.node.Node;
 import ecs.Engine;
 import ecs.system.System;

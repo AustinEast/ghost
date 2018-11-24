@@ -1,8 +1,8 @@
 package;
 
-import boost.GM;
-import boost.Game;
-import boost.GameState;
+import ghost.GM;
+import ghost.Game;
+import ghost.GameState;
 import states.*;
 import systems.SampleSwapperSystem;
 

@@ -1,13 +1,13 @@
 package states;
 
 import h2d.Tile;
-import boost.GM;
-import boost.h2d.GameObject;
-import boost.util.RandomUtil;
-import boost.GameState;
+import ghost.GM;
+import ghost.h2d.GameObject;
+import ghost.util.RandomUtil;
+import ghost.GameState;
 import systems.ScreenWrapperSystem;
 
-using boost.h2d.ext.ObjectExt;
+using ghost.h2d.ext.ObjectExt;
 /**
  * Sample State 1 - Pixel Art Stress Test.
  */
@@ -19,7 +19,7 @@ class SampleState1 extends GameState {
   /**
    * The amount of Entities to spawn.
    */
-  var entity_count:Int = 5000;
+  var entity_count:Int = 2000;
   /**
    * Override `init()` to initialize the State.
    */
