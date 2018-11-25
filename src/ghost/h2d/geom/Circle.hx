@@ -27,9 +27,9 @@ class Circle extends Shape implements IPooled {
     return circle;
   }
 
-  function new(x:Float = 0, y:Float = 0, radius:Float = 1) {
-    super(x, y);
-    this.radius = radius;
+  function new() {
+    super();
+    radius = 0;
   }
 
   override inline function put() {
@@ -47,7 +47,7 @@ class Circle extends Shape implements IPooled {
 
   public inline function load(circle:Circle):Circle return set(circle.x, circle.y, circle.radius);
 
-  public function destroy() position = null;
+  public function destroy() {}
 
   override inline function to_aabb(?rect:Rect):Rect return rect == null ? Rect.get(x, y, diameter, diameter) : rect.set(x, y, diameter, diameter);
 
@@ -63,14 +63,14 @@ class Circle extends Shape implements IPooled {
 
   override inline function collides(s:Shape):Null<CollisionData> return s.collide_circle(this);
 
-  override inline function collide_rect(r:Rect):Null<CollisionData> return r.rect_and_circle(this);
+  override inline function collide_rect(r:Rect):Null<CollisionData> return r.rect_and_circle(this, true);
 
-  override inline function collide_circle(c:Circle):Null<CollisionData> return c.circle_and_circle(this, true);
+  override inline function collide_circle(c:Circle):Null<CollisionData> return c.circle_and_circle(this);
 
   // getters
   static function get_pool():IPool<Circle> return _pool;
 
-  inline function get_diameter():Float return radius * 0.5;
+  inline function get_diameter():Float return radius * 2;
 
   override inline function get_top():Float return y - radius;
 

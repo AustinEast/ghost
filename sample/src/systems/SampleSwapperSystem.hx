@@ -23,8 +23,7 @@ class SampleSwapperSystem<Event> extends System<Event> {
   override function update(dt:Float) {
     for (node in nodes) {
       if (Key.isPressed(Key.ENTER)) {
-        current = 0;
-        node.states.reset = true;
+        GM.load_state(cast Type.createInstance(samples[current], []));
       }
 
       if (Key.isPressed(Key.SPACE)) {

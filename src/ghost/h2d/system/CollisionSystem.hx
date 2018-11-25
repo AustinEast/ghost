@@ -86,13 +86,12 @@ class CollisionSystem extends EventHandlerSystem<Event, Pair<CollisionItem, Coll
 
     if (!debug_cleared) debug_graphic.clear();
     if (debug) {
-      debug_graphic.beginFill(0x000000, 0.0);
-      debug_graphic.lineStyle(1, Color.BLUE);
+      debug_graphic.beginFill(0x00cbdbfc, 0.2);
       for (node in nodes) {
         if (node.collider.collided) {
-          debug_graphic.lineStyle(1, Color.RED);
+          debug_graphic.lineStyle(1, 0x00d95763);
           node.collider.collided = false;
-        }
+        } else debug_graphic.lineStyle(1, 0x005b6ee1);
         node.collider.shape.draw_debug(debug_graphic, node.transform.x, node.transform.y);
       }
       debug_graphic.endFill();

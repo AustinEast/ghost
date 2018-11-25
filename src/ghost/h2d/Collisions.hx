@@ -82,36 +82,32 @@ class Collisions {
 
     // Vector2 from s2 to s1
     var n = s2.position - s1.position;
-    // Squared radii of circles
+    // radii of circles
     var r = s1.radius + s2.radius;
-    r *= r;
+    var d = n.lengthSq;
 
     // Do quick check if circles are colliding
-    if (n.lengthSq > r) return null;
-
-    // Get actual square root
-    var d = n.length;
-
-    if (d != 0) {
-      // Distance is difference between radius and distance
-
-      return {
-        overlap: r - d,
-        normal: n / d
-      };
-    } else {
-      // If distance between circles is zero, make up a number
-
+    if (d >= r * r) return null;
+    // If distance between circles is zero, make up a number
+    else if (d == 0) {
       return {
         overlap: s1.radius,
         normal: new Vector2(1, 0)
+      };
+    } else {
+      // Get actual square root
+      d = Math.sqrt(d);
+      // Distance is difference between radius and distance
+      return {
+        overlap: r - d,
+        normal: n / d
       };
     }
   }
 
   public static function rect_and_circle(r:Rect, c:Circle, flip:Bool = false):Null<CollisionData> {
     // Vector from A to B
-    var n = c.position - r.position;
+    var n = flip ? c.position - r.position : r.position - c.position;
     // Closest point on A to center of B
     var closest = n.clone();
 
@@ -144,12 +140,12 @@ class Collisions {
 
     // Avoided sqrt until we needed
     d = Math.sqrt(d);
+    // n.normalize();
 
     // Collision normal needs to be flipped to point outside if circle was
     // inside the AABB
-
     return {
-      normal: flip && inside ? -n : n,
+      normal: n.normalize(),
       overlap: rad - d
     };
   }

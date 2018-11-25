@@ -1,6 +1,5 @@
 package states;
 
-import ghost.util.RandomUtil;
 import ghost.h2d.geom.Shape;
 import systems.ScreenWrapperSystem;
 import h2d.Graphics;
@@ -11,9 +10,9 @@ import ghost.GameState;
 
 using ghost.h2d.ext.ObjectExt;
 /**
- * Sample State 3 - Collision Separation
+ * Sample State 4 - Physics
  */
-class SampleState3 extends GameState {
+class SampleState4 extends GameState {
   /**
    * Text to display the FPS.
    */
@@ -21,7 +20,7 @@ class SampleState3 extends GameState {
   /**
    * The amount of Entities to spawn.
    */
-  var entity_count:Int = 100;
+  var entity_count:Int = 50;
   /**
    * Debug Graphic
    */
@@ -30,19 +29,38 @@ class SampleState3 extends GameState {
    * Override `init()` to initialize the State.
    */
   override public function create() {
+    // Set the State's Gravity
+    GM.physics.gravity.y = 40;
+
+    close_callback = () -> GM.physics.gravity.y = 0;
+
+    var game_object = new GameObject(GM.width * 0.5, GM.height - 10);
+    game_object.sprite.make(GM.width - 10, 8);
+    game_object.collider;
+    add(game_object);
+
     for (i in 0...entity_count) {
       // Create a GameObject at a random point on the Screen
-      var game_object = new GameObject(Math.random() * GM.width, Math.random() * GM.height);
+      game_object = new GameObject(Math.random() * GM.width, Math.random() * GM.height * 0.5);
       // Load the GameObject's graphic
-      game_object.sprite.visible = false;
-      // Set the GameObject's Collider to a random sizhsshape
-      var size = RandomUtil.range_int(2, 5) * 8;
-      game_object.collider.shape = i % 2 == 0 ? Shape.circle(0, 0, size * 0.5) : Shape.square(0, 0, size);
+      if (i % 2 == 0) {
+        game_object.sprite.load(hxd.Res.images.box);
+        game_object.collider;
+      } else if (i % 3 == 0) {
+        game_object.sprite.load(hxd.Res.images.ghostlg);
+        game_object.collider.shape = Shape.circle(0, 0, 8);
+      } else {
+        game_object.sprite.load(hxd.Res.images.boxlg);
+        game_object.collider;
+      }
       // Add some motion
       game_object.motion;
       // Add the GameObject to the State
       add(game_object);
     }
+
+    // Add the custom ScreenWrapper system.
+    add_system(new ScreenWrapperSystem());
 
     // Add some info text to the UI
     add_ui();

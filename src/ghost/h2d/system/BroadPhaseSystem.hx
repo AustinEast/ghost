@@ -98,7 +98,7 @@ class BroadPhaseSystem extends System<Event> {
 
   override function update(dt:Float) {
     // Update Static Quadtree data if their transforms have been updated
-    for (node in statics) if (node.transform.dirty) update_data(node.entity.id, node.transform, node.collider);
+    for (node in statics) update_data(node.entity.id, node.transform, node.collider);
     // Update Dynamic Quadtree data
     for (node in dynamics) update_data(node.entity.id, node.transform, node.collider);
 
@@ -149,8 +149,8 @@ class BroadPhaseSystem extends System<Event> {
     // Draw debug graphics
     if (!debug_cleared) debug_graphic.clear();
     if (debug) {
-      debug_graphic.beginFill(0x00FF00, 0.2);
-      debug_graphic.lineStyle(1, 0xFF00FF);
+      debug_graphic.beginFill(0x009badb7, 0.2);
+      debug_graphic.lineStyle(1, 0x00847e87);
       draw_quadtree(quadtree);
       debug_graphic.endFill();
       debug_cleared = false;

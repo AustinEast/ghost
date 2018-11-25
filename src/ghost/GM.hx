@@ -37,9 +37,9 @@ class GM {
    * TODO: Make this set-able
    */
   public static var fps(get, null):Float;
-  public static var world(default, null):BroadPhaseSystem;
-  public static var collisions(default, null):CollisionSystem;
-  public static var physics(default, null):PhysicsSystem;
+  public static var world(get, null):BroadPhaseSystem;
+  public static var collisions(get, null):CollisionSystem;
+  public static var physics(get, null):PhysicsSystem;
   /**
    * Internal tracker for Window.
    */
@@ -132,6 +132,12 @@ class GM {
   static function get_background_color() return engine.backgroundColor;
 
   static function get_fps() return engine.fps;
+
+  static function get_world() return game.world;
+
+  static function get_collisions() return game.collisions;
+
+  static function get_physics() return game.physics;
 
   // setters
   // static function set_framerate(value:Int) return game.framerate = value;

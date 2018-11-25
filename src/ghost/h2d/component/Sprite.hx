@@ -1,6 +1,5 @@
 package ghost.h2d.component;
 
-import hxd.res.DefaultFont;
 import h2d.Bitmap;
 import h2d.Tile;
 import hxd.res.Image;

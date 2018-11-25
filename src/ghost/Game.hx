@@ -41,6 +41,18 @@ class Game extends hxd.App implements IDestroyable {
    */
   public var framerate:Int;
   /**
+   *
+   */
+  public var world(default, null):ghost.h2d.system.BroadPhaseSystem;
+  /**
+   *
+   */
+  public var collisions(default, null):ghost.h2d.system.CollisionSystem;
+  /**
+   *
+   */
+  public var physics(default, null):ghost.h2d.system.PhysicsSystem;
+  /**
    * A Mask to constrain the root 2D Scene to the Game's width/height. Eventually will be replaced by camera system
    */
   public var root2d(default, null):Mask;
@@ -116,14 +128,18 @@ class Game extends hxd.App implements IDestroyable {
 
     // Init the Game Manager
     GM.init(this, engine, entity);
+    // Get reference to some of our systems
+    world = new ghost.h2d.system.BroadPhaseSystem(BroadPhaseEvent, {debug: true}, root2d);
+    collisions = new ghost.h2d.system.CollisionSystem(CollisionEvent, {debug: true}, root2d);
+    physics = new ghost.h2d.system.PhysicsSystem();
 
     // Add the default Systems to the ECS Engine
     ecs.systems.add(new ghost.hxd.system.StateSystem(this), STATE);
     ecs.systems.add(new ghost.hxd.system.ScaleSystem(this, engine), SCALE);
     ecs.systems.add(new ghost.hxd.system.ProcessSystem(), PROCESS);
-    ecs.systems.add(new ghost.h2d.system.BroadPhaseSystem(BroadPhaseEvent, {debug: true}, root2d), BROADPHASE);
-    ecs.systems.add(new ghost.h2d.system.CollisionSystem(CollisionEvent, {debug: true}, root2d), COLLISION);
-    ecs.systems.add(new ghost.h2d.system.PhysicsSystem(), PHYSICS);
+    ecs.systems.add(world, BROADPHASE);
+    ecs.systems.add(collisions, COLLISION);
+    ecs.systems.add(physics, PHYSICS);
     ecs.systems.add(new ghost.h2d.system.RenderSystem(root2d), RENDER);
     ecs.systems.add(new ghost.h2d.system.AnimationSystem(), ANIMATION);
 
@@ -176,7 +192,7 @@ class Game extends hxd.App implements IDestroyable {
   }
 
   static function get_defaults() return {
-    name: "Boost App",
+    name: "Ghost App",
     version: "0.0.0",
     width: 0,
     height: 0,

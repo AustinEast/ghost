@@ -7,7 +7,7 @@ import states.*;
 import systems.SampleSwapperSystem;
 
 class Main {
-  var sample_states:Array<Class<GameState>> = [SampleState3, SampleState2, SampleState1];
+  var sample_states:Array<Class<GameState>> = [SampleState4, SampleState3, SampleState2, SampleState1];
 
   static function main() {
     new Main();
@@ -18,7 +18,7 @@ class Main {
     var game = new Game(sample_states[0], EMBED, {
       name: "Sample App",
       version: "0.0.1",
-      width: 320,
+      width: 180,
       height: 180
     });
 

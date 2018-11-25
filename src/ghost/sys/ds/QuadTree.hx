@@ -37,6 +37,13 @@ class QuadTree extends Rect implements IPooled {
     return qt;
   }
 
+  override function put() {
+    if (!pooled) {
+      pooled = true;
+      _pool.putUnsafe(this);
+    }
+  }
+
   override public function destroy() {
     for (child in children) child.put();
     children = [];

@@ -20,14 +20,14 @@ class PhysicsSystem extends EventHandlerSystem<Event, Collision> {
 
   public var gravity:Vector2;
   public var correction_percent:Float;
-  public var slop:Float;
+  public var lerp:Float;
 
   public function new(?options:PhysicsOptions) {
     super();
     options = DataUtil.copy_fields(options, defaults);
     gravity = new Vector2(options.gravity.x, options.gravity.y);
     correction_percent = options.correction_percent;
-    slop = options.slop;
+    lerp = options.lerp;
   }
 
   override function select(e:Event) {
@@ -38,8 +38,14 @@ class PhysicsSystem extends EventHandlerSystem<Event, Collision> {
   }
 
   override function handle(col:Collision) {
-    if (col.item1.motion != null && col.item2.motion != null) resolve(col.item1, col.item2, col.data);
-    separate(col.item1, col.item2, col.data);
+    if (col.item1.motion != null && col.item2.motion != null) {
+      resolve(col.item1, col.item2, col.data);
+    } else if (col.item1.motion != null) {
+      resolve_static(col.item1, col.data);
+    }
+    // else {
+    //   col.item2.transform.add(col.data.normal * col.data.overlap);
+    // }
   }
 
   override function update(dt:Float) {
@@ -65,29 +71,37 @@ class PhysicsSystem extends EventHandlerSystem<Event, Collision> {
   function resolve(e1:CollisionItem, e2:CollisionItem, cd:CollisionData) {
     // Calculate relative velocity
     var rv = e1.motion.velocity - e2.motion.velocity; // Calculate relative velocity in terms of the normal direction
-    var velAlongNormal = rv * cd.normal;
+    var vel_to_normal = rv * cd.normal;
     // Do not resolve if velocities are separating
-    if (velAlongNormal > 0) return;
-    // Calculate restitution
-    var e = Math.min(e1.motion.elasticity, e1.motion.elasticity); // Calculate impulse scalar
+    if (vel_to_normal > 0) return;
+    // Calculate elasticity
+    var e = Math.min(e1.motion.elasticity, e2.motion.elasticity);
+    // Calculate impulse scalar
     var inv_mass_sum = e1.motion.inv_mass + e2.motion.inv_mass;
-    var j = (-(1 + e) * velAlongNormal) / inv_mass_sum;
-    // Apply impulse
+    var j = (-(1 + e) * vel_to_normal) / inv_mass_sum;
     var impulse = j * cd.normal;
+    // Apply impulse
     var mass_sum = e1.motion.mass + e2.motion.mass;
     var ratio = e1.motion.mass / mass_sum;
     e1.motion.velocity -= ratio * impulse;
     ratio = e2.motion.mass / mass_sum;
     e2.motion.velocity += ratio * impulse;
 
-    // var correction = (Math.max(cd.overlap - slop, 0) / inv_mass_sum) * correction_percent * cd.normal;
-    // e1.transform.subtract(e1.motion.inv_mass * correction);
-    // e2.transform.add(e2.motion.inv_mass * correction);
+    var correction = (Math.max(cd.overlap - lerp, 0) / inv_mass_sum) * correction_percent * cd.normal;
+    e1.transform.subtract(e1.motion.inv_mass * correction);
+    e2.transform.add(e2.motion.inv_mass * correction);
   }
 
-  function separate(e1:CollisionItem, e2:CollisionItem, cd:CollisionData) {
-    e1.transform.subtract(cd.normal * (cd.overlap * 0.5));
-    e2.transform.add(cd.normal * (cd.overlap * 0.5));
+  function resolve_static(e:CollisionItem, cd:CollisionData) {
+    // var vel_to_normal = e.motion.velocity * cd.normal;
+    // if (vel_to_normal > 0) return;
+    var j = (-(1 + e.motion.elasticity) * e.motion.velocity) / e.motion.inv_mass;
+    var impulse = j * cd.normal;
+    // // Apply impulse
+    e.motion.velocity.set(0, 0);
+
+    var correction = (Math.max(cd.overlap - lerp, 0)) * correction_percent * cd.normal;
+    e.transform.subtract(e.motion.inv_mass * correction);
   }
 
   static function get_defaults() return {
@@ -95,8 +109,8 @@ class PhysicsSystem extends EventHandlerSystem<Event, Collision> {
       x: 0.,
       y: 0.
     },
-    correction_percent: 0.2,
-    slop: 0.01
+    correction_percent: 0.9,
+    lerp: 0.009
   }
 }
 
@@ -106,5 +120,5 @@ typedef PhysicsOptions = {
     y:Float
   },
   ?correction_percent:Float,
-  ?slop:Float
+  ?lerp:Float
 }

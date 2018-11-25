@@ -2,7 +2,6 @@ package ghost.h2d.geom;
 
 import h2d.Graphics;
 import ghost.sys.ds.Pool;
-import hxmath.math.MathUtil;
 import hxmath.math.Vector2;
 
 using ghost.h2d.Collisions;
@@ -46,7 +45,7 @@ class Rect extends Shape implements IPooled {
     ey = 0;
   }
 
-  override inline function put() {
+  override function put() {
     if (!pooled) {
       pooled = true;
       _pool.putUnsafe(this);

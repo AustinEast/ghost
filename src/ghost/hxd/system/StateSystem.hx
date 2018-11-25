@@ -23,18 +23,23 @@ class StateSystem extends System<Event> {
   override function update(dt:Float) {
     for (node in nodes) {
       var states = node.states;
+      // Reset States if requested
       if (states.reset) reset(states);
+      // Remove all closed States
+      for (state in states.active) {
+        if (state.closed) {
+          remove(state);
+          states.active.remove(state);
+        }
+      }
+      // Create any requested States
       for (state in states.requested) {
         add(state);
         states.active.push(state);
       }
       states.requested = [];
+      // Update active States
       for (state in states.active) {
-        if (state.closed) {
-          remove(state);
-          states.active.remove(state);
-          continue;
-        }
         state.age += dt;
         state.update(state.time_scale * dt);
       }
