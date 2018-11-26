@@ -4,6 +4,7 @@ import ecs.system.SystemId;
 import ghost.util.DataUtil;
 import h2d.Mask;
 import ghost.sys.Event;
+import ghost.sys.GhostEngine;
 import ghost.util.DestroyUtil;
 import ecs.component.Component;
 import ecs.system.System;
@@ -39,7 +40,7 @@ class Game extends hxd.App implements IDestroyable {
   /**
    * The target framerate.
    */
-  public var framerate:Int;
+  public var framerate(default, set):Int;
   /**
    *
    */
@@ -72,7 +73,7 @@ class Game extends hxd.App implements IDestroyable {
   /**
    * ECS Engine.
    */
-  var ecs:ecs.Engine<Event>;
+  var ecs:GhostEngine;
   /**
    * The Game Entity.
    */
@@ -89,8 +90,11 @@ class Game extends hxd.App implements IDestroyable {
    */
   public function new(initial_state:Class<GameState>, filesystem:FileSystemOptions = EMBED, ?options:GameOptions) {
     super();
-
     options = DataUtil.copy_fields(options, Game.defaults);
+
+    ecs = new GhostEngine();
+    entity = new Entity("Game");
+
     name = options.name;
     version = options.version;
     width = options.width <= 0 ? engine.width : options.width;
@@ -119,9 +123,6 @@ class Game extends hxd.App implements IDestroyable {
 
   override public function init() {
     root2d = new Mask(width, height, s2d);
-    // Create the ECS Engine and Game Entity
-    ecs = new ecs.Engine();
-    entity = new Entity("Game");
     // Add our game components, then add the game entity to the ECS Engine
     entity.add(new ghost.hxd.component.States(initial_state));
     ecs.entities.add(entity);
@@ -137,10 +138,10 @@ class Game extends hxd.App implements IDestroyable {
     ecs.systems.add(new ghost.hxd.system.StateSystem(this), STATE);
     ecs.systems.add(new ghost.hxd.system.ScaleSystem(this, engine), SCALE);
     ecs.systems.add(new ghost.hxd.system.ProcessSystem(), PROCESS);
-    ecs.systems.add(world, BROADPHASE);
-    ecs.systems.add(collisions, COLLISION);
-    ecs.systems.add(physics, PHYSICS);
-    ecs.systems.add(new ghost.h2d.system.RenderSystem(root2d), RENDER);
+    ecs.fixed_systems.add(world, BROADPHASE);
+    ecs.fixed_systems.add(collisions, COLLISION);
+    ecs.fixed_systems.add(physics, PHYSICS);
+    ecs.fixed_systems.add(new ghost.h2d.system.RenderSystem(root2d), RENDER);
     ecs.systems.add(new ghost.h2d.system.AnimationSystem(), ANIMATION);
 
     // Call the callback function if it's set
@@ -189,6 +190,11 @@ class Game extends hxd.App implements IDestroyable {
   public function destroy() {
     ecs.destroy();
     dispose();
+  }
+
+  function set_framerate(value:Int) {
+    ecs.delta = 1 / value;
+    return framerate = value;
   }
 
   static function get_defaults() return {

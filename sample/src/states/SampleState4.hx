@@ -20,7 +20,7 @@ class SampleState4 extends GameState {
   /**
    * The amount of Entities to spawn.
    */
-  var entity_count:Int = 50;
+  var entity_count:Int = 20;
   /**
    * Debug Graphic
    */
@@ -31,11 +31,12 @@ class SampleState4 extends GameState {
   override public function create() {
     // Set the State's Gravity
     GM.physics.gravity.y = 40;
-
     close_callback = () -> GM.physics.gravity.y = 0;
 
+    GM.time_scale = 1;
+
     var game_object = new GameObject(GM.width * 0.5, GM.height - 10);
-    game_object.sprite.make(GM.width - 10, 8);
+    game_object.sprite.make(GM.width - 10, 16);
     game_object.collider;
     add(game_object);
 

@@ -93,12 +93,12 @@ class PhysicsSystem extends EventHandlerSystem<Event, Collision> {
   }
 
   function resolve_static(e:CollisionItem, cd:CollisionData) {
-    // var vel_to_normal = e.motion.velocity * cd.normal;
-    // if (vel_to_normal > 0) return;
-    var j = (-(1 + e.motion.elasticity) * e.motion.velocity) / e.motion.inv_mass;
-    var impulse = j * cd.normal;
+    var vel_to_normal = -e.motion.velocity * cd.normal;
+    if (vel_to_normal > 0) return;
+    // var j = (-(1 + e.motion.elasticity) * e.motion.velocity) / e.motion.inv_mass;
+    // var impulse = j * cd.normal;
     // // Apply impulse
-    e.motion.velocity.set(0, 0);
+    e.motion.velocity = e.motion.velocity * -e.motion.elasticity;
 
     var correction = (Math.max(cd.overlap - lerp, 0)) * correction_percent * cd.normal;
     e.transform.subtract(e.motion.inv_mass * correction);

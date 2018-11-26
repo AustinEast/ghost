@@ -33,6 +33,10 @@ class GM {
    */
   public static var background_color(get, set):Int;
   /**
+   * How fast or slow time should pass in the Game; default is `1.0`.
+   */
+  public static var time_scale:Float;
+  /**
    * The target framerate.
    * TODO: Make this set-able
    */
@@ -108,7 +112,7 @@ class GM {
     states = entity.get(States);
 
     // Init other properties
-
+    time_scale = 1;
     // TODO: See if we can migrate these to Game Components/Systems
     log = new Log();
     window = Window.getInstance();

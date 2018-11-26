@@ -18,7 +18,7 @@ class Main {
     var game = new Game(sample_states[0], EMBED, {
       name: "Sample App",
       version: "0.0.1",
-      width: 180,
+      width: 320,
       height: 180
     });
 
