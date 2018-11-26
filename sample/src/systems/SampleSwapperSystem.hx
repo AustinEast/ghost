@@ -1,8 +1,8 @@
 package systems;
 
-import boost.State;
-import boost.GM;
-import boost.hxd.component.States;
+import ghost.GameState;
+import ghost.GM;
+import ghost.hxd.component.States;
 import hxd.Key;
 import ecs.node.Node;
 import ecs.Engine;
@@ -12,10 +12,10 @@ import ecs.system.System;
  */
 class SampleSwapperSystem<Event> extends System<Event> {
   @:nodes var nodes:Node<States>;
-  var samples:Array<Class<State>>;
+  var samples:Array<Class<GameState>>;
   var current:Int = 0;
 
-  public function new(samples:Array<Class<State>>) {
+  public function new(samples:Array<Class<GameState>>) {
     super();
     this.samples = samples;
   }
@@ -23,8 +23,7 @@ class SampleSwapperSystem<Event> extends System<Event> {
   override function update(dt:Float) {
     for (node in nodes) {
       if (Key.isPressed(Key.ENTER)) {
-        current = 0;
-        node.states.reset = true;
+        GM.load_state(cast Type.createInstance(samples[current], []));
       }
 
       if (Key.isPressed(Key.SPACE)) {

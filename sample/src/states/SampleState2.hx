@@ -1,16 +1,16 @@
 package states;
 
-import boost.h2d.component.Animator.;
+import ghost.h2d.component.Animator.;
 import h2d.Bitmap;
 import h2d.Tile;
 import h2d.Text;
-import boost.util.Color;
-import boost.GM;
-import boost.h2d.GameObject;
-import boost.GameState;
+import ghost.util.Color;
+import ghost.GM;
+import ghost.h2d.GameObject;
+import ghost.GameState;
 import hxd.Math;
 
-using boost.h2d.ext.ObjectExt;
+using ghost.h2d.ext.ObjectExt;
 /**
  * Sample State 2 - 2D Animations.
  */
@@ -34,7 +34,7 @@ class SampleState2 extends GameState {
   /**
    * Override `init()` to initialize the State.
    */
-  override public function init() {
+  override public function create() {
     // Create the target animated GameObject
     var game_object = new GameObject(GM.width * 0.5, GM.height * 0.25);
     // Load the GameObject's graphic
@@ -43,7 +43,7 @@ class SampleState2 extends GameState {
     // * flag that the image is a Sprite Sheet
     // * the width of each Sprite Sheet cell
     // * the height of each Sprite Sheet cell
-    game_object.graphic.load(hxd.Res.images.baddegg, true, 180, 96);
+    game_object.sprite.load(hxd.Res.images.baddegg, true, 180, 96);
     // Add the Target Entity to the State
     add(game_object);
 
@@ -72,36 +72,36 @@ class SampleState2 extends GameState {
   override public function update(dt:Float) {
     super.update(dt);
 
-    var pos = target_animator.index / (target_animator.current.frames.length - 1);
-    cursor.x = Math.lerp(2, cursor_bg.tile.width - cursor.tile.width - 2, pos);
+    // var pos = target_animator.index / (target_animator.current.frames.length - 1);
+    // cursor.x = Math.lerp(2, cursor_bg.tile.width - cursor.tile.width - 2, pos);
   }
 
   function add_ui() {
     // Add and configure a Flow Object for the UI
-    var menu = ui.add_flow(0, (GM.height * 0.5) + 10, {
-      vertical: true,
-      align: {
-        horizontal: Middle
-      },
-      spacing: {
-        vertical: 6
-      },
-      width: {
-        min: GM.width
-      }
-    });
+    // var menu = ui.add_flow(0, (GM.height * 0.5) + 10, {
+    //   vertical: true,
+    //   align: {
+    //     horizontal: Middle
+    //   },
+    //   spacing: {
+    //     vertical: 6
+    //   },
+    //   width: {
+    //     min: GM.width
+    //   }
+    // });
 
-    // Add the Animation Cursor
-    cursor_bg = menu.add_graphic(Tile.fromColor(Color.GRAY, Math.floor(GM.width * 0.5), 10));
-    cursor = cursor_bg.add_graphic(Tile.fromColor(Color.WHITE, 4, 8), 0, 1);
-    // Add the info Text
-    direction_text = menu.add_text('Animation Direction: $FORWARD');
-    // Add and configure a nested Flow Object to contain the directional buttons
-    var dir_buttons = menu.add_flow(0, 0, {spacing: {horizontal: 3}});
-    // Add the directional buttons
-    dir_buttons.add_button(0, 0, '$FORWARD', () -> set_animation_direction(FORWARD));
-    dir_buttons.add_button(0, 0, '$REVERSE', () -> set_animation_direction(REVERSE));
-    dir_buttons.add_button(0, 0, '$PINGPONG', () -> set_animation_direction(PINGPONG));
+    // // Add the Animation Cursor
+    // cursor_bg = menu.add_graphic(Tile.fromColor(Color.GRAY, Math.floor(GM.width * 0.5), 10));
+    // cursor = cursor_bg.add_graphic(Tile.fromColor(Color.WHITE, 4, 8), 0, 1);
+    // // Add the info Text
+    // direction_text = menu.add_text('Animation Direction: $FORWARD');
+    // // Add and configure a nested Flow Object to contain the directional buttons
+    // var dir_buttons = menu.add_flow(0, 0, {spacing: {horizontal: 3}});
+    // // Add the directional buttons
+    // dir_buttons.add_button(0, 0, '$FORWARD', () -> set_animation_direction(FORWARD));
+    // dir_buttons.add_button(0, 0, '$REVERSE', () -> set_animation_direction(REVERSE));
+    // dir_buttons.add_button(0, 0, '$PINGPONG', () -> set_animation_direction(PINGPONG));
   }
 
   function set_animation_direction(anim_dir:AnimationDirection) {
