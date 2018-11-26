@@ -1,6 +1,6 @@
 package states;
 
-import ghost.h2d.component.Animator.;
+import ghost.h2d.component.Animator;
 import h2d.Bitmap;
 import h2d.Tile;
 import h2d.Text;

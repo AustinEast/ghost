@@ -30,3 +30,4 @@ class ScaleSystem extends System<Event> {
       game.resized = false;
     }
   }
+}

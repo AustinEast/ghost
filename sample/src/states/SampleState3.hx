@@ -2,7 +2,6 @@ package states;
 
 import ghost.util.RandomUtil;
 import ghost.h2d.geom.Shape;
-import systems.ScreenWrapperSystem;
 import h2d.Graphics;
 import h2d.Tile;
 import ghost.GM;

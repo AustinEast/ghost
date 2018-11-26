@@ -3,7 +3,16 @@ package ghost.sys;
 import ecs.system.System;
 import ecs.system.SystemCollection;
 import ecs.Engine;
-
+/**
+ * Ghost ECS Engine.
+ *
+ * This is an Extentsion of the base Engine from the `ecs` library to maintain a "Fixed-Timestep" Systems list and a "Late Update" Systems list.
+ *
+ * TODO:
+ * - docs
+ * - Interpolate the `residue` value when updating the "Variable-Timestep" System.
+ * - Implement GhostSystem.
+ */
 class GhostEngine extends Engine<Event> {
   public var fixed_systems(default, null):SystemCollection<Event>;
   public var late_systems(default, null):SystemCollection<Event>;
