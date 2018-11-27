@@ -113,8 +113,9 @@ class GameState implements IDestroyable {
   }
 
   @:allow(ghost.hxd.system.StateSystem)
-  function attach(engine:Engine<Event>) {
+  function attach(engine:Engine<Event>, ui:h2d.Object) {
     this.engine = engine;
+    this.ui = new h2d.Object(ui);
     entities = new EntityCollection();
     systems = new SystemCollection<Event>(engine);
   }
