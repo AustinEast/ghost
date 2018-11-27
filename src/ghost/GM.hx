@@ -1,5 +1,6 @@
 package ghost;
 
+import h2d.Layers;
 import ghost.h2d.system.*;
 import ghost.Game;
 import ghost.hxd.component.States;
@@ -37,13 +38,22 @@ class GM {
    */
   public static var time_scale:Float;
   /**
-   * The target framerate.
-   * TODO: Make this set-able
+   * The current frames per second that the game is rendering at.
    */
-  public static var fps(get, null):Float;
+  public static var framerate(get, null):Float;
+  /**
+   * The target frames per second that the game is updating its fixed timestep at.
+   */
+  public static var fixed_framerate(get, set):Int;
   public static var world(get, null):BroadPhaseSystem;
   public static var collisions(get, null):CollisionSystem;
   public static var physics(get, null):PhysicsSystem;
+  /**
+   * An Object available to act as a Global UI that persists between GameStates.
+   *
+   * Use the `ui` Object in a GameState to create UIs that only last during a single GameState.
+   */
+  public static var ui(default, null):h2d.Object;
   /**
    * Internal tracker for Window.
    */
@@ -116,6 +126,7 @@ class GM {
     // TODO: See if we can migrate these to Game Components/Systems
     log = new Log();
     window = Window.getInstance();
+    ui = new h2d.Object(game.ui);
 
     log.info(':: :: :: :: ::');
     log.info(':: $name');
@@ -135,7 +146,9 @@ class GM {
 
   static function get_background_color() return engine.backgroundColor;
 
-  static function get_fps() return engine.fps;
+  static function get_framerate() return engine.fps;
+
+  static function get_fixed_framerate() return game.framerate;
 
   static function get_world() return game.world;
 
@@ -144,6 +157,7 @@ class GM {
   static function get_physics() return game.physics;
 
   // setters
-  // static function set_framerate(value:Int) return game.framerate = value;
+  static function set_fixed_framerate(value:Int) return game.framerate = value;
+
   static function set_background_color(value:Int) return engine.backgroundColor = value;
 }

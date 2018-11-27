@@ -34,11 +34,10 @@ class GameState implements IDestroyable {
    * A function that gets called when this state is closed.
    */
   public var close_callback:Void->Void;
+  public var ui:h2d.Object;
 
   var engine:Engine<Event>;
-  @:dox(hide) @:noCompletion
   var entities:EntityCollection;
-  @:dox(hide) @:noCompletion
   var systems:SystemCollection<Event>;
 
   function new() {
@@ -110,6 +109,7 @@ class GameState implements IDestroyable {
     for (system in systems) engine.systems.remove(system);
     entities.destroy();
     systems.destroy();
+    ui.remove();
   }
 
   @:allow(ghost.hxd.system.StateSystem)

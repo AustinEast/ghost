@@ -51,6 +51,7 @@ class StateSystem extends System<Event> {
     state.attach(engine);
     state.create();
     state.age = 0;
+    state.ui = new h2d.Object(game.ui);
     // Trigger a scale event for the new state
     game.resized = true;
   }

@@ -22,18 +22,12 @@ class SampleState4 extends GameState {
    */
   var entity_count:Int = 20;
   /**
-   * Debug Graphic
-   */
-  var dg:Graphics;
-  /**
    * Override `init()` to initialize the State.
    */
   override public function create() {
     // Set the State's Gravity
     GM.physics.gravity.y = 40;
     close_callback = () -> GM.physics.gravity.y = 0;
-
-    GM.time_scale = 1;
 
     var game_object = new GameObject(GM.width * 0.5, GM.height - 10);
     game_object.sprite.make(GM.width - 10, 16);
@@ -46,16 +40,17 @@ class SampleState4 extends GameState {
       // Load the GameObject's graphic
       if (i % 2 == 0) {
         game_object.sprite.load(hxd.Res.images.box);
+        game_object.motion.elasticity = .2;
         game_object.collider;
       } else if (i % 3 == 0) {
         game_object.sprite.load(hxd.Res.images.ghostlg);
+        game_object.motion.elasticity = .5;
         game_object.collider.shape = Shape.circle(0, 0, 8);
       } else {
         game_object.sprite.load(hxd.Res.images.boxlg);
+        game_object.motion.elasticity = .1;
         game_object.collider;
       }
-      // Add some motion
-      game_object.motion;
       // Add the GameObject to the State
       add(game_object);
     }
@@ -73,23 +68,23 @@ class SampleState4 extends GameState {
    */
   override public function update(dt:Float) {
     super.update(dt);
-    // fps.text = 'FPS: ${GM.fps}';
+    fps.text = 'FPS: ${GM.framerate}';
   }
 
   function add_ui() {
-    // var menu = ui.add_flow(0, 0, {
-    //   background: Tile.fromColor(0x000000, 5, 5, 0.8),
-    //   vertical: true,
-    //   align: {
-    //     vertical: Middle
-    //   },
-    //   padding: {
-    //     bottom: 2,
-    //     left: 2,
-    //     right: 2
-    //   }
-    // });
-    // fps = menu.add_text();
-    // menu.add_text('Entities: $entity_count');
+    var menu = ui.add_flow(0, 0, {
+      background: Tile.fromColor(0x000000, 5, 5, 0.8),
+      vertical: true,
+      align: {
+        vertical: Middle
+      },
+      padding: {
+        bottom: 2,
+        left: 2,
+        right: 2
+      }
+    });
+    fps = menu.add_text();
+    menu.add_text('Entities: $entity_count');
   }
 }

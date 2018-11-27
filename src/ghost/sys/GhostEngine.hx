@@ -33,11 +33,11 @@ class GhostEngine extends Engine<Event> {
     late_systems.lock();
 
     residue += dt;
-    while (residue > delta) {
+    while (residue >= delta) {
       for (system in fixed_systems) {
-        update_system(system, delta);
-        residue -= delta;
+        update_system(system, delta == 0 ? dt : delta);
       }
+      residue -= dt;
     }
 
     for (system in systems) update_system(system, dt);

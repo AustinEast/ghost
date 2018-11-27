@@ -1,14 +1,15 @@
 package ghost;
 
+import h2d.Layers;
 import ecs.system.SystemId;
-import ghost.util.DataUtil;
-import h2d.Mask;
-import ghost.sys.Event;
-import ghost.sys.GhostEngine;
-import ghost.util.DestroyUtil;
 import ecs.component.Component;
 import ecs.system.System;
 import ecs.entity.Entity;
+import ghost.util.DataUtil;
+import ghost.sys.Event;
+import ghost.sys.GhostEngine;
+import ghost.util.DestroyUtil;
+import h2d.Mask;
 import hxd.App;
 /**
  * The Game Class bootstraps the creation of a HEAPS game.
@@ -57,6 +58,14 @@ class Game extends hxd.App implements IDestroyable {
    * A Mask to constrain the root 2D Scene to the Game's width/height. Eventually will be replaced by camera system
    */
   public var root2d(default, null):Mask;
+  /**
+   * Layers Object that `h2d` Entities will be displayed on. Eventually will be replaced by camera system
+   */
+  public var viewport(default, null):Layers;
+  /**
+   * Layers Object that ui will be displayed on. Eventually will be replaced by camera system
+   */
+  public var ui(default, null):Layers;
   /**
    * Flag to check if a game resize is requested.
    */
@@ -123,25 +132,31 @@ class Game extends hxd.App implements IDestroyable {
 
   override public function init() {
     root2d = new Mask(width, height, s2d);
+    viewport = new Layers(root2d);
+    ui = new Layers(root2d);
+
     // Add our game components, then add the game entity to the ECS Engine
     entity.add(new ghost.hxd.component.States(initial_state));
     ecs.entities.add(entity);
 
     // Init the Game Manager
     GM.init(this, engine, entity);
+
     // Get reference to some of our systems
-    world = new ghost.h2d.system.BroadPhaseSystem(BroadPhaseEvent, {debug: true}, root2d);
+    world = new ghost.h2d.system.BroadPhaseSystem(BroadPhaseEvent);
     collisions = new ghost.h2d.system.CollisionSystem(CollisionEvent, {debug: true}, root2d);
     physics = new ghost.h2d.system.PhysicsSystem();
+
+    // Add the Fixed Systems to the ECS Engine
+    ecs.fixed_systems.add(world, BROADPHASE);
+    ecs.fixed_systems.add(collisions, COLLISION);
+    ecs.fixed_systems.add(physics, PHYSICS);
+    ecs.fixed_systems.add(new ghost.h2d.system.RenderSystem(viewport), RENDER);
 
     // Add the default Systems to the ECS Engine
     ecs.systems.add(new ghost.hxd.system.StateSystem(this), STATE);
     ecs.systems.add(new ghost.hxd.system.ScaleSystem(this, engine), SCALE);
     ecs.systems.add(new ghost.hxd.system.ProcessSystem(), PROCESS);
-    ecs.fixed_systems.add(world, BROADPHASE);
-    ecs.fixed_systems.add(collisions, COLLISION);
-    ecs.fixed_systems.add(physics, PHYSICS);
-    ecs.fixed_systems.add(new ghost.h2d.system.RenderSystem(root2d), RENDER);
     ecs.systems.add(new ghost.h2d.system.AnimationSystem(), ANIMATION);
 
     // Call the callback function if it's set
@@ -193,7 +208,7 @@ class Game extends hxd.App implements IDestroyable {
   }
 
   function set_framerate(value:Int) {
-    ecs.delta = 1 / value;
+    ecs.delta = value == 0 ? 0 : 1 / value;
     return framerate = value;
   }
 

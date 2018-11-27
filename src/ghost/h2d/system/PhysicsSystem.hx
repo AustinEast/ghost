@@ -70,22 +70,24 @@ class PhysicsSystem extends EventHandlerSystem<Event, Collision> {
 
   function resolve(e1:CollisionItem, e2:CollisionItem, cd:CollisionData) {
     // Calculate relative velocity
-    var rv = e1.motion.velocity - e2.motion.velocity; // Calculate relative velocity in terms of the normal direction
+    var rv = e1.motion.velocity - e2.motion.velocity;
+    // Calculate relative velocity in terms of the normal direction
     var vel_to_normal = rv * cd.normal;
-    // Do not resolve if velocities are separating
-    if (vel_to_normal > 0) return;
-    // Calculate elasticity
-    var e = Math.min(e1.motion.elasticity, e2.motion.elasticity);
-    // Calculate impulse scalar
     var inv_mass_sum = e1.motion.inv_mass + e2.motion.inv_mass;
-    var j = (-(1 + e) * vel_to_normal) / inv_mass_sum;
-    var impulse = j * cd.normal;
-    // Apply impulse
-    var mass_sum = e1.motion.mass + e2.motion.mass;
-    var ratio = e1.motion.mass / mass_sum;
-    e1.motion.velocity -= ratio * impulse;
-    ratio = e2.motion.mass / mass_sum;
-    e2.motion.velocity += ratio * impulse;
+    // Do not resolve if velocities are separating
+    if (vel_to_normal <= 0) {
+      // Calculate elasticity
+      var e = Math.min(e1.motion.elasticity, e2.motion.elasticity);
+      // Calculate impulse scalar
+      var j = (-(1 + e) * vel_to_normal) / inv_mass_sum;
+      var impulse = j * cd.normal;
+      // Apply impulse
+      var mass_sum = e1.motion.mass + e2.motion.mass;
+      var ratio = e1.motion.mass / mass_sum;
+      e1.motion.velocity -= ratio * impulse;
+      ratio = e2.motion.mass / mass_sum;
+      e2.motion.velocity += ratio * impulse;
+    }
 
     var correction = (Math.max(cd.overlap - lerp, 0) / inv_mass_sum) * correction_percent * cd.normal;
     e1.transform.subtract(e1.motion.inv_mass * correction);
@@ -94,11 +96,12 @@ class PhysicsSystem extends EventHandlerSystem<Event, Collision> {
 
   function resolve_static(e:CollisionItem, cd:CollisionData) {
     var vel_to_normal = -e.motion.velocity * cd.normal;
-    if (vel_to_normal > 0) return;
-    // var j = (-(1 + e.motion.elasticity) * e.motion.velocity) / e.motion.inv_mass;
-    // var impulse = j * cd.normal;
-    // // Apply impulse
-    e.motion.velocity = e.motion.velocity * -e.motion.elasticity;
+    if (vel_to_normal <= 0) {
+      // var j = (-(1 + e.motion.elasticity) * e.motion.velocity) / e.motion.inv_mass;
+      // var impulse = j * cd.normal;
+      // // Apply impulse
+      e.motion.velocity = e.motion.velocity * -e.motion.elasticity;
+    }
 
     var correction = (Math.max(cd.overlap - lerp, 0)) * correction_percent * cd.normal;
     e.transform.subtract(e.motion.inv_mass * correction);
@@ -109,8 +112,8 @@ class PhysicsSystem extends EventHandlerSystem<Event, Collision> {
       x: 0.,
       y: 0.
     },
-    correction_percent: 0.9,
-    lerp: 0.009
+    correction_percent: 1.,
+    lerp: 0.09
   }
 }
 

@@ -105,6 +105,7 @@ class BroadPhaseSystem extends System<Event> {
     // Get an empty rect to copy our dynamic nodes' aabbs
     var r = Rect.get();
 
+    // Make an array to store all collision pairs, to cull for duplicates
     var arr:Array<Pair<CollisionItem, CollisionItem>> = [];
 
     // Query the Quadtree for potential collisions with all Dynamic Colliders
@@ -118,7 +119,7 @@ class BroadPhaseSystem extends System<Event> {
       for (item in quadtree.query(r)) {
         // Filter out self collisions
         if (node.entity.id == item.data.id) continue;
-        // Filter out Duplicate Pairs
+        // Filter out duplicate pairs
         if (arr.filter((pair)
             -> {
               if (pair.a.id == node.entity.id && pair.b.id == item.data.id) return true;
@@ -149,7 +150,7 @@ class BroadPhaseSystem extends System<Event> {
     // Draw debug graphics
     if (!debug_cleared) debug_graphic.clear();
     if (debug) {
-      debug_graphic.beginFill(0x009badb7, 0.2);
+      debug_graphic.beginFill(0x009badb7, 0.4);
       debug_graphic.lineStyle(1, 0x00847e87);
       draw_quadtree(quadtree);
       debug_graphic.endFill();

@@ -51,23 +51,23 @@ class SampleState1 extends GameState {
    */
   override public function update(dt:Float) {
     super.update(dt);
-    // fps.text = 'FPS: ${GM.fps}';
+    fps.text = 'FPS: ${GM.framerate}';
   }
 
   function add_ui() {
-    // var menu = ui.add_flow(0, 0, {
-    //   background: Tile.fromColor(0x000000, 5, 5, 0.8),
-    //   vertical: true,
-    //   align: {
-    //     vertical: Middle
-    //   },
-    //   padding: {
-    //     bottom: 2,
-    //     left: 2,
-    //     right: 2
-    //   }
-    // });
-    // fps = menu.add_text();
-    // menu.add_text('Entities: $entity_count');
+    var menu = ui.add_flow(0, 0, {
+      background: Tile.fromColor(0x000000, 5, 5, 0.8),
+      vertical: true,
+      align: {
+        vertical: Middle
+      },
+      padding: {
+        bottom: 2,
+        left: 2,
+        right: 2
+      }
+    });
+    fps = menu.add_text();
+    menu.add_text('Entities: $entity_count');
   }
 }

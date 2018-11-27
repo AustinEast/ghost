@@ -1,8 +1,8 @@
 package ghost.h2d.ext;
 
+import ghost.ui.Button;
 import h2d.Bitmap;
 import h2d.Slider;
-import ghost.ui.Button;
 import h2d.Object;
 import h2d.Tile;
 import h2d.Text;

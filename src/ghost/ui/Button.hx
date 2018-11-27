@@ -1,7 +1,6 @@
 package ghost.ui;
 
 import ghost.util.DataUtil;
-import ghost.ui.Styles;
 import h2d.Object;
 import h2d.Text;
 import h2d.Flow;
