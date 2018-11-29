@@ -17,7 +17,10 @@ class AnimationSystem extends System<Event> {
       var s = node.sprite;
       var a = node.animator;
 
-      if (a.current != null && a.delay != 0 && !a.paused) update_animation(dt, s, a);
+      if (a.current != null) {
+        if (a.current.frames.length == 1) s.current_frame = 0;
+        else if (a.delay != 0 && !a.paused) update_animation(dt, s, a);
+      }
       s.bitmap.tile = s.frames[s.current_frame];
     }
   }
@@ -40,7 +43,8 @@ class AnimationSystem extends System<Event> {
           if (a.reversed && a.index <= 0) {
             a.reversed = false;
             finish_animation(a);
-          } else if (!a.reversed && a.index >= a.current.frames.length) {
+          }
+          else if (!a.reversed && a.index >= a.current.frames.length) {
             a.index = a.current.frames.length - 1;
             a.reversed = true;
           }

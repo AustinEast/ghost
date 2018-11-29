@@ -40,6 +40,8 @@ class Sprite extends Component {
    * The Y offset of the `Sprite` from it's `Transform`.
    */
   public var dy(default, set):Int;
+  public var flip_x(default, set):Bool = false;
+  public var flip_y(default, set):Bool = false;
   public var bitmap:Bitmap;
 
   public function new(?bitmap:Bitmap) {
@@ -67,7 +69,8 @@ class Sprite extends Component {
           }
         }
       ];
-    } else frames[0] = asset.toTile();
+    }
+    else frames[0] = asset.toTile();
     bitmap.tile = frames[0];
     center_offset();
   }
@@ -118,5 +121,15 @@ class Sprite extends Component {
   function set_dy(value:Int) {
     for (frame in frames) frame.dy = value;
     return dy = value;
+  }
+
+  function set_flip_x(value:Bool) {
+    if (flip_x != value) for (frame in frames) frame.flipX();
+    return flip_x = value;
+  }
+
+  function set_flip_y(value:Bool) {
+    if (flip_y != value) for (frame in frames) frame.flipY();
+    return flip_y = value;
   }
 }

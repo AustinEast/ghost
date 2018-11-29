@@ -6,7 +6,7 @@
     "sameLine": {
         "anonFunctionBody": "keep",
         "ifBody": "same",
-        "ifElse": "same",
+        "ifElse": "next",
         "elseBody": "same",
         "elseIf": "same",
         "caseBody": "keep",

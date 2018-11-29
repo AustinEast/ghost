@@ -45,6 +45,10 @@ class GM {
    * The target frames per second that the game is updating its fixed timestep at.
    */
   public static var fixed_framerate(get, set):Int;
+  /**
+   *
+   */
+  public static var residue(get, null):Float;
   public static var world(get, null):BroadPhaseSystem;
   public static var collisions(get, null):CollisionSystem;
   public static var physics(get, null):PhysicsSystem;
@@ -149,6 +153,8 @@ class GM {
   static function get_framerate() return engine.fps;
 
   static function get_fixed_framerate() return game.framerate;
+
+  static function get_residue() return game.ecs.residue;
 
   static function get_world() return game.world;
 

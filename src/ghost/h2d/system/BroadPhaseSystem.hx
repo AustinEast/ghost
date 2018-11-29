@@ -22,7 +22,6 @@ using tink.CoreApi;
  */
 class BroadPhaseSystem extends System<Event> {
   var factory:EventFactory<Event, Pair<CollisionItem, CollisionItem>>;
-  var statics:NodeList<Static>;
   @:nodes var dynamics:Node<Transform, Collider, Motion>;
   @:nodes var nodes:Node<Transform, Collider>;
 
@@ -60,8 +59,6 @@ class BroadPhaseSystem extends System<Event> {
 
   override function onAdded(engine:Engine<Event>) {
     super.onAdded(engine);
-
-    statics = new TrackingNodeList(engine, Static.new, entity -> entity.has(Transform) && entity.has(Collider) && !entity.has(Motion));
     for (node in nodes) add_collider(node);
     listeners = [nodes.nodeAdded.handle(add_collider), nodes.nodeRemoved.handle(remove_collider)];
   }
@@ -97,10 +94,8 @@ class BroadPhaseSystem extends System<Event> {
   }
 
   override function update(dt:Float) {
-    // Update Static Quadtree data if their transforms have been updated
-    for (node in statics) update_data(node.entity.id, node.transform, node.collider);
-    // Update Dynamic Quadtree data
-    for (node in dynamics) update_data(node.entity.id, node.transform, node.collider);
+    // Update entity Quadtree data if their transforms have been updated
+    for (node in nodes) update_data(node.entity.id, node.transform, node.collider);
 
     // Get an empty rect to copy our dynamic nodes' aabbs
     var r = Rect.get();
@@ -159,10 +154,13 @@ class BroadPhaseSystem extends System<Event> {
   }
 
   inline function update_data(id:Int, t:Transform, c:Collider) {
-    c.shape.to_aabb(c.quadtree_data.bounds);
-    c.quadtree_data.bounds.position.x += t.x;
-    c.quadtree_data.bounds.position.y += t.y;
-    quadtree.update(c.quadtree_data);
+    if (t.dirty) {
+      t.dirty = false;
+      c.shape.to_aabb(c.quadtree_data.bounds);
+      c.quadtree_data.bounds.position.x += t.x;
+      c.quadtree_data.bounds.position.y += t.y;
+      quadtree.update(c.quadtree_data);
+    }
   }
 
   // getters

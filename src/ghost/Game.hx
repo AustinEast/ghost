@@ -82,7 +82,7 @@ class Game extends hxd.App implements IDestroyable {
   /**
    * ECS Engine.
    */
-  var ecs:GhostEngine;
+  public var ecs:GhostEngine;
   /**
    * The Game Entity.
    */
@@ -144,19 +144,19 @@ class Game extends hxd.App implements IDestroyable {
 
     // Get reference to some of our systems
     world = new ghost.h2d.system.BroadPhaseSystem(BroadPhaseEvent);
-    collisions = new ghost.h2d.system.CollisionSystem(CollisionEvent, {debug: true}, root2d);
-    physics = new ghost.h2d.system.PhysicsSystem();
+    collisions = new ghost.h2d.system.CollisionSystem(CollisionEvent, null, root2d);
+    physics = new ghost.h2d.system.PhysicsSystem(null, root2d);
 
     // Add the Fixed Systems to the ECS Engine
     ecs.fixed_systems.add(world, BROADPHASE);
     ecs.fixed_systems.add(collisions, COLLISION);
     ecs.fixed_systems.add(physics, PHYSICS);
-    ecs.fixed_systems.add(new ghost.h2d.system.RenderSystem(viewport), RENDER);
 
     // Add the default Systems to the ECS Engine
     ecs.systems.add(new ghost.hxd.system.StateSystem(this), STATE);
     ecs.systems.add(new ghost.hxd.system.ScaleSystem(this, engine), SCALE);
     ecs.systems.add(new ghost.hxd.system.ProcessSystem(), PROCESS);
+    ecs.systems.add(new ghost.h2d.system.RenderSystem(viewport), RENDER);
     ecs.systems.add(new ghost.h2d.system.AnimationSystem(), ANIMATION);
 
     // Call the callback function if it's set

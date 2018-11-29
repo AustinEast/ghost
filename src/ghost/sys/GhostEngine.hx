@@ -17,8 +17,7 @@ class GhostEngine extends Engine<Event> {
   public var fixed_systems(default, null):SystemCollection<Event>;
   public var late_systems(default, null):SystemCollection<Event>;
   public var delta:Float;
-
-  var residue:Float;
+  public var residue(default, null):Float;
 
   public function new() {
     super();
@@ -37,7 +36,7 @@ class GhostEngine extends Engine<Event> {
       for (system in fixed_systems) {
         update_system(system, delta == 0 ? dt : delta);
       }
-      residue -= dt;
+      residue -= delta;
     }
 
     for (system in systems) update_system(system, dt);

@@ -25,11 +25,11 @@ class Collider extends Component {
   /**
    * The X offset of the `Collider` from it's `Transform`.
    */
-  public var x:Float;
+  public var x(get, set):Float;
   /**
    * The Y offset of the `Collider` from it's `Transform`.
    */
-  public var y:Float;
+  public var y(get, set):Float;
   /**
    * The `Shape` of the `Collider`.
    */

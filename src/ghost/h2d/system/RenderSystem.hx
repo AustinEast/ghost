@@ -10,6 +10,8 @@ import ecs.node.Node;
 import ecs.Engine;
 import ecs.system.System;
 import tink.CoreApi.CallbackLink;
+
+using hxd.Math;
 /**
  * System for handling the rendering of 2D Objects added to a State.
  *
@@ -18,6 +20,9 @@ import tink.CoreApi.CallbackLink;
 class RenderSystem extends System<Event> {
   @:nodes var objects:Node<Transform, Object>;
   @:nodes var sprites:Node<Transform, Sprite>;
+  var last_objects:Node<Transform, Object>;
+  var last_sprites:Node<Transform, Sprite>;
+  var bias:Float = 5;
 
   public static var defaults(get, null):DisplayOptions;
   /**
@@ -59,18 +64,20 @@ class RenderSystem extends System<Event> {
   inline function remove_object(object:h2d.Object) context.removeChild(object);
 
   override function update(dt:Float) {
-    for (node in objects) if (node.transform.dirty) update_object(node.transform, node.object.object);
-    for (node in sprites) if (node.transform.dirty) update_object(node.transform, node.sprite.bitmap);
+    var alpha = 1; // (GM.residue / dt).clamp();
+    for (node in objects) update_object(node.transform, node.object.object, alpha);
+    for (node in sprites) update_object(node.transform, node.sprite.bitmap, alpha);
   }
 
-  function update_object(t:Transform, o:h2d.Object) {
-    t.dirty = false;
-    o.x = t.x;
-    o.y = t.y;
-    o.rotation = t.rotation * 180 / Math.PI;
-    o.scaleX = t.scale_x;
-    o.scaleY = t.scale_y;
+  inline function update_object(t:Transform, o:h2d.Object, alpha:Float) {
+    o.x = interp(o.x, t.x, alpha);
+    o.y = interp(o.y, t.y, alpha);
+    o.rotation = interp(o.rotation, t.rotation, alpha);
+    o.scaleX = interp(o.scaleX, t.scale_x, alpha);
+    o.scaleY = interp(o.scaleY, t.scale_y, alpha);
   }
+
+  inline function interp(from:Float, to:Float, alpha:Float):Float return (to - from).abs() > bias ? to : to * alpha + from * (1 - alpha);
 
   static function get_defaults() return {
     pixelPerfect: true

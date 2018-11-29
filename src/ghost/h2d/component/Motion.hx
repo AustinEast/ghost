@@ -16,6 +16,7 @@ class Motion extends Component {
   public static var defaults(get, null):MotionOptions;
 
   public var velocity:Vector2;
+  public var max_velocity:Vector2;
   public var acceleration:Vector2;
   public var rotational_velocity:Float;
   public var drag:Vector2;
@@ -29,6 +30,7 @@ class Motion extends Component {
   public function new(?options:MotionOptions) {
     options = DataUtil.copy_fields(options, defaults);
     velocity = new Vector2(options.velocity.x, options.velocity.y);
+    max_velocity = new Vector2(options.max_velocity.x, options.max_velocity.y);
     acceleration = new Vector2(0, 0);
     rotational_velocity = options.rotational_velocity;
     drag = new Vector2(options.drag.x, options.drag.y);
@@ -41,6 +43,7 @@ class Motion extends Component {
 
   static function get_defaults():MotionOptions return {
     velocity: {x: 0, y: 0},
+    max_velocity: {x: 0, y: 0},
     rotational_velocity: 0,
     drag: {x: 0, y: 0},
     rotational_drag: 0,
@@ -51,7 +54,7 @@ class Motion extends Component {
   }
 
   function set_mass(value:Float) {
-    if (value < 0) value = 0;
+    if (value < 0.0001) value = 0;
     inv_mass = 1 / value;
     return mass = value;
   }
@@ -59,6 +62,7 @@ class Motion extends Component {
 
 typedef MotionOptions = {
   ?velocity:{?x:Float, ?y:Float},
+  ?max_velocity:{?x:Float, ?y:Float},
   ?rotational_velocity:Float,
   ?drag:{?x:Float, ?y:Float},
   ?rotational_drag:Float,
