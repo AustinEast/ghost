@@ -45,15 +45,15 @@ class Game extends hxd.App implements IDestroyable {
   /**
    *
    */
-  public var world(default, null):ghost.h2d.system.BroadPhaseSystem;
+  public var world(default, null):h2d.system.BroadPhaseSystem;
   /**
    *
    */
-  public var collisions(default, null):ghost.h2d.system.CollisionSystem;
+  public var collisions(default, null):h2d.system.CollisionSystem;
   /**
    *
    */
-  public var physics(default, null):ghost.h2d.system.PhysicsSystem;
+  public var physics(default, null):h2d.system.PhysicsSystem;
   /**
    * A Mask to constrain the root 2D Scene to the Game's width/height. Eventually will be replaced by camera system
    */
@@ -136,16 +136,16 @@ class Game extends hxd.App implements IDestroyable {
     ui = new Layers(root2d);
 
     // Add our game components, then add the game entity to the ECS Engine
-    entity.add(new ghost.hxd.component.States(initial_state));
+    entity.add(new hxd.component.States(initial_state));
     ecs.entities.add(entity);
 
     // Init the Game Manager
     GM.init(this, engine, entity);
 
     // Get reference to some of our systems
-    world = new ghost.h2d.system.BroadPhaseSystem(BroadPhaseEvent);
-    collisions = new ghost.h2d.system.CollisionSystem(CollisionEvent, null, root2d);
-    physics = new ghost.h2d.system.PhysicsSystem(null, root2d);
+    world = new h2d.system.BroadPhaseSystem(BroadPhaseEvent);
+    collisions = new h2d.system.CollisionSystem(CollisionEvent, null, root2d);
+    physics = new h2d.system.PhysicsSystem(null, root2d);
 
     // Add the Fixed Systems to the ECS Engine
     ecs.fixed_systems.add(world, BROADPHASE);
@@ -153,11 +153,11 @@ class Game extends hxd.App implements IDestroyable {
     ecs.fixed_systems.add(physics, PHYSICS);
 
     // Add the default Systems to the ECS Engine
-    ecs.systems.add(new ghost.hxd.system.StateSystem(this), STATE);
-    ecs.systems.add(new ghost.hxd.system.ScaleSystem(this, engine), SCALE);
-    ecs.systems.add(new ghost.hxd.system.ProcessSystem(), PROCESS);
-    ecs.systems.add(new ghost.h2d.system.RenderSystem(viewport), RENDER);
-    ecs.systems.add(new ghost.h2d.system.AnimationSystem(), ANIMATION);
+    ecs.systems.add(new hxd.system.StateSystem(this), STATE);
+    ecs.systems.add(new hxd.system.ScaleSystem(this, engine), SCALE);
+    ecs.systems.add(new hxd.system.ProcessSystem(), PROCESS);
+    ecs.systems.add(new h2d.system.RenderSystem(viewport), RENDER);
+    ecs.systems.add(new h2d.system.AnimationSystem(), ANIMATION);
 
     // Call the callback function if it's set
     if (on_init != null) on_init();
@@ -237,7 +237,7 @@ abstract FileSystemOptions(Int) {
 }
 
 @:enum
-abstract GameSystems(String) from (String) to (SystemId) {
+abstract GameSystems(String) from(String) to(SystemId) {
   var STATE = 'State';
   var SCALE = 'Scale';
   var PROCESS = 'Process';

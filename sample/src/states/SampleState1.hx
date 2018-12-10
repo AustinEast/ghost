@@ -1,13 +1,13 @@
 package states;
 
-import h2d.Tile;
-import ghost.GM;
-import ghost.h2d.GameObject;
-import ghost.util.RandomUtil;
-import ghost.GameState;
 import systems.ScreenWrapperSystem;
+import ghost.GM;
+import ghost.GameState;
+import ghost.util.RandomUtil;
+import h2d.Tile;
+import h2d.object.Sprite;
 
-using ghost.h2d.ext.ObjectExt;
+using h2d.ext.ObjectExt;
 /**
  * Sample State 1 - Pixel Art Stress Test.
  */
@@ -26,16 +26,24 @@ class SampleState1 extends GameState {
   override public function create() {
     // Create a legion of circles!
     for (i in 0...entity_count) {
-      // Create a GameObject at a random point on the Screen
-      var game_object = new GameObject(Math.random() * GM.width, Math.random() * GM.height);
+      // Create a new Sprite with options
+      var sprite = new Sprite({
+        collides: false,
+        transform: {
+          x: Math.random() * GM.width,
+          y: Math.random() * GM.height,
+          rotation: Math.random() * 360
+        },
+        motion: {
+          rotational_velocity: 1,
+          velocity: {x: Math.random() * 45 * (RandomUtil.chance() == true ? 1 : -1), y: 0}
+        }
+      });
       // Load the GameObject's graphic
-      game_object.sprite.load(hxd.Res.images.cir);
-      // Add some motion
-      game_object.transform.rotation = Math.random() * 360;
-      game_object.motion.rotational_velocity = 0.01;
-      game_object.motion.velocity.x = Math.random() * 45 * (RandomUtil.chance() == true ? 1 : -1);
+      sprite.graphic.load(hxd.Res.images.cir);
+      sprite.motion.velocity.x = Math.random() * 45 * (RandomUtil.chance() == true ? 1 : -1);
       // Add the GameObject to the State
-      add(game_object);
+      add(sprite);
     }
 
     // Add the custom ScreenWrapper system.

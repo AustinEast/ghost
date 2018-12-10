@@ -1,20 +1,20 @@
 package states;
 
-import hxd.Key;
-import ghost.h2d.geom.Shape;
+import hxmath.math.IntVector2;
 import systems.ScreenWrapperSystem;
-import h2d.Graphics;
-import h2d.Tile;
 import ghost.GM;
-import ghost.h2d.GameObject;
 import ghost.GameState;
+import hxd.Key;
+import h2d.geom.Shape;
+import h2d.object.Sprite;
+import h2d.Tile;
 
-using ghost.h2d.ext.ObjectExt;
+using h2d.ext.ObjectExt;
 /**
  * Sample State 4 - Physics
  */
 class SampleState4 extends GameState {
-  var player:GameObject;
+  var player:Sprite;
   /**
    * Text to display the FPS.
    */
@@ -22,51 +22,63 @@ class SampleState4 extends GameState {
   /**
    * The amount of Entities to spawn.
    */
-  var entity_count:Int = 20;
+  var entity_count:Int = 50;
   /**
    * Override `init()` to initialize the State.
    */
   override public function create() {
     // Set the State's Gravity
     GM.physics.gravity.y = 5;
-    close_callback = () -> GM.physics.gravity.y = 0;
 
-    var game_object = new GameObject(GM.width * 0.5, GM.height - 10);
-    game_object.sprite.make(GM.width - 10, 16);
-    game_object.collider;
-    add(game_object);
+    // Make a
+    var size = new IntVector2(GM.width - 10, 16);
+    var sprite = new Sprite({moves: false, transform: {x: GM.width * 0.5, y: GM.height - 10}});
+    sprite.graphic.make(size.x, size.y);
+    sprite.collider_from_graphic();
+    add(sprite);
 
-    player = new GameObject(GM.width * 0.5, GM.height - 20);
-    player.sprite.load(hxd.Res.images.bot, true, 16, 16);
+    player = new Sprite({
+      transform: {x: GM.width * 0.5, y: GM.height - 20},
+      motion: {
+        max_velocity: {x: 90, y: 180},
+        drag: {x: 5, y: 0}
+      },
+      collider: {
+        width: 12,
+        height: 12,
+        y: 2
+      }
+    });
+    player.graphic.load(hxd.Res.images.bot, true, 16, 16);
     player.animator.add("idle", [0]);
     player.animator.add("run", [1, 2, 3, 4], 15, true);
-    player.collider.shape = Shape.square(0, 2, 12);
-    player.motion.max_velocity.set(90, 180);
-    player.motion.drag.x = 5;
     add(player);
 
     for (i in 0...entity_count) {
       // Create a GameObject at a random point on the Screen
-      game_object = new GameObject(Math.random() * GM.width, Math.random() * GM.height * 0.5);
+      sprite = new Sprite({
+        transform: {x: Math.random() * GM.width, y: Math.random() * GM.height * 0.5}
+      });
       if (i % 2 == 0) {
-        game_object.sprite.load(hxd.Res.images.box);
-        game_object.motion.elasticity = .2;
+        sprite.graphic.load(hxd.Res.images.box);
+        sprite.collider_from_graphic();
+        sprite.motion.elasticity = .2;
       }
-      else if (i % 3 == 0) {
-        game_object.sprite.load(hxd.Res.images.ghostlg);
-        game_object.motion.elasticity = .5;
-        // game_object.collider.shape = Shape.circle(0, 0, 8);
-      }
+        // else if (i % 3 == 0) {
+        //   sprite.graphic.load(hxd.Res.images.ghostlg);
+        //   sprite.motion.elasticity = .5;
+        //   sprite.collider.shape = Shape.circle(0, 0, 8);
+      // }
       else {
-        game_object.sprite.load(hxd.Res.images.boxlg);
-        game_object.motion.elasticity = .2;
-        game_object.motion.mass = 5;
+        sprite.graphic.load(hxd.Res.images.boxlg);
+        sprite.collider_from_graphic();
+        sprite.motion.elasticity = .2;
+        sprite.motion.mass = 5;
       }
-      game_object.collider;
-      game_object.motion.drag.x = 5;
-      game_object.motion.max_velocity.set(180, 180);
+      sprite.motion.drag.x = 5;
+      sprite.motion.max_velocity.set(180, 180);
       // Add the GameObject to the State
-      add(game_object);
+      add(sprite);
     }
 
     // Add the custom ScreenWrapper system.
@@ -89,10 +101,15 @@ class SampleState4 extends GameState {
     if (Key.isDown(Key.LEFT)) left = true;
     if (Key.isDown(Key.RIGHT)) right = true;
     if (left != right) {
-      player.sprite.flip_x = left ? true : false;
+      player.graphic.flip_x = left ? true : false;
       player.motion.acceleration.x = left ? -40 : 40;
     }
     player.motion.velocity.x != 0 ? player.animator.play("run") : player.animator.play("idle");
+  }
+
+  override public function destroy() {
+    super.destroy();
+    GM.physics.gravity.y = 0;
   }
 
   function add_ui() {

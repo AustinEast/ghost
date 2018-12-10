@@ -13,3 +13,24 @@
     * Scene made the "haxeflixel" way vs "ECS" way
     * horizontal shooter
     * platformer
+
+
+A GameObject is an Entity with a couple of enhancements:
+* Has `create()`, `update()`, and `destroy()` methods
+* Has a macro-powered constructor that lets the user add and configure any component tagged with the right metadata
+```
+// Creates a GameObject with Transform, Group, and Physics Components that to collect 
+var group = GM.physics.group();
+add(group);
+for (i in 0...100) {
+    // Create a GameObject with some components.
+    
+    var go = new GameObject({
+         transform3d: { x: 40, y: 30, z: 10 }, 
+         collider2d: { shape:CIRCLE, radius: 16 }, 
+         motion: true,
+         graphic: { asset: "img.png", animated: true, width: 8, height: 8 
+         }});
+    group.add(go);
+}
+```

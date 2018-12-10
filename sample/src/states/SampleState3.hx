@@ -1,14 +1,13 @@
 package states;
 
-import ghost.util.RandomUtil;
-import ghost.h2d.geom.Shape;
-import h2d.Graphics;
-import h2d.Tile;
 import ghost.GM;
-import ghost.h2d.GameObject;
 import ghost.GameState;
+import ghost.util.RandomUtil;
+import h2d.geom.Shape;
+import h2d.object.Sprite;
+import h2d.Tile;
 
-using ghost.h2d.ext.ObjectExt;
+using h2d.ext.ObjectExt;
 /**
  * Sample State 3 - Collision Separation
  */
@@ -25,18 +24,18 @@ class SampleState3 extends GameState {
    * Override `init()` to initialize the State.
    */
   override public function create() {
+    GM.collisions.debug = true;
+
     for (i in 0...entity_count) {
-      // Create a GameObject at a random point on the Screen
-      var game_object = new GameObject(Math.random() * GM.width, Math.random() * GM.height);
-      // Load the GameObject's graphic
-      game_object.sprite.visible = false;
-      // Set the GameObject's Collider to a random sizhsshape
+      // Create a Sprite at a random point on the Screen
+      var sprite = new Sprite({transform: {x: Math.random() * GM.width, y: Math.random() * GM.height}});
+      // Load the Sprite's graphic
+      sprite.graphic.visible = false;
+      // Set the Sprite's Collider to a random size/shape
       var size = RandomUtil.range_int(2, 5) * 8;
-      game_object.collider.shape = i % 2 == 0 ? Shape.circle(0, 0, size * 0.5) : Shape.square(0, 0, size);
-      // Add some motion
-      game_object.motion;
-      // Add the GameObject to the State
-      add(game_object);
+      sprite.collider.shape = i % 2 == 0 ? Shape.circle(0, 0, size * 0.5) : Shape.square(0, 0, size);
+      // Add the Sprite to the State
+      add(sprite);
     }
 
     // Add some info text to the UI
@@ -50,6 +49,11 @@ class SampleState3 extends GameState {
   override public function update(dt:Float) {
     super.update(dt);
     fps.text = 'FPS: ${GM.framerate}';
+  }
+
+  override public function destroy() {
+    super.destroy();
+    GM.collisions.debug = false;
   }
 
   function add_ui() {

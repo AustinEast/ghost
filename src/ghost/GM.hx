@@ -1,13 +1,15 @@
 package ghost;
 
 import h2d.Layers;
-import ghost.h2d.system.*;
+import h2d.system.*;
 import ghost.Game;
-import ghost.hxd.component.States;
+import hxd.component.States;
 import ghost.util.Log;
 import ecs.entity.Entity;
 import h3d.Engine;
 import hxd.Window;
+
+using tink.CoreApi;
 /**
  * Game Manager (GM).
  * Contains handy global references for many systems and properties.
@@ -86,6 +88,12 @@ class GM {
    */
   @:allow(ghost.Game)
   static var states(default, null):States;
+
+  public static function overlap(object1:ghost.GameObject, object12:ghost.GameObject) {
+    // Query Broaphase system, then query Collision System
+  }
+
+  public static function collide(object1:ghost.GameObject, object12:ghost.GameObject) {}
   /**
    * Loads a new State.
    * @param state The new State to load.

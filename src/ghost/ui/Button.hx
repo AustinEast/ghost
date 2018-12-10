@@ -5,7 +5,7 @@ import h2d.Object;
 import h2d.Text;
 import h2d.Flow;
 
-using ghost.h2d.ext.ObjectExt;
+using h2d.ext.ObjectExt;
 using ghost.ui.Styles;
 
 class Button extends Flow {

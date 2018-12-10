@@ -32,5 +32,3 @@ class Main {
     }
   }
 }
-
-enum Event {}

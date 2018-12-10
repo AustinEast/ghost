@@ -24,16 +24,12 @@ class GameState implements IDestroyable {
   /**
    * Age of the State (in Seconds).
    */
-  @:allow(ghost.hxd.system.StateSystem)
+  @:allow(hxd.system.StateSystem)
   public var age(default, null):Float;
   /**
    * When the State is marked as closed, it is destroyed after this update cycle.
    */
   public var closed:Bool;
-  /**
-   * A function that gets called when this state is closed.
-   */
-  public var close_callback:Void->Void;
   public var ui:h2d.Object;
 
   var engine:Engine<Event>;
@@ -44,7 +40,6 @@ class GameState implements IDestroyable {
     age = 0;
     time_scale = 1;
     closed = false;
-    close_callback = () -> {};
   }
   /**
    * Override this to add initialization logic.
@@ -112,7 +107,7 @@ class GameState implements IDestroyable {
     ui.remove();
   }
 
-  @:allow(ghost.hxd.system.StateSystem)
+  @:allow(hxd.system.StateSystem)
   function attach(engine:Engine<Event>, ui:h2d.Object) {
     this.engine = engine;
     this.ui = new h2d.Object(ui);

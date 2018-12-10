@@ -1,16 +1,16 @@
 package states;
 
-import ghost.h2d.component.Animator;
+import ghost.GM;
+import ghost.GameState;
+import ghost.util.Color;
+import h2d.component.Animator;
+import h2d.object.Sprite;
 import h2d.Bitmap;
 import h2d.Tile;
 import h2d.Text;
-import ghost.util.Color;
-import ghost.GM;
-import ghost.h2d.GameObject;
-import ghost.GameState;
 import hxd.Math;
 
-using ghost.h2d.ext.ObjectExt;
+using h2d.ext.ObjectExt;
 /**
  * Sample State 2 - 2D Animations.
  */
@@ -36,19 +36,19 @@ class SampleState2 extends GameState {
    */
   override public function create() {
     // Create the target animated GameObject
-    var game_object = new GameObject(GM.width * 0.5, GM.height * 0.25);
+    var sprite = new Sprite({transform: {x: GM.width * 0.5, y: GM.height * 0.25}});
     // Load the GameObject's graphic
     // Passing in four arguments:
     // * the desired Image file
     // * flag that the image is a Sprite Sheet
     // * the width of each Sprite Sheet cell
     // * the height of each Sprite Sheet cell
-    game_object.sprite.load(hxd.Res.images.baddegg, true, 180, 96);
+    sprite.graphic.load(hxd.Res.images.baddegg, true, 180, 96);
     // Add the Target Entity to the State
-    add(game_object);
+    add(sprite);
 
     // Get a reference the GameObject's Animator so we can manipulate it
-    target_animator = game_object.animator;
+    target_animator = sprite.animator;
     // Add an animation to the GameObject's Animator
     // Passing in six arguments:
     // * the animation's name
@@ -99,9 +99,9 @@ class SampleState2 extends GameState {
     // Add and configure a nested Flow Object to contain the directional buttons
     var dir_buttons = menu.add_flow(0, 0, {spacing: {horizontal: 3}});
     // Add the directional buttons
-    dir_buttons.add_button(0, 0, '$FORWARD', () -> set_animation_direction(FORWARD));
-    dir_buttons.add_button(0, 0, '$REVERSE', () -> set_animation_direction(REVERSE));
-    dir_buttons.add_button(0, 0, '$PINGPONG', () -> set_animation_direction(PINGPONG));
+    dir_buttons.add_button(0, 0, '$FORWARD',() -> set_animation_direction(FORWARD));
+    dir_buttons.add_button(0, 0, '$REVERSE',() -> set_animation_direction(REVERSE));
+    dir_buttons.add_button(0, 0, '$PINGPONG',() -> set_animation_direction(PINGPONG));
   }
 
   function set_animation_direction(anim_dir:AnimationDirection) {

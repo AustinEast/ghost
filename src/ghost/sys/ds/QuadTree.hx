@@ -1,8 +1,8 @@
 package ghost.sys.ds;
 
-import ghost.h2d.Collisions;
-import ghost.h2d.geom.Shape;
-import ghost.h2d.geom.Rect;
+import h2d.Collisions;
+import h2d.geom.Shape;
+import h2d.geom.Rect;
 import ghost.sys.ds.Pool;
 /**
  * Simple QuadTree implementation to assist with broad-phase 2D collisions.
@@ -57,7 +57,8 @@ class QuadTree extends Rect implements IPooled {
     if (leaf && contents.length + 1 > max_objects) split();
     // If the node is still a leaf, push the data to it.
     // Else try to insert the data into the node's children
-    if (leaf) contents.push(data); else for (child in children) child.insert(data);
+    if (leaf) contents.push(data);
+    else for (child in children) child.insert(data);
   }
 
   public function remove(data:QuadTreeData) {
@@ -75,7 +76,8 @@ class QuadTree extends Rect implements IPooled {
     if (!overlaps(shape)) return result;
     if (leaf) {
       for (data in contents) if (data.bounds.overlaps(shape)) result.push(data);
-    } else {
+    }
+    else {
       for (child in children) {
         var recurse = child.query(shape);
         if (recurse.length > 0) {
@@ -92,7 +94,8 @@ class QuadTree extends Rect implements IPooled {
       var len = count;
       if (len == 0) {
         clear_children();
-      } else if (len < max_objects) {
+      }
+      else if (len < max_objects) {
         var nodes = new List<QuadTree>();
         nodes.push(this);
         while (nodes.length > 0) {
@@ -101,7 +104,8 @@ class QuadTree extends Rect implements IPooled {
             for (data in node.contents) {
               if (contents.indexOf(data) == -1) contents.push(data);
             }
-          } else for (child in node.children) nodes.add(child);
+          }
+          else for (child in node.children) nodes.add(child);
           nodes.pop();
         }
         clear_children();
@@ -135,7 +139,8 @@ class QuadTree extends Rect implements IPooled {
   }
 
   function reset() {
-    if (leaf) for (data in contents) data.flag = false; else for (child in children) child.reset();
+    if (leaf) for (data in contents) data.flag = false;
+    else for (child in children) child.reset();
   }
 
   function clear_children() {
@@ -174,7 +179,8 @@ class QuadTree extends Rect implements IPooled {
             data.flag = true;
           }
         }
-      } else for (child in node.children) nodes.add(child);
+      }
+      else for (child in node.children) nodes.add(child);
       nodes.pop();
     }
     reset();

@@ -2,7 +2,8 @@ package systems;
 
 import ghost.GameState;
 import ghost.GM;
-import ghost.hxd.component.States;
+import ghost.sys.Event;
+import hxd.component.States;
 import hxd.Key;
 import ecs.node.Node;
 import ecs.Engine;
@@ -10,7 +11,7 @@ import ecs.system.System;
 /**
  * System for swapping out the different Sample GameStates.
  */
-class SampleSwapperSystem<Event> extends System<Event> {
+class SampleSwapperSystem extends System<Event> {
   @:nodes var nodes:Node<States>;
   var samples:Array<Class<GameState>>;
   var current:Int = 0;

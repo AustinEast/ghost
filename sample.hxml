@@ -3,7 +3,6 @@
 # entry point
 -main Main
 # libraries
--lib castle
 -lib heaps
 -lib ecs
 -lib hxmath

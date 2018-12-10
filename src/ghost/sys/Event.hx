@@ -1,6 +1,6 @@
 package ghost.sys;
 
-import ghost.h2d.Collisions;
+import h2d.Collisions;
 
 using tink.CoreApi;
 
