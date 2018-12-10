@@ -163,11 +163,11 @@ class PhysicsSystem extends EventHandlerSystem<Event, Collision> {
 }
 
 typedef PhysicsOptions = {
-  ?gravity:{
-    x:Float,
-    y:Float
-  },
-  ?correction_percent:Float,
-  ?lerp:Float,
-  ?debug:Bool
+  var ?gravity:{
+    var x:Float;
+    var y:Float;
+  }
+  var ?correction_percent:Float;
+  var ?lerp:Float;
+  var ?debug:Bool;
 }

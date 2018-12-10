@@ -91,11 +91,11 @@ class Sprite extends GameObject {
 }
 
 typedef SpriteOptions = {
-  > GameObjectOptions,
-  ?moves:Bool,
-  ?collides:Bool,
-  ?transform:TransformOptions,
-  ?motion:MotionOptions,
-  ?collider:ColliderOptions,
-  ?graphic:GraphicOptions
+  > GameObjectOptions
+  var ?moves:Bool;
+  var ?collides:Bool;
+  var ?transform:TransformOptions;
+  var ?motion:MotionOptions;
+  var ?collider:ColliderOptions;
+  var ?graphic:GraphicOptions;
 }

@@ -6,10 +6,10 @@ using hxd.Math;
 using hxmath.math.MathUtil;
 
 typedef PolygonType = {
-  x:Float,
-  y:Float,
-  vertices:Array<Vector2>,
-  rotation:Float
+  var x:Float;
+  var y:Float;
+  var vertices:Array<Vector2>;
+  var rotation:Float;
 }
 /**
  * TODO: EVERYTHING

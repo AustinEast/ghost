@@ -87,13 +87,13 @@ class Animator extends Component {
 }
 
 typedef Animation = {
-  name:String,
-  frames:Array<Int>,
-  speed:Int,
-  looped:Bool,
-  loop_delay:Float,
-  direction:AnimationDirection,
-  ?ease:Ease
+  var name:String;
+  var frames:Array<Int>;
+  var speed:Int;
+  var looped:Bool;
+  var loop_delay:Float;
+  var direction:AnimationDirection;
+  var ?ease:Ease;
 }
 
 @:enum

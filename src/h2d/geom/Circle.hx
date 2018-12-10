@@ -7,9 +7,9 @@ import hxmath.math.Vector2;
 using h2d.Collisions;
 
 typedef CircleType = {
-  x:Float,
-  y:Float,
-  radius:Float
+  var x:Float;
+  var y:Float;
+  var radius:Float;
 }
 
 class Circle extends Shape implements IPooled {

@@ -169,70 +169,70 @@ class Styles {
 }
 
 typedef TextStyle = {
-  ?font:Font,
-  ?color:Int,
-  ?align:Align,
-  ?letter_spacing:Int,
-  ?line_spacing:Int,
-  ?dropShadow:{
-    ?dx:Float,
-    ?dy:Float,
-    ?color:Int,
-    ?alpha:Float
+  var ?font:Font;
+  var ?color:Int;
+  var ?align:Align;
+  var ?letter_spacing:Int;
+  var ?line_spacing:Int;
+  var ?dropShadow:{
+    var ?dx:Float;
+    var ?dy:Float;
+    var ?color:Int;
+    var ?alpha:Float;
   }
 }
 
 typedef FlowStyle = {
-  ?background:Tile,
-  ?border:{
-    ?width:Int,
-    ?height:Int
-  },
-  ?align:{
-    ?vertical:FlowAlign,
-    ?horizontal:FlowAlign
-  },
-  ?padding:{
-    ?top:Int,
-    ?bottom:Int,
-    ?left:Int,
-    ?right:Int
-  },
-  ?spacing:{
-    ?vertical:Int,
-    ?horizontal:Int
-  },
-  ?vertical:Bool,
-  ?width:{
-    ?min:Int,
-    ?max:Int
-  },
-  ?height:{
-    ?min:Int,
-    ?max:Int
+  var ?background:Tile;
+  var ?border:{
+    var ?width:Int;
+    var ?height:Int;
+  }
+  var ?align:{
+    var ?vertical:FlowAlign;
+    var ?horizontal:FlowAlign;
+  }
+  var ?padding:{
+    var ?top:Int;
+    var ?bottom:Int;
+    var ?left:Int;
+    var ?right:Int;
+  }
+  var ?spacing:{
+    var ?vertical:Int;
+    var ?horizontal:Int;
+  }
+  var ?vertical:Bool;
+  var ?width:{
+    var ?min:Int;
+    var ?max:Int;
+  }
+  var ?height:{
+    var ?min:Int;
+    var ?max:Int;
   }
 }
 
 typedef ButtonStyle = {
-  ?text:TextStyle,
-  ?flow:FlowStyle,
-  ?on_over:{
-    ?color:Int,
-    ?background:Tile
-  },
-  ?on_click:{
-    ?color:Int,
-    ?background:Tile
-  },
-  ?on_out:{
-    ?color:Int,
-    ?background:Tile
+  var ?text:TextStyle;
+  var ?flow:FlowStyle;
+  var ?on_over:{
+    var ?color:Int;
+    var ?background:Tile;
+  }
+  var ?on_click:{
+    var ?color:Int;
+    var ?background:Tile;
+  }
+  var ?on_out:{
+    var ?color:Int;
+    var ?background:Tile;
   }
 }
 
 typedef SliderStyle = {
-  width:Int,
-  height:Int,
-  background:Tile,
-  cursor:Tile
+  var width:Int;
+  var height:Int;
+  var background:Tile;
+  var cursor:Tile;
 }

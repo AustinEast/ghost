@@ -152,5 +152,5 @@ class Graphic extends Component {
 }
 
 typedef GraphicOptions = {
-  ?bitmap:Bitmap
+  var ?bitmap:Bitmap;
 }

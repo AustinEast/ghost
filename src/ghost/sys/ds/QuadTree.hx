@@ -198,13 +198,13 @@ typedef QuadTreeData = {
    *
    * TODO: Make this abstract so quadtree data can be variable[][][][][][][][][][][][][][][][][][][][][]
    */
-  ?data:CollisionItem,
+  var ?data:CollisionItem;
   /**
    * Bounds of the Data.
    */
-  bounds:Rect,
+  var bounds:Rect;
   /**
    * Helper flag to check if this Data has been counted during queries.
    */
-  ?flag:Bool
+  var flag:Bool;
 }

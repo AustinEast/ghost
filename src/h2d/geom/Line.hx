@@ -3,10 +3,10 @@ package h2d.geom;
 import hxmath.math.Vector2;
 
 typedef LineType = {
-  x:Float,
-  y:Float,
-  dx:Float,
-  dy:Float
+  var x:Float;
+  var y:Float;
+  var dx:Float;
+  var dy:Float;
 }
 
 class Line {

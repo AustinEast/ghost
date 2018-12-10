@@ -106,5 +106,5 @@ class CollisionSystem extends EventHandlerSystem<Event, Pair<CollisionItem, Coll
 }
 
 typedef CollisionOptions = {
-  ?debug:Bool
+  var ?debug:Bool;
 }

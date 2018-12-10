@@ -96,5 +96,5 @@ class RenderSystem extends System<Event> {
 }
 
 typedef DisplayOptions = {
-  ?pixelPerfect:Bool
+  var ?pixelPerfect:Bool;
 }

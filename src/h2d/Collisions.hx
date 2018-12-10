@@ -158,27 +158,27 @@ class Collisions {
 }
 
 typedef Collision = {
-  item1:CollisionItem,
-  item2:CollisionItem,
-  data:CollisionData
+  var item1:CollisionItem;
+  var item2:CollisionItem;
+  var data:CollisionData;
 }
 
 typedef CollisionItem = {
-  id:Int,
-  collider:Collider,
-  transform:Transform,
-  ?motion:Motion
+  var id:Int;
+  var collider:Collider;
+  var transform:Transform;
+  var ?motion:Motion;
 }
 
 typedef CollisionData = {
   /**
    * The length of shape1's penetration into shape2.
    */
-  overlap:Float,
+  var overlap:Float;
   /**
    * The normal vector (direction) of shape1's penetration into shape2.
    */
-  normal:Vector2,
+  var normal:Vector2;
 }
 
 typedef IntersectionData = {}

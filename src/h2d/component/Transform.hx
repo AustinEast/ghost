@@ -152,9 +152,9 @@ class Transform extends Component {
 }
 
 typedef TransformOptions = {
-  ?x:Float,
-  ?y:Float,
-  ?rotation:Float,
-  ?scale_x:Float,
-  ?scale_y:Float
+  var ?x:Float;
+  var ?y:Float;
+  var ?rotation:Float;
+  var ?scale_x:Float;
+  var ?scale_y:Float;
 }

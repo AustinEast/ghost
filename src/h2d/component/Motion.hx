@@ -61,13 +61,22 @@ class Motion extends Component {
 }
 
 typedef MotionOptions = {
-  ?velocity:{x:Float, y:Float},
-  ?max_velocity:{x:Float, y:Float},
-  ?rotational_velocity:Float,
-  ?drag:{x:Float, y:Float},
-  ?rotational_drag:Float,
-  ?elasticity:Float,
-  ?mass:Float,
-  ?gravity_scale:Float,
-  ?kinematic:Bool
+  var ?velocity:{
+    var x:Float;
+    var y:Float;
+  }
+  var ?max_velocity:{
+    var x:Float;
+    var y:Float;
+  }
+  var ?rotational_velocity:Float;
+  var ?drag:{
+    var x:Float;
+    var y:Float;
+  }
+  var ?rotational_drag:Float;
+  var ?elasticity:Float;
+  var ?mass:Float;
+  var ?gravity_scale:Float;
+  var ?kinematic:Bool;
 }

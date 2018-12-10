@@ -1,6 +1,5 @@
 # TODO
 
-* Fix line spacing issues in Github
 * Figure out engine update FPS vs render FPS
 * 2D Camera Entity
 * Figure out better system of grouping (parent/childing) Entities (maybe a "Group" component?)
@@ -14,8 +13,10 @@
     * horizontal shooter
     * platformer
 
+## Future Plans
 
-A GameObject is an Entity with a couple of enhancements:
+### Macro Powered GameObjects
+A GameObject will be an Entity with a couple of enhancements:
 * Has `create()`, `update()`, and `destroy()` methods
 * Has a macro-powered constructor that lets the user add and configure any component tagged with the right metadata
 ```

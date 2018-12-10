@@ -43,11 +43,7 @@ class SampleState4 extends GameState {
         max_velocity: {x: 90, y: 180},
         drag: {x: 5, y: 0}
       },
-      collider: {
-        width: 12,
-        height: 12,
-        y: 2
-      }
+      collider: {width: 12, height: 12, y: 2}
     });
     player.graphic.load(hxd.Res.images.bot, true, 16, 16);
     player.animator.add("idle", [0]);

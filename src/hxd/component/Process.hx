@@ -38,6 +38,6 @@ class Process extends Component {
 }
 
 typedef ProcessOptions = {
-  ?loop:Bool,
-  ?active:Bool
+  var ?loop:Bool;
+  var ?active:Bool;
 }

@@ -181,9 +181,9 @@ class BroadPhaseSystem extends System<Event> {
 }
 
 typedef BroadPhaseOptions = {
-  ?x:Float,
-  ?y:Float,
-  ?width:Float,
-  ?height:Float,
-  ?debug:Bool
+  var ?x:Float;
+  var ?y:Float;
+  var ?width:Float;
+  var ?height:Float;
+  var ?debug:Bool;
 }

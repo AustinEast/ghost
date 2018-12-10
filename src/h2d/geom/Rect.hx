@@ -7,10 +7,10 @@ import hxmath.math.Vector2;
 using h2d.Collisions;
 
 typedef RectType = {
-  x:Float,
-  y:Float,
-  width:Float,
-  height:Float
+  var x:Float;
+  var y:Float;
+  var width:Float;
+  var height:Float;
 }
 
 class Rect extends Shape implements IPooled {

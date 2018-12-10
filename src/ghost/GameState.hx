@@ -14,7 +14,7 @@ import ghost.util.DestroyUtil;
  * For example, a simple Game could be organized to have a State for each of theses views: Main Menu, GamePlay, Game Over Screen.
  * If use of the ECS Engine and default Systems are desired, it is recommended to Extend the `GameState` class instead.
  *
- * Extend this class to access and override the `init()`, `update()`, and `destroy()` functions in order to construct/manage the State.
+ * Extend this class to access and override the `create()`, `update()`, and `destroy()` functions in order to construct/manage the State.
  */
 class GameState implements IDestroyable {
   /**

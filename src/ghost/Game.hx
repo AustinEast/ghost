@@ -222,11 +222,11 @@ class Game extends hxd.App implements IDestroyable {
 }
 
 typedef GameOptions = {
-  ?name:String,
-  ?version:String,
-  ?width:Int,
-  ?height:Int,
-  ?framerate:Int
+  var ?name:String;
+  var ?version:String;
+  var ?width:Int;
+  var ?height:Int;
+  var ?framerate:Int;
 }
 
 @:enum

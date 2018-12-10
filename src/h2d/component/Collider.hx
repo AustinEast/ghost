@@ -117,16 +117,16 @@ abstract ColliderShape(Int) {
 }
 
 typedef ColliderOptions = {
-  ?x:Float,
-  ?y:Float,
-  ?shape:ColliderShape,
-  ?width:Float,
-  ?height:Float,
-  ?radius:Float,
-  ?solid:Bool,
-  ?group:String,
-  ?colliding_groups:Array<String>,
-  ?on_enter:Pair<Entity, CollisionData>->Void,
-  ?on_stay:Pair<Entity, CollisionData>->Void,
-  ?on_exit:Pair<Entity, CollisionData>->Void,
+  var ?x:Float;
+  var ?y:Float;
+  var ?shape:ColliderShape;
+  var ?width:Float;
+  var ?height:Float;
+  var ?radius:Float;
+  var ?solid:Bool;
+  var ?group:String;
+  var ?colliding_groups:Array<String>;
+  var ?on_enter:Pair<Entity, CollisionData>->Void;
+  var ?on_stay:Pair<Entity, CollisionData>->Void;
+  var ?on_exit:Pair<Entity, CollisionData>->Void;
 }
