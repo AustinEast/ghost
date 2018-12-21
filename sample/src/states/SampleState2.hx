@@ -1,20 +1,20 @@
 package states;
 
-import ghost.GM;
-import ghost.GameState;
-import ghost.util.Color;
-import h2d.component.Animator;
-import h2d.object.Sprite;
+import gxd.GM;
+import gxd.State;
+import gxd.util.Color;
+import g2d.component.Animator;
+import g2d.Sprite;
 import h2d.Bitmap;
 import h2d.Tile;
 import h2d.Text;
 import hxd.Math;
 
-using h2d.ext.ObjectExt;
+using g2d.ext.ObjectExt;
 /**
  * Sample State 2 - 2D Animations.
  */
-class SampleState2 extends GameState {
+class SampleState2 extends State {
   /**
    * The Animator we are controlling.
    */

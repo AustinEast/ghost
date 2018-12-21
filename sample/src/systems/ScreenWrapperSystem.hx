@@ -1,9 +1,9 @@
 package systems;
 
-import ghost.GM;
-import ghost.sys.Event;
-import h2d.component.Transform;
-import h2d.component.Graphic;
+import gxd.GM;
+import gxd.sys.Event;
+import g2d.component.Transform;
+import g2d.component.Graphic;
 import ecs.node.Node;
 import ecs.Engine;
 import ecs.system.System;

@@ -1,13 +1,13 @@
 package;
 
-import ghost.GM;
-import ghost.Game;
-import ghost.GameState;
+import gxd.GM;
+import gxd.Game;
+import gxd.State;
 import states.*;
 import systems.SampleSwapperSystem;
 
 class Main {
-  var sample_states:Array<Class<GameState>> = [SampleState4, SampleState3, SampleState2, SampleState1];
+  var sample_states:Array<Class<State>> = [SampleState4, SampleState3, SampleState2, SampleState1];
 
   static function main() {
     new Main();

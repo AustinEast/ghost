@@ -2,18 +2,18 @@ package states;
 
 import hxmath.math.IntVector2;
 import systems.ScreenWrapperSystem;
-import ghost.GM;
-import ghost.GameState;
+import gxd.GM;
+import gxd.State;
 import hxd.Key;
-import h2d.geom.Shape;
-import h2d.object.Sprite;
+import g2d.geom.Shape;
+import g2d.Sprite;
 import h2d.Tile;
 
-using h2d.ext.ObjectExt;
+using g2d.ext.ObjectExt;
 /**
  * Sample State 4 - Physics
  */
-class SampleState4 extends GameState {
+class SampleState4 extends State {
   var player:Sprite;
   /**
    * Text to display the FPS.
@@ -27,7 +27,7 @@ class SampleState4 extends GameState {
    * Override `init()` to initialize the State.
    */
   override public function create() {
-    // Set the State's Gravity
+    // Set the Physics System's Gravity
     GM.physics.gravity.y = 5;
 
     // Make a
@@ -90,7 +90,7 @@ class SampleState4 extends GameState {
    */
   override public function update(dt:Float) {
     super.update(dt);
-    fps.text = 'FPS: ${GM.framerate}';
+    fps.text = 'FPS: ${GM.render_framerate}';
 
     var left:Bool = false;
     var right:Bool = false;
@@ -102,9 +102,12 @@ class SampleState4 extends GameState {
     }
     player.motion.velocity.x != 0 ? player.animator.play("run") : player.animator.play("idle");
   }
-
+  /**
+   * Override `destroy()` to preform any needed cleanup when the State is closed.
+   */
   override public function destroy() {
     super.destroy();
+    // Set the Physics System's Gravity back to 0
     GM.physics.gravity.y = 0;
   }
 

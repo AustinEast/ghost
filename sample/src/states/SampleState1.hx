@@ -1,17 +1,17 @@
 package states;
 
 import systems.ScreenWrapperSystem;
-import ghost.GM;
-import ghost.GameState;
-import ghost.util.RandomUtil;
+import gxd.GM;
+import gxd.State;
+import gxd.util.RandomUtil;
+import g2d.Sprite;
 import h2d.Tile;
-import h2d.object.Sprite;
 
-using h2d.ext.ObjectExt;
+using g2d.ext.ObjectExt;
 /**
  * Sample State 1 - Pixel Art Stress Test.
  */
-class SampleState1 extends GameState {
+class SampleState1 extends State {
   /**
    * Text to display the FPS.
    */
@@ -59,7 +59,7 @@ class SampleState1 extends GameState {
    */
   override public function update(dt:Float) {
     super.update(dt);
-    fps.text = 'FPS: ${GM.framerate}';
+    fps.text = 'FPS: ${GM.render_framerate}';
   }
 
   function add_ui() {

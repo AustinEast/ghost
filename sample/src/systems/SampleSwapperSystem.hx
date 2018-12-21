@@ -1,22 +1,22 @@
 package systems;
 
-import ghost.GameState;
-import ghost.GM;
-import ghost.sys.Event;
-import hxd.component.States;
+import gxd.State;
+import gxd.GM;
+import gxd.sys.Event;
+import gxd.component.States;
 import hxd.Key;
 import ecs.node.Node;
 import ecs.Engine;
 import ecs.system.System;
 /**
- * System for swapping out the different Sample GameStates.
+ * System for swapping out the different Sample States.
  */
 class SampleSwapperSystem extends System<Event> {
   @:nodes var nodes:Node<States>;
-  var samples:Array<Class<GameState>>;
+  var samples:Array<Class<State>>;
   var current:Int = 0;
 
-  public function new(samples:Array<Class<GameState>>) {
+  public function new(samples:Array<Class<State>>) {
     super();
     this.samples = samples;
   }

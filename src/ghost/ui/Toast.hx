@@ -1,3 +1,0 @@
-package ghost.ui;
-
-// TODO
