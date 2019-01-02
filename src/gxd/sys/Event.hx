@@ -1,6 +1,6 @@
 package gxd.sys;
 
-import g2d.Collisions;
+import g2d.col.Collisions;
 
 using tink.CoreApi;
 

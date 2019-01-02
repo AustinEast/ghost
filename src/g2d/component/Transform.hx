@@ -8,7 +8,7 @@ class Transform extends Component {
   /**
    * Default Transform Options
    *
-   * TODO: Update to use `Vector2` (see geom shapes)
+   * TODO: Update to use `Vector2` (see col shapes)
    */
   public static var defaults(get, null):TransformOptions;
 
@@ -133,12 +133,13 @@ class Transform extends Component {
   }
 
   function set_parent(value:Transform):Transform {
+    object.remove();
+    dirty = true;
     if (value != null) {
       value.object.addChild(object);
       return _parent = value;
     }
     if (context != null) context.addChild(object);
-    dirty = true;
     return _parent = null;
   }
 

@@ -21,7 +21,7 @@ class BaseObject extends GameObject {
   public var scale_x(get, set):Float;
   public var scale_y(get, set):Float;
   /**
-   * Creates a new Sprite.
+   * Creates a new BaseObject.
    */
   public function new(?options:BaseObjectOptions) {
     super(options);
@@ -29,7 +29,12 @@ class BaseObject extends GameObject {
     options = DataUtil.copy_fields(options, defaults);
 
     transform = new Transform(options.transform);
-    add(transform);
+    components.add(transform);
+  }
+
+  override function destroy() {
+    super.destroy();
+    transform = null;
   }
 
   // getters
@@ -60,6 +65,6 @@ class BaseObject extends GameObject {
 }
 
 typedef BaseObjectOptions = {
-  > GameObjectOptions
+  > GameObjectOptions,
   var ?transform:TransformOptions;
 }

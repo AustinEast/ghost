@@ -3,17 +3,17 @@ package states;
 import hxmath.math.IntVector2;
 import systems.ScreenWrapperSystem;
 import gxd.GM;
-import gxd.State;
+import gxd.GameState;
 import hxd.Key;
-import g2d.geom.Shape;
+import g2d.col.Shape;
 import g2d.Sprite;
 import h2d.Tile;
 
 using g2d.ext.ObjectExt;
 /**
- * Sample State 4 - Physics
+ * Sample GameState 4 - Physics
  */
-class SampleState4 extends State {
+class SampleState4 extends GameState {
   var player:Sprite;
   /**
    * Text to display the FPS.
@@ -24,7 +24,7 @@ class SampleState4 extends State {
    */
   var entity_count:Int = 50;
   /**
-   * Override `init()` to initialize the State.
+   * Override `init()` to initialize the GameState.
    */
   override public function create() {
     // Set the Physics System's Gravity
@@ -58,22 +58,22 @@ class SampleState4 extends State {
       if (i % 2 == 0) {
         sprite.graphic.load(hxd.Res.images.box);
         sprite.collider_from_graphic();
-        sprite.motion.elasticity = .2;
+        sprite.motion.elasticity = 1;
       }
-        // else if (i % 3 == 0) {
-        //   sprite.graphic.load(hxd.Res.images.ghostlg);
-        //   sprite.motion.elasticity = .5;
-        //   sprite.collider.shape = Shape.circle(0, 0, 8);
-      // }
+      else if (i % 3 == 0) {
+        sprite.graphic.load(hxd.Res.images.ghostlg);
+        sprite.motion.elasticity = 1;
+        sprite.collider.shape = Shape.circle(0, 0, 8);
+      }
       else {
         sprite.graphic.load(hxd.Res.images.boxlg);
         sprite.collider_from_graphic();
         sprite.motion.elasticity = .2;
-        sprite.motion.mass = 5;
+        // sprite.motion.mass = 5;
       }
       sprite.motion.drag.x = 5;
       sprite.motion.max_velocity.set(180, 180);
-      // Add the GameObject to the State
+      // Add the GameObject to the GameState
       add(sprite);
     }
 
@@ -103,7 +103,7 @@ class SampleState4 extends State {
     player.motion.velocity.x != 0 ? player.animator.play("run") : player.animator.play("idle");
   }
   /**
-   * Override `destroy()` to preform any needed cleanup when the State is closed.
+   * Override `destroy()` to preform any needed cleanup when the GameState is closed.
    */
   override public function destroy() {
     super.destroy();

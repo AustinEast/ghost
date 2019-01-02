@@ -1,10 +1,9 @@
-package g2d;
+package g2d.col;
 
 import g2d.component.Motion;
 import g2d.component.Transform;
 import g2d.component.Collider;
 import hxmath.math.Vector2;
-import g2d.geom.*;
 
 using hxmath.math.MathUtil;
 
@@ -126,7 +125,7 @@ class Collisions {
     if (n == closest) {
       inside = true;
       // Find closest axis
-      if (Math.abs(n.x) > Math.abs(n.y)) {
+      if (Math.abs(n.x) < Math.abs(n.y)) {
         // Clamp to closest extent
         closest.x = closest.x > 0 ? r.ex : -r.ex;
       }
@@ -157,6 +156,17 @@ class Collisions {
   }
 }
 
+typedef CollisionData = {
+  /**
+   * The length of shape1's penetration into shape2.
+   */
+  var overlap:Float;
+  /**
+   * The normal vector (direction) of shape1's penetration into shape2.
+   */
+  var normal:Vector2;
+}
+
 typedef Collision = {
   var item1:CollisionItem;
   var item2:CollisionItem;
@@ -168,17 +178,6 @@ typedef CollisionItem = {
   var collider:Collider;
   var transform:Transform;
   var ?motion:Motion;
-}
-
-typedef CollisionData = {
-  /**
-   * The length of shape1's penetration into shape2.
-   */
-  var overlap:Float;
-  /**
-   * The normal vector (direction) of shape1's penetration into shape2.
-   */
-  var normal:Vector2;
 }
 
 typedef IntersectionData = {}

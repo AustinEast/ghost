@@ -1,37 +1,36 @@
 package systems;
 
-import gxd.State;
+import gxd.GameState;
 import gxd.GM;
 import gxd.sys.Event;
-import gxd.component.States;
-import hxd.Key;
-import ecs.node.Node;
-import ecs.Engine;
 import ecs.system.System;
+import hxd.Key;
 /**
  * System for swapping out the different Sample States.
  */
 class SampleSwapperSystem extends System<Event> {
-  @:nodes var nodes:Node<States>;
-  var samples:Array<Class<State>>;
-  var current:Int = 0;
+  var samples:Array<Class<GameState>>;
+  var index:Int;
+  var current:GameState;
 
-  public function new(samples:Array<Class<State>>) {
+  public function new(samples:Array<Class<GameState>>) {
     super();
     this.samples = samples;
+    index = 0;
+    current = cast GM.add(cast Type.createInstance(samples[index], []));
   }
 
   override function update(dt:Float) {
-    for (node in nodes) {
-      if (Key.isPressed(Key.ENTER)) {
-        GM.load_state(cast Type.createInstance(samples[current], []));
-      }
+    if (Key.isPressed(Key.ENTER)) {
+      current.close();
+      current = cast GM.add(cast Type.createInstance(samples[index], []));
+    }
 
-      if (Key.isPressed(Key.SPACE)) {
-        current += 1;
-        if (current >= samples.length) current = 0;
-        GM.load_state(cast Type.createInstance(samples[current], []));
-      }
+    if (Key.isPressed(Key.SPACE)) {
+      current.close();
+      index += 1;
+      if (index >= samples.length) index = 0;
+      current = cast GM.add(cast Type.createInstance(samples[index], []));
     }
   }
 }

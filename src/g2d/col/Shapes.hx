@@ -1,4 +1,4 @@
-package g2d.geom;
+package g2d.col;
 
 abstract Shapes(Array<Shape>) {
   public static function rounded_rect():Array<Shape> {

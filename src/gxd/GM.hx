@@ -3,7 +3,6 @@ package gxd;
 import h2d.Layers;
 import g2d.system.*;
 import gxd.Game;
-import gxd.component.States;
 import gxd.util.Log;
 import ecs.entity.Entity;
 import h3d.Engine;
@@ -53,7 +52,7 @@ class GM {
   /**
    * An Object available to act as a Global UI that persists between States.
    *
-   * Use the `ui` Object in a State to create UIs that only last during a single State.
+   * Use the `ui` Object in a GameState to create UIs that only last during a single GameState.
    */
   public static var ui(default, null):h2d.Object;
   /**
@@ -79,11 +78,6 @@ class GM {
    */
   @:allow(gxd.Game)
   static var engine(default, null):Engine;
-  /**
-   * Internal instance of States Component.
-   */
-  @:allow(gxd.Game)
-  static var states(default, null):States;
 
   public static function overlap(object1:gxd.GameObject, object12:gxd.GameObject) {
     // Query Broaphase system, then query Collision System
@@ -91,21 +85,28 @@ class GM {
 
   public static function collide(object1:gxd.GameObject, object12:gxd.GameObject) {}
   /**
-   * Loads a new State.
-   * @param state The new State to load.
-   * @param close_others If false, other open states will not be closed.
+   * Adds a GameObject to the Game.
+   * @param object The GameObject to add.
+   * @return The added GameObject. Useful for chaining.
    */
-  public static function load_state(state:State, close_others:Bool = true) {
-    if (close_others) for (state in states.active) state.close();
-    states.requested.push(state);
+  public static function add(object:GameObject):GameObject {
+    return game.add(object);
+  }
+  /**
+   * Removes a GameObject from the Game.
+   * @param object The GameObject to remove.
+   * @return The removed GameObject. Useful for chaining.
+   */
+  public static function remove(object:GameObject):GameObject {
+    return game.remove(object);
   }
   /**
    * Requests the game to be reset.
    */
   public static function reset() {
     log.info('Resetting Game..');
-    for (state in states.active) state.close();
-    states.reset = true;
+    // for (state in states.active) state.close();
+    // states.reset = true;
   }
   /**
    * TODO:
@@ -127,7 +128,6 @@ class GM {
   static function init(game:Game, engine:Engine, entity:Entity):Void {
     GM.game = game;
     GM.engine = engine;
-    states = entity.get(States);
 
     // Init other properties
     time_scale = 1;

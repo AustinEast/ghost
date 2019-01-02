@@ -1,6 +1,6 @@
 package g2d.component;
 
-import g2d.geom.Rect;
+import g2d.col.Rect;
 import gxd.util.Color;
 import gxd.util.DataUtil;
 import h2d.Bitmap;
@@ -84,6 +84,18 @@ class Graphic extends Component {
     else frames[0] = asset.toTile();
     bitmap.tile = frames[0];
     center_offset();
+  }
+
+  public function from_tile(tile:Tile) {
+    clear_frames();
+    current_frame = 0;
+    frames[0] = tile;
+  }
+
+  public function from_tiles(tiles:Array<Tile>) {
+    clear_frames();
+    current_frame = 0;
+    frames = tiles;
   }
   /**
    * Creates a Colored Rectangle to be displayed by the Entity.

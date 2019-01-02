@@ -62,37 +62,29 @@ class Game extends hxd.App implements IDestroyable {
    */
   public var ui(default, null):Layers;
   /**
-   * Flag to check if a game resize is requested.
-   */
-  public var resized:Bool;
-  /**
    * Age of the Game (in Seconds).
    */
   public var age(default, null):Float;
   /**
    * Callback function that is called at the end of this Game's `init()`.
-   * Useful for adding in game-wide Components and Systems from the Game's entry point.
+   *
+   * This acts as the Game's main entry point for adding in GameStates, GameObjects, Components, and Systems.
    */
-  public var on_init:Void->Void;
+  public var create:Void->Void;
   /**
    * ECS Engine.
    */
-  public var ecs:ecs.Engine<Event>;
+  var ecs:ecs.Engine<Event>;
   /**
    * The Game Entity.
    */
   var entity:Entity;
   /**
-   * Temporary store of initial_state to pass into the Game Component on `init()`.
-   */
-  var initial_state:Class<State>;
-  /**
-   * Creates a new Game and Initial State.
-   * @param initial_state The Initial State the Game will load.
+   * Creates a new Game.
    * @param filesystem The type of FileSystem to initialize.
    * @param options Optional Parameters to configure the Game.
    */
-  public function new(initial_state:Class<State>, filesystem:FileSystemOptions = EMBED, ?options:GameOptions) {
+  public function new(filesystem:FileSystemOptions = EMBED, ?options:GameOptions) {
     super();
     options = DataUtil.copy_fields(options, Game.defaults);
 
@@ -104,9 +96,7 @@ class Game extends hxd.App implements IDestroyable {
     width = options.width <= 0 ? engine.width : options.width;
     height = options.height <= 0 ? engine.height : options.height;
     hxd.Timer.wantedFPS = options.framerate;
-    resized = false;
 
-    this.initial_state = initial_state;
     this.age = 0;
 
     // Load the FileSystem
@@ -130,8 +120,7 @@ class Game extends hxd.App implements IDestroyable {
     viewport = new Layers(root2d);
     ui = new Layers(root2d);
 
-    // Add our game components, then add the game entity to the ECS Engine
-    entity.add(new gxd.component.States(initial_state));
+    // Add the game entity to the ECS Engine
     ecs.entities.add(entity);
 
     // Init the Game Manager
@@ -144,8 +133,7 @@ class Game extends hxd.App implements IDestroyable {
 
     // Add the default Systems to the ECS Engine
     ecs.systems.add(new gxd.system.StateSystem(this), STATE);
-    ecs.systems.add(new gxd.system.ScaleSystem(this, engine), SCALE);
-    ecs.systems.add(new gxd.system.ProcessSystem(), PROCESS);
+    ecs.systems.add(new gxd.system.UpdateSystem(), UPDATE);
     ecs.systems.add(world, BROADPHASE);
     ecs.systems.add(collisions, COLLISION);
     ecs.systems.add(physics, PHYSICS);
@@ -153,7 +141,7 @@ class Game extends hxd.App implements IDestroyable {
     ecs.systems.add(new g2d.system.AnimationSystem(), ANIMATION);
 
     // Call the callback function if it's set
-    if (on_init != null) on_init();
+    if (create != null) create();
 
     // Call a resize event for good measure
     onResize();
@@ -161,15 +149,37 @@ class Game extends hxd.App implements IDestroyable {
 
   @:dox(hide) @:noCompletion
   override public function update(dt:Float) {
-    super.update(dt);
     age += dt;
     ecs.update(dt);
   }
 
   @:dox(hide) @:noCompletion
   override public function onResize() {
-    super.onResize();
-    resized = true;
+    var scaleFactorX:Float = engine.width / width;
+    var scaleFactorY:Float = engine.height / height;
+    var scaleFactor:Float = Math.min(scaleFactorX, scaleFactorY);
+    if (scaleFactor < 1) scaleFactor = 1;
+
+    root2d.setScale(scaleFactor);
+    root2d.setPosition(engine.width * 0.5 - (width * scaleFactor) * 0.5, engine.height * 0.5 - (height * scaleFactor) * 0.5);
+  }
+  /**
+   * Adds a GameObject to the Game.
+   * @param object The GameObject to add.
+   * @return The added GameObject. Useful for chaining.
+   */
+  public function add(object:GameObject):GameObject {
+    ecs.entities.add(object.components);
+    return object;
+  }
+  /**
+   * Removes a GameObject from the Game.
+   * @param object The GameObject to remove.
+   * @return The removed GameObject. Useful for chaining.
+   */
+  public function remove(object:GameObject):GameObject {
+    ecs.entities.remove(object.components);
+    return object;
   }
   /**
    * Adds a `Component` to the Game.
@@ -227,8 +237,7 @@ abstract FileSystemOptions(Int) {
 @:enum
 abstract GameSystems(String) from(String) to(SystemId) {
   var STATE = 'State';
-  var SCALE = 'Scale';
-  var PROCESS = 'Process';
+  var UPDATE = 'Update';
   var BROADPHASE = 'BroadPhase';
   var COLLISION = 'Collision';
   var PHYSICS = 'Physics';

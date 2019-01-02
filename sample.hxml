@@ -9,5 +9,6 @@
 -lib ghost
 # defines
 -dce full
+-debug
 -D standalone
 -D resourcesPath=sample/res

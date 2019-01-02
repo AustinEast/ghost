@@ -2,27 +2,27 @@ package;
 
 import gxd.GM;
 import gxd.Game;
-import gxd.State;
+import gxd.GameState;
 import states.*;
 import systems.SampleSwapperSystem;
 
 class Main {
-  var sample_states:Array<Class<State>> = [SampleState4, SampleState3, SampleState2, SampleState1];
+  var sample_states:Array<Class<GameState>> = [SampleState4, SampleState3, SampleState2, SampleState1];
 
   static function main() {
     new Main();
   }
 
   function new() {
-    // Create our Game with an Initial State and Options
-    var game = new Game(sample_states[0], EMBED, {
+    // Create our Game with an Initial GameState and Options
+    var game = new Game(EMBED, {
       name: "Sample App",
       version: "0.0.1",
       width: 320,
       height: 180
     });
 
-    game.on_init = () -> {
+    game.create = () -> {
       // Set the window's Background Color to something a little more pleasing ;)
       GM.background_color = 0xff222034;
       // Add a custom System to the Game's top-level ECS Engine

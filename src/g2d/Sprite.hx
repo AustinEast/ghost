@@ -44,30 +44,36 @@ class Sprite extends BaseObject {
     graphic = new Graphic(options.graphic);
     animator = new Animator();
 
-    add(graphic);
-    add(animator);
+    components.add(graphic);
+    components.add(animator);
 
     if (options.moves) {
       motion = new Motion(options.motion);
-      add(motion);
+      components.add(motion);
     }
 
     if (options.collides) {
       collider = new Collider(options.collider);
-      add(collider);
+      components.add(collider);
     }
+  }
+
+  override public function destroy() {
+    super.destroy();
+    motion = null;
+    collider = null;
+    graphic = null;
+    animator = null;
   }
 
   override public function kill() {
     super.kill();
-    var g = this.get(Graphic);
-    if (g != null) g.visible = false;
+    if (graphic != null) graphic.visible = false;
   }
 
   override public function revive() {
     super.revive();
-    var g = this.get(Graphic);
-    if (g != null) g.visible = true;
+    if (graphic != null) graphic.visible = true;
   }
 
   public function collider_from_graphic() {

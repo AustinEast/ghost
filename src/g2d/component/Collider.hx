@@ -1,10 +1,10 @@
 package g2d.component;
 
-import g2d.Collisions;
-import g2d.geom.Circle;
-import g2d.geom.Rect;
+import g2d.col.Collisions;
+import g2d.col.Circle;
+import g2d.col.Rect;
 import gxd.sys.ds.QuadTree.QuadTreeData;
-import g2d.geom.Shape;
+import g2d.col.Shape;
 import gxd.util.DataUtil;
 import ecs.entity.Entity;
 import ecs.component.Component;

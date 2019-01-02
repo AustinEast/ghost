@@ -1,19 +1,20 @@
 package gxd.system;
 
 import gxd.GM;
-import gxd.State;
 import gxd.Game;
+import gxd.component.Instance;
+import gxd.node.GameStateNode;
 import gxd.sys.Event;
-import gxd.util.DestroyUtil;
-import gxd.component.States;
-import ecs.node.Node;
+import ecs.Engine;
+import ecs.node.NodeList;
+import ecs.node.TrackingNodeList;
 import ecs.system.System;
 import tink.CoreApi.CallbackLink;
 /**
- * System for managing the current `State`
+ * System for managing the current `GameState`
  */
 class StateSystem extends System<Event> {
-  @:nodes var nodes:Node<States>;
+  var nodes:NodeList<GameStateNode>;
   var listeners:CallbackLink;
   var game:Game;
 
@@ -22,49 +23,30 @@ class StateSystem extends System<Event> {
     this.game = game;
   }
 
+  override function onAdded(engine:Engine<Event>) {
+    super.onAdded(engine);
+    nodes = new TrackingNodeList(engine, GameStateNode.new, entity -> entity.has(Instance) && entity.get(Instance).value_type == GAMESTATE);
+    for (node in nodes) add(node);
+    listeners = [nodes.nodeAdded.handle(add)];
+  }
+
+  override function onRemoved(engine:Engine<Event>) {
+    super.onRemoved(engine);
+    listeners.dissolve();
+    listeners = null;
+  }
+
+  function add(node:GameStateNode) {
+    GM.log.info('Initializing GameState: ${Type.getClassName(Type.getClass(node.gameState))}');
+    node.gameState.attach(engine, game.ui);
+    node.gameState.create();
+    node.gameState.age = 0;
+  }
+
   override function update(dt:Float) {
-    for (node in nodes) {
-      var states = node.states;
-      // Reset States if requested
-      if (states.reset) reset(states);
-      // Remove all closed States
-      for (state in states.active) {
-        if (state.closed) {
-          remove(state);
-          states.active.remove(state);
-        }
-      }
-      // Create any requested States
-      for (state in states.requested) {
-        add(state);
-        states.active.push(state);
-      }
-      states.requested = [];
-      // Update active States
-      for (state in states.active) {
-        state.age += dt;
-        state.update(state.time_scale * dt);
-      }
+    for (node in nodes) if (node.gameState.closed) {
+      GM.log.info('Destroying GameState: ${Type.getClassName(Type.getClass(node.gameState))}');
+      node.gameState.destroy();
     }
-  }
-
-  function add(state:State) {
-    GM.log.info('Initializing State: ${Type.getClassName(Type.getClass(state))}');
-    state.attach(engine, game.ui);
-    state.create();
-    state.age = 0;
-    // Trigger a scale event for the new state
-    game.resized = true;
-  }
-
-  function remove(state:State) {
-    GM.log.info('Destroying State: ${Type.getClassName(Type.getClass(state))}');
-    state.destroy();
-  }
-
-  function reset(states:States) {
-    states.reset = false;
-    states.requested.push(cast Type.createInstance(states.initial, []));
-    // DestroyUtil.destroyArray(states.active);
   }
 }

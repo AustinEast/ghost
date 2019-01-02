@@ -1,8 +1,8 @@
 package gxd.sys.ds;
 
-import g2d.Collisions;
-import g2d.geom.Shape;
-import g2d.geom.Rect;
+import g2d.col.Collisions;
+import g2d.col.Shape;
+import g2d.col.Rect;
 import gxd.sys.ds.Pool;
 /**
  * Simple QuadTree implementation to assist with broad-phase 2D collisions.

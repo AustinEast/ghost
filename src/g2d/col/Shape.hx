@@ -1,9 +1,9 @@
-package g2d.geom;
+package g2d.col;
 
 import h2d.Graphics;
 import hxmath.math.Vector2;
 
-using g2d.Collisions;
+using g2d.col.Collisions;
 
 class Shape {
   public var x(get, set):Float;

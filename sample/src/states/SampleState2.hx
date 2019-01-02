@@ -1,7 +1,7 @@
 package states;
 
 import gxd.GM;
-import gxd.State;
+import gxd.GameState;
 import gxd.util.Color;
 import g2d.component.Animator;
 import g2d.Sprite;
@@ -12,9 +12,9 @@ import hxd.Math;
 
 using g2d.ext.ObjectExt;
 /**
- * Sample State 2 - 2D Animations.
+ * Sample GameState 2 - 2D Animations.
  */
-class SampleState2 extends State {
+class SampleState2 extends GameState {
   /**
    * The Animator we are controlling.
    */
@@ -32,7 +32,7 @@ class SampleState2 extends State {
    */
   var direction_text:Text;
   /**
-   * Override `init()` to initialize the State.
+   * Override `init()` to initialize the GameState.
    */
   override public function create() {
     // Create the target animated GameObject
@@ -44,7 +44,7 @@ class SampleState2 extends State {
     // * the width of each Sprite Sheet cell
     // * the height of each Sprite Sheet cell
     sprite.graphic.load(hxd.Res.images.baddegg, true, 180, 96);
-    // Add the Target Entity to the State
+    // Add the Target Entity to the GameState
     add(sprite);
 
     // Get a reference the GameObject's Animator so we can manipulate it

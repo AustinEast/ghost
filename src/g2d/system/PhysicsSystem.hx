@@ -1,7 +1,7 @@
 package g2d.system;
 
 import h2d.Graphics;
-import g2d.Collisions;
+import g2d.col.Collisions;
 import g2d.component.Transform;
 import g2d.component.Motion;
 import gxd.sys.Event;

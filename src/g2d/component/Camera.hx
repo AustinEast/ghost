@@ -1,7 +1,6 @@
 package g2d.component;
 
 import hxmath.math.Vector2;
-import h2d.col.Bounds;
 import ecs.component.Component;
 
 class Camera extends Component {
@@ -16,5 +15,4 @@ class Camera extends Component {
   public var scroll:Vector2;
   public var width:Float;
   public var height:Float;
-  public var bounds:Bounds
 }

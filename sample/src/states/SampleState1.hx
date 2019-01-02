@@ -2,16 +2,16 @@ package states;
 
 import systems.ScreenWrapperSystem;
 import gxd.GM;
-import gxd.State;
+import gxd.GameState;
 import gxd.util.RandomUtil;
 import g2d.Sprite;
 import h2d.Tile;
 
 using g2d.ext.ObjectExt;
 /**
- * Sample State 1 - Pixel Art Stress Test.
+ * Sample GameState 1 - Pixel Art Stress Test.
  */
-class SampleState1 extends State {
+class SampleState1 extends GameState {
   /**
    * Text to display the FPS.
    */
@@ -21,7 +21,7 @@ class SampleState1 extends State {
    */
   var entity_count:Int = 2000;
   /**
-   * Override `init()` to initialize the State.
+   * Override `init()` to initialize the GameState.
    */
   override public function create() {
     // Create a legion of circles!
@@ -42,7 +42,7 @@ class SampleState1 extends State {
       // Load the GameObject's graphic
       sprite.graphic.load(hxd.Res.images.cir);
       sprite.motion.velocity.x = Math.random() * 45 * (RandomUtil.chance() == true ? 1 : -1);
-      // Add the GameObject to the State
+      // Add the GameObject to the GameState
       add(sprite);
     }
 

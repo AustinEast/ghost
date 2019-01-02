@@ -1,17 +1,17 @@
 package states;
 
 import gxd.GM;
-import gxd.State;
+import gxd.GameState;
 import gxd.util.RandomUtil;
-import g2d.geom.Shape;
+import g2d.col.Shape;
 import g2d.Sprite;
 import h2d.Tile;
 
 using g2d.ext.ObjectExt;
 /**
- * Sample State 3 - Collision Separation
+ * Sample GameState 3 - Collision Separation
  */
-class SampleState3 extends State {
+class SampleState3 extends GameState {
   /**
    * Text to display the FPS.
    */
@@ -21,7 +21,7 @@ class SampleState3 extends State {
    */
   var entity_count:Int = 100;
   /**
-   * Override `init()` to initialize the State.
+   * Override `init()` to initialize the GameState.
    */
   override public function create() {
     GM.collisions.debug = true;
@@ -34,7 +34,7 @@ class SampleState3 extends State {
       // Set the Sprite's Collider to a random size/shape
       var size = RandomUtil.range_int(2, 5) * 8;
       sprite.collider.shape = i % 2 == 0 ? Shape.circle(0, 0, size * 0.5) : Shape.square(0, 0, size);
-      // Add the Sprite to the State
+      // Add the Sprite to the GameState
       add(sprite);
     }
 

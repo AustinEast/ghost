@@ -1,4 +1,4 @@
-package gxd.h2.d.geom;
+package gxd.h2.d.col;
 
 import hxmath.math.Vector2;
 

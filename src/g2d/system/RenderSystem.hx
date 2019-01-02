@@ -13,7 +13,7 @@ import tink.CoreApi.CallbackLink;
 
 using hxd.Math;
 /**
- * System for handling the rendering of 2D Objects added to a State.
+ * System for handling the rendering of 2D Objects added to a GameState.
  *
  * TODO: Re-evaluate this system and how it can support parent/child relationships
  */
