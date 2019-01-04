@@ -3,7 +3,7 @@ package states;
 import systems.ScreenWrapperSystem;
 import gxd.GM;
 import gxd.GameState;
-import gxd.util.RandomUtil;
+import glib.Random;
 import g2d.Sprite;
 import h2d.Tile;
 
@@ -36,12 +36,12 @@ class SampleState1 extends GameState {
         },
         motion: {
           rotational_velocity: 1,
-          velocity: {x: Math.random() * 45 * (RandomUtil.chance() == true ? 1 : -1), y: 0}
+          velocity: {x: Math.random() * 45 * (Random.chance() == true ? 1 : -1), y: 0}
         }
       });
       // Load the GameObject's graphic
       sprite.graphic.load(hxd.Res.images.cir);
-      sprite.motion.velocity.x = Math.random() * 45 * (RandomUtil.chance() == true ? 1 : -1);
+      sprite.motion.velocity.x = Math.random() * 45 * (Random.chance() == true ? 1 : -1);
       // Add the GameObject to the GameState
       add(sprite);
     }

@@ -2,8 +2,8 @@ package states;
 
 import gxd.GM;
 import gxd.GameState;
-import gxd.util.RandomUtil;
-import g2d.col.Shape;
+import glib.Random;
+import echo.shape.Shape;
 import g2d.Sprite;
 import h2d.Tile;
 
@@ -32,7 +32,7 @@ class SampleState3 extends GameState {
       // Load the Sprite's graphic
       sprite.graphic.visible = false;
       // Set the Sprite's Collider to a random size/shape
-      var size = RandomUtil.range_int(2, 5) * 8;
+      var size = Random.range_int(2, 5) * 8;
       sprite.collider.shape = i % 2 == 0 ? Shape.circle(0, 0, size * 0.5) : Shape.square(0, 0, size);
       // Add the Sprite to the GameState
       add(sprite);

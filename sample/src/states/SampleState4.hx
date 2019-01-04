@@ -5,7 +5,7 @@ import systems.ScreenWrapperSystem;
 import gxd.GM;
 import gxd.GameState;
 import hxd.Key;
-import g2d.col.Shape;
+import echo.shape.Shape;
 import g2d.Sprite;
 import h2d.Tile;
 

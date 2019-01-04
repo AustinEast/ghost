@@ -1,7 +1,7 @@
 package systems;
 
 import gxd.GM;
-import gxd.sys.Event;
+import gxd.Event;
 import g2d.component.Transform;
 import g2d.component.Graphic;
 import ecs.node.Node;

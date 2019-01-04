@@ -2,13 +2,14 @@
     "name": "ghost",
     "license": "MIT",
     "tags": [],
-    "classPath": "src",
     "contributors": [
       "austineast"
     ],
     "releasenote": "initial release",
     "version": "0.0.1",
     "dependencies": {
+      "ghostlib": "",
+      "echo": "",
       "heaps": "",
       "ecs": "",
       "hxmath": ""

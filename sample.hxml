@@ -3,9 +3,6 @@
 # entry point
 -main Main
 # libraries
--lib heaps
--lib ecs
--lib hxmath
 -lib ghost
 # defines
 -dce full

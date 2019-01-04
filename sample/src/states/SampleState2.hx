@@ -2,7 +2,7 @@ package states;
 
 import gxd.GM;
 import gxd.GameState;
-import gxd.util.Color;
+import glib.Color;
 import g2d.component.Animator;
 import g2d.Sprite;
 import h2d.Bitmap;

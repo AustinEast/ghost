@@ -2,7 +2,7 @@ package systems;
 
 import gxd.GameState;
 import gxd.GM;
-import gxd.sys.Event;
+import gxd.Event;
 import ecs.system.System;
 import hxd.Key;
 /**
