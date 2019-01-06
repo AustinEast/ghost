@@ -46,7 +46,7 @@ class StateSystem extends System<Event> {
   override function update(dt:Float) {
     for (node in nodes) if (node.gameState.closed) {
       GM.log.info('Destroying GameState: ${Type.getClassName(Type.getClass(node.gameState))}');
-      node.gameState.destroy();
+      node.gameState.dispose();
     }
   }
 }

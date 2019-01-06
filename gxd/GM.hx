@@ -112,13 +112,13 @@ class GM {
    * TODO:
    * Quits the Game.
    * First, it calls the optional `GM.quit_game_callback` function.
-   * Second, it destroys the `Game` instance.
+   * Second, it disposes the `Game` instance.
    * Finally - depending on the what argument is passed in - it will attempt to quit the Applicaton.
-   * @param exit_application If false, this function will destroy the `Game` instance but not attempt to quit the Application.
+   * @param exit_application If false, this function will dispose the `Game` instance but not attempt to quit the Application.
    */
   public static function quit(exit_application:Bool = true) {
     quit_game_callback();
-    // game.destroy();
+    // game.dispose();
   }
   /**
    * Called by `Game` during it's initialization to set up the Game Manager (`GM`).

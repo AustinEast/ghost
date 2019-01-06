@@ -34,8 +34,8 @@ class TypedGroup<T:GameObject> extends GameObject {
 
   public function for_each(method:T->Void, recurse:Bool = false) members.for_each(method, recurse);
 
-  override public function destroy() {
-    super.destroy();
+  override public function dispose() {
+    super.dispose();
     members = null;
   }
 }

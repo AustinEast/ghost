@@ -9,7 +9,7 @@ import ecs.system.SystemId;
  * The Base "GameState" of a `Game`. States are used to organize a Game's different views.
  * For example, a simple Game could be organized to have a GameState for each of theses views: Main Menu, GamePlay, Game Over Screen.
  *
- * Extend this class to access and override the `create()`, `update()`, and `destroy()` functions in order to construct/manage the GameState.
+ * Extend this class to access and override the `create()`, `update()`, and `dispose()` functions in order to construct/manage the GameState.
  */
 class GameState extends Group {
   /**
@@ -22,7 +22,7 @@ class GameState extends Group {
   @:allow(gxd.system.StateSystem)
   public var age(default, null):Float;
   /**
-   * When the GameState is marked as closed, it is destroyed after this update cycle.
+   * When the GameState is marked as closed, it is disposeed after this update cycle.
    */
   public var closed:Bool;
   public var ui:h2d.Object;
@@ -97,10 +97,10 @@ class GameState extends Group {
   /**
    * Override this to run cleanup logic when closing the state.
    */
-  override public function destroy() {
+  override public function dispose() {
     for (system in systems) ecs.systems.remove(system);
     members.for_each((member) -> remove(member));
-    super.destroy();
+    super.dispose();
     systems = null;
     ecs.entities.remove(components);
     ecs = null;

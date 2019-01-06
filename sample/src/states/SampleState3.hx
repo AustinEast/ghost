@@ -3,7 +3,7 @@ package states;
 import gxd.GM;
 import gxd.GameState;
 import glib.Random;
-import echo.shape.Shape;
+import echo.Shape;
 import g2d.Sprite;
 import h2d.Tile;
 
@@ -51,8 +51,8 @@ class SampleState3 extends GameState {
     fps.text = 'FPS: ${GM.render_framerate}';
   }
 
-  override public function destroy() {
-    super.destroy();
+  override public function dispose() {
+    super.dispose();
     GM.collisions.debug = false;
   }
 

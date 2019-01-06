@@ -17,7 +17,7 @@
 
 ### Macro Powered GameObjects
 A GameObject will be an Entity with a couple of enhancements:
-* Has `create()`, `update()`, and `destroy()` methods
+* Has `create()`, `update()`, and `dispose()` methods
 * Has a macro-powered constructor that lets the user add and configure any component tagged with the right metadata
 ```
 // Creates a GameObject with Transform, Group, and Physics Components that to collect 

@@ -58,8 +58,8 @@ class Sprite extends BaseObject {
     }
   }
 
-  override public function destroy() {
-    super.destroy();
+  override public function dispose() {
+    super.dispose();
     motion = null;
     collider = null;
     graphic = null;

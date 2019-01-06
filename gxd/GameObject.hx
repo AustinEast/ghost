@@ -1,7 +1,7 @@
 package gxd;
 
 import glib.Data;
-import glib.Destroyable;
+import glib.Disposable;
 import gxd.component.Process;
 import gxd.component.Instance;
 import ecs.entity.Entity;
@@ -12,7 +12,7 @@ import ecs.entity.Entity;
  *
  * TODO: Pool GameObjects
  */
-class GameObject implements IDestroyable {
+class GameObject implements IDisposable {
   /**
    * Default GameObject Options
    */
@@ -31,7 +31,7 @@ class GameObject implements IDestroyable {
    * Drives the `update` function.
    */
   public var process(default, null):Process;
-  public var destroyed(default, null):Bool;
+  public var disposeed(default, null):Bool;
   /**
    * Creates a new GameObject.
    */
@@ -39,7 +39,7 @@ class GameObject implements IDestroyable {
     options = Data.copy_fields(options, defaults);
 
     alive = true;
-    destroyed = false;
+    disposeed = false;
     name = options.name;
     components = new Entity(options.name);
     process = new Process(options.update == null ? update : options.update, {loop: true});
@@ -53,11 +53,11 @@ class GameObject implements IDestroyable {
 
   public function update(dt:Float) {}
 
-  public function destroy() {
+  public function dispose() {
     alive = false;
     components.destroy();
     process = null;
-    destroyed = true;
+    disposeed = true;
   }
 
   public function kill() {

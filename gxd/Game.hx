@@ -6,7 +6,7 @@ import ecs.component.Component;
 import ecs.system.System;
 import ecs.entity.Entity;
 import glib.Data;
-import glib.Destroyable;
+import glib.Disposable;
 import h2d.Mask;
 import hxd.App;
 /**
@@ -15,7 +15,7 @@ import hxd.App;
  * Once created, this class doesn't need to be interacted with directly.
  * Instead, look to the Game Manager (GM) Class for available properties and methods.
  */
-class Game extends hxd.App implements IDestroyable {
+class Game extends hxd.App implements IDisposable {
   /**
    * Default Game Options.
    */
@@ -204,7 +204,7 @@ class Game extends hxd.App implements IDestroyable {
    */
   public function remove_system(system:System<Event>) ecs.systems.remove(system);
 
-  public function destroy() {
+  override public function dispose() {
     ecs.destroy();
     dispose();
   }

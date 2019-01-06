@@ -5,7 +5,7 @@ import systems.ScreenWrapperSystem;
 import gxd.GM;
 import gxd.GameState;
 import hxd.Key;
-import echo.shape.Shape;
+import echo.Shape;
 import g2d.Sprite;
 import h2d.Tile;
 
@@ -103,10 +103,10 @@ class SampleState4 extends GameState {
     player.motion.velocity.x != 0 ? player.animator.play("run") : player.animator.play("idle");
   }
   /**
-   * Override `destroy()` to preform any needed cleanup when the GameState is closed.
+   * Override `dispose()` to preform any needed cleanup when the GameState is closed.
    */
-  override public function destroy() {
-    super.destroy();
+  override public function dispose() {
+    super.dispose();
     // Set the Physics System's Gravity back to 0
     GM.physics.gravity.y = 0;
   }

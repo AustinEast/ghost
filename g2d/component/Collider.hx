@@ -1,7 +1,7 @@
 package g2d.component;
 
 import echo.Collisions;
-import echo.shape.Shape;
+import echo.Shape;
 import echo.shape.Circle;
 import echo.shape.Rect;
 import echo.util.QuadTree.QuadTreeData;

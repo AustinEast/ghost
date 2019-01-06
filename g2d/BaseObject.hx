@@ -32,8 +32,8 @@ class BaseObject extends GameObject {
     components.add(transform);
   }
 
-  override function destroy() {
-    super.destroy();
+  override function dispose() {
+    super.dispose();
     transform = null;
   }
 
