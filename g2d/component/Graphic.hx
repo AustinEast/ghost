@@ -119,7 +119,7 @@ class Graphic extends Component {
     dy = -Math.floor(height * 0.5);
   }
 
-  public function to_aabb():Rect return Rect.get(0, 0, width, height);
+  public function bounds():Rect return Rect.get(0, 0, width, height);
 
   inline function clear_frames() while (frames.length > 0) frames.pop().dispose();
 

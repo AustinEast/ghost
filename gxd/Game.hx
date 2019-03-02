@@ -1,21 +1,25 @@
 package gxd;
 
+import h2d.Object;
+import g2d.GameState;
+import glib.Data;
+import glib.Disposable;
+import h2d.Mask;
 import h2d.Layers;
+import hxd.App;
+#if ecs
 import ecs.system.SystemId;
 import ecs.component.Component;
 import ecs.system.System;
 import ecs.entity.Entity;
-import glib.Data;
-import glib.Disposable;
-import h2d.Mask;
-import hxd.App;
+#end
 /**
  * The Game Class bootstraps the creation of a HEAPS game.
  *
  * Once created, this class doesn't need to be interacted with directly.
  * Instead, look to the Game Manager (GM) Class for available properties and methods.
  */
-class Game extends hxd.App implements IDisposable {
+class #if ecs Game<Event> #else Game #end extends hxd.App implements IDisposable {
   /**
    * Default Game Options.
    */
@@ -39,15 +43,7 @@ class Game extends hxd.App implements IDisposable {
   /**
    *
    */
-  public var world(default, null):g2d.system.BroadPhaseSystem;
-  /**
-   *
-   */
-  public var collisions(default, null):g2d.system.CollisionSystem;
-  /**
-   *
-   */
-  public var physics(default, null):g2d.system.PhysicsSystem;
+  public var states(default, null):Array<GameState>;
   /**
    * A Mask to constrain the root 2D Scene to the Game's width/height. Eventually will be replaced by camera system
    */
@@ -55,7 +51,7 @@ class Game extends hxd.App implements IDisposable {
   /**
    * Layers Object that `h2d` Entities will be displayed on. Eventually will be replaced by camera system
    */
-  public var viewport(default, null):Layers;
+  public var viewport(default, null):Object;
   /**
    * Layers Object that ui will be displayed on. Eventually will be replaced by camera system
    */
@@ -70,6 +66,7 @@ class Game extends hxd.App implements IDisposable {
    * This acts as the Game's main entry point for adding in GameStates, GameObjects, Components, and Systems.
    */
   public var create:Void->Void;
+  #if ecs
   /**
    * ECS Engine.
    */
@@ -77,7 +74,8 @@ class Game extends hxd.App implements IDisposable {
   /**
    * The Game Entity.
    */
-  var entity:Entity;
+  var components:Entity;
+  #end
   /**
    * Creates a new Game.
    * @param filesystem The type of FileSystem to initialize.
@@ -87,8 +85,10 @@ class Game extends hxd.App implements IDisposable {
     super();
     options = Data.copy_fields(options, Game.defaults);
 
+    #if ecs
     ecs = new ecs.Engine();
     entity = new Entity("Game");
+    #end
 
     name = options.name;
     version = options.version;
@@ -119,25 +119,13 @@ class Game extends hxd.App implements IDisposable {
     viewport = new Layers(root2d);
     ui = new Layers(root2d);
 
+    #if ecs
     // Add the game entity to the ECS Engine
     ecs.entities.add(entity);
+    #end
 
     // Init the Game Manager
-    GM.init(this, engine, entity);
-
-    // Get reference to some of our systems
-    world = new g2d.system.BroadPhaseSystem(Event.BroadPhaseEvent);
-    collisions = new g2d.system.CollisionSystem(Event.CollisionEvent, null, root2d);
-    physics = new g2d.system.PhysicsSystem(null, root2d);
-
-    // Add the default Systems to the ECS Engine
-    ecs.systems.add(new gxd.system.StateSystem(this), STATE);
-    ecs.systems.add(new gxd.system.UpdateSystem(), UPDATE);
-    ecs.systems.add(world, BROADPHASE);
-    ecs.systems.add(collisions, COLLISION);
-    ecs.systems.add(physics, PHYSICS);
-    ecs.systems.add(new g2d.system.RenderSystem(viewport), RENDER);
-    ecs.systems.add(new g2d.system.AnimationSystem(), ANIMATION);
+    GM.init(this, engine);
 
     // Call the callback function if it's set
     if (create != null) create();
@@ -149,7 +137,12 @@ class Game extends hxd.App implements IDisposable {
   @:dox(hide) @:noCompletion
   override public function update(dt:Float) {
     age += dt;
+    for (state in states) {
+      state.update(dt);
+    }
+    #if ecs
     ecs.update(dt);
+    #end
   }
 
   @:dox(hide) @:noCompletion
@@ -167,19 +160,21 @@ class Game extends hxd.App implements IDisposable {
    * @param object The GameObject to add.
    * @return The added GameObject. Useful for chaining.
    */
-  public function add(object:GameObject):GameObject {
-    ecs.entities.add(object.components);
-    return object;
+  public function add(state:GameState):GameState {
+    viewport.addChild(state);
+    return state;
   }
   /**
    * Removes a GameObject from the Game.
    * @param object The GameObject to remove.
    * @return The removed GameObject. Useful for chaining.
    */
-  public function remove(object:GameObject):GameObject {
-    ecs.entities.remove(object.components);
-    return object;
+  public function remove(state:GameState, dispose:Bool = true):GameState {
+    viewport.removeChild(state);
+    if (dispose) state.dispose();
+    return state;
   }
+  #if ecs
   /**
    * Adds a `Component` to the Game.
    * Useful for adding custom game-wide functionality that persists between states.
@@ -203,6 +198,7 @@ class Game extends hxd.App implements IDisposable {
    * @param system `System` to remove.
    */
   public function remove_system(system:System<Event>) ecs.systems.remove(system);
+  #end
 
   override public function dispose() {
     ecs.destroy();
@@ -231,15 +227,4 @@ abstract FileSystemOptions(Int) {
   var EMBED = 0;
   var LOCAL = 1;
   var PAK = 2;
-}
-
-@:enum
-abstract GameSystems(String) from(String) to(SystemId) {
-  var STATE = 'State';
-  var UPDATE = 'Update';
-  var BROADPHASE = 'BroadPhase';
-  var COLLISION = 'Collision';
-  var PHYSICS = 'Physics';
-  var RENDER = 'Render';
-  var ANIMATION = 'Animation';
 }

@@ -6,15 +6,8 @@ import ecs.component.Component;
 import h2d.col.Point;
 /**
  * Component to add motion to an Entity.
- *
- * TODO: Move some of the traits to a `Material` type
  */
-class Motion extends Component {
-  /**
-   * Default Motion Options
-   */
-  public static var defaults(get, null):MotionOptions;
-
+class Body extends Component {
   public var velocity:Vector2;
   public var max_velocity:Vector2;
   public var acceleration:Vector2;
@@ -25,7 +18,8 @@ class Motion extends Component {
   public var mass(default, set):Float;
   public var inv_mass(default, null):Float;
   public var gravity_scale:Float;
-  public var kinematic:Bool;
+
+  var body:echo.Body;
 
   public function new(?options:MotionOptions) {
     options = Data.copy_fields(options, defaults);
@@ -39,24 +33,6 @@ class Motion extends Component {
     mass = options.mass;
     gravity_scale = options.gravity_scale;
     kinematic = options.kinematic;
-  }
-
-  static function get_defaults():MotionOptions return {
-    velocity: {x: 0, y: 0},
-    max_velocity: {x: 0, y: 0},
-    rotational_velocity: 0,
-    drag: {x: 0, y: 0},
-    rotational_drag: 0,
-    elasticity: 0,
-    mass: 1,
-    gravity_scale: 1,
-    kinematic: false
-  }
-
-  function set_mass(value:Float) {
-    if (value < 0.0001) value = 0;
-    inv_mass = 1 / value;
-    return mass = value;
   }
 }
 

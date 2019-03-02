@@ -1,6 +1,7 @@
 package g2d.component;
 
 import gxd.GM;
+import g2d.data.Animation;
 import ecs.component.Component;
 import hxd.Math;
 
@@ -84,27 +85,4 @@ class Animator extends Component {
     });
     return members.get(name);
   }
-}
-
-typedef Animation = {
-  var name:String;
-  var frames:Array<Int>;
-  var speed:Int;
-  var looped:Bool;
-  var loop_delay:Float;
-  var direction:AnimationDirection;
-  var ?ease:Ease;
-}
-
-@:enum
-abstract AnimationDirection(String) {
-  var FORWARD = 'Forward';
-  var REVERSE = 'Reverse';
-  var PINGPONG = 'PingPong';
-}
-
-// TODO: Add in optional Easing functions on enter/exit
-@:enum
-abstract Ease(Int) {
-  var TODO = 0;
 }

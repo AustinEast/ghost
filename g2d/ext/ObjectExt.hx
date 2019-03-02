@@ -16,6 +16,13 @@ using gxd.ui.Styles;
  * TODO: DOCS!
  */
 class ObjectExt {
+  public static function add_object(?parent:Object, x:Float = 0, y:Float = 0):Object {
+    var c = new Object(parent);
+    c.x = x;
+    c.y = y;
+    return c;
+  }
+
   public static function add_flow(?parent:Object, x:Float = 0, y:Float = 0, ?styles:FlowStyle):Flow {
     var c = new Flow(parent);
     c.x = x;

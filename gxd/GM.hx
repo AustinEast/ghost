@@ -1,14 +1,10 @@
 package gxd;
 
 import h2d.Layers;
-import g2d.system.*;
 import gxd.Game;
 import glib.Log;
-import ecs.entity.Entity;
 import h3d.Engine;
 import hxd.Window;
-
-using tink.CoreApi;
 /**
  * Game Manager (GM).
  * Contains handy global references for many systems and properties.
@@ -46,9 +42,6 @@ class GM {
    * The current frames per second that the game is rendering at.
    */
   public static var render_framerate(get, null):Float;
-  public static var world(get, null):BroadPhaseSystem;
-  public static var collisions(get, null):CollisionSystem;
-  public static var physics(get, null):PhysicsSystem;
   /**
    * An Object available to act as a Global UI that persists between States.
    *
@@ -79,27 +72,28 @@ class GM {
   @:allow(gxd.Game)
   static var engine(default, null):Engine;
 
-  public static function overlap(object1:gxd.GameObject, object12:gxd.GameObject) {
-    // Query Broaphase system, then query Collision System
-  }
-
-  public static function collide(object1:gxd.GameObject, object12:gxd.GameObject) {}
-  /**
-   * Adds a GameObject to the Game.
-   * @param object The GameObject to add.
-   * @return The added GameObject. Useful for chaining.
-   */
-  public static function add(object:GameObject):GameObject {
-    return game.add(object);
-  }
-  /**
-   * Removes a GameObject from the Game.
-   * @param object The GameObject to remove.
-   * @return The removed GameObject. Useful for chaining.
-   */
-  public static function remove(object:GameObject):GameObject {
-    return game.remove(object);
-  }
+  // public static function overlap(object1:gxd.GameObject, object12:gxd.GameObject) {
+  //   // Query Broaphase system, then query Collision System
+  // }
+  // public static function collide(object1:gxd.GameObject, object12:gxd.GameObject) {}
+  // /**
+  // TODO: Add GameStates here?
+  //  * Adds a GameObject to the Game.
+  //  * @param object The GameObject to add.
+  //  * @return The added GameObject. Useful for chaining.
+  //  */
+  // public static function add(object:GameObject):GameObject {
+  //   return game.add(object);
+  // }
+  // /**
+  // TODO: Add GameStates here?
+  //  * Removes a GameObject from the Game.
+  //  * @param object The GameObject to remove.
+  //  * @return The removed GameObject. Useful for chaining.
+  //  */
+  // public static function remove(object:GameObject):GameObject {
+  //   return game.remove(object);
+  // }
   /**
    * Requests the game to be reset.
    */
@@ -125,7 +119,7 @@ class GM {
    * @param game_entity the Game Entity.
    */
   @:allow(gxd.Game.init)
-  static function init(game:Game, engine:Engine, entity:Entity):Void {
+  static function init(game:Game, engine:Engine):Void {
     GM.game = game;
     GM.engine = engine;
 
@@ -157,12 +151,6 @@ class GM {
   static function get_render_framerate() return engine.fps;
 
   static function get_framerate() return hxd.Timer.wantedFPS;
-
-  static function get_world() return game.world;
-
-  static function get_collisions() return game.collisions;
-
-  static function get_physics() return game.physics;
 
   // setters
   static function set_framerate(value:Float) return hxd.Timer.wantedFPS = value;

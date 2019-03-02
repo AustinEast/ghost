@@ -2,13 +2,11 @@ package;
 
 import gxd.GM;
 import gxd.Game;
-import gxd.GameState;
-import states.*;
-import systems.SampleSwapperSystem;
 
+// import states.*;
+// // import systems.SampleSwapperSystem;
 class Main {
-  var sample_states:Array<Class<GameState>> = [SampleState4, SampleState3, SampleState2, SampleState1];
-
+  // var sample_states:Array<Class<GameState>> = [SampleState4, SampleState3, SampleState2, SampleState1];
   static function main() {
     new Main();
   }
@@ -25,10 +23,6 @@ class Main {
     game.create = () -> {
       // Set the window's Background Color to something a little more pleasing ;)
       GM.background_color = 0xff222034;
-      // Add a custom System to the Game's top-level ECS Engine
-      // Systems added to the Game's ECS Engine will persist between states
-      // This is useful for Level managers, Save managers, etc.
-      game.add_system(new SampleSwapperSystem(sample_states));
     }
   }
 }
