@@ -2,14 +2,14 @@ package states;
 
 import hxmath.math.IntVector2;
 import systems.ScreenWrapperSystem;
-import gxd.GM;
-import gxd.GameState;
+import hxd.GM;
+import hxd.GameState;
 import hxd.Key;
 import echo.Shape;
-import g2d.Sprite;
+import h2d.Sprite;
 import h2d.Tile;
 
-using g2d.ext.ObjectExt;
+using h2d.ext.ObjectExt;
 /**
  * Sample GameState 4 - Physics
  */

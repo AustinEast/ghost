@@ -3,9 +3,9 @@ sample.hxml
 # libraries
 -lib hlsdl
 # output
--hl sample/bin/game.hl
+-hl bin/sample.hl
 -debug
 # defines
 # -D windowSize=1400x700
 # 
--cmd hl sample/bin/game.hl
+-cmd hl bin/sample.hl

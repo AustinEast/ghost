@@ -1,16 +1,16 @@
 package states;
 
-import gxd.GM;
-import gxd.GameState;
-import glib.Color;
-import g2d.component.Animator;
-import g2d.Sprite;
+import hxd.GM;
+import hxd.GameState;
+import ghost.Color;
+import h2d.component.Animator;
+import h2d.Sprite;
 import h2d.Bitmap;
 import h2d.Tile;
 import h2d.Text;
 import hxd.Math;
 
-using g2d.ext.ObjectExt;
+using h2d.ext.ObjectExt;
 /**
  * Sample GameState 2 - 2D Animations.
  */
@@ -99,9 +99,9 @@ class SampleState2 extends GameState {
     // Add and configure a nested Flow Object to contain the directional buttons
     var dir_buttons = menu.add_flow(0, 0, {spacing: {horizontal: 3}});
     // Add the directional buttons
-    dir_buttons.add_button(0, 0, '$FORWARD',() -> set_animation_direction(FORWARD));
-    dir_buttons.add_button(0, 0, '$REVERSE',() -> set_animation_direction(REVERSE));
-    dir_buttons.add_button(0, 0, '$PINGPONG',() -> set_animation_direction(PINGPONG));
+    dir_buttons.add_button(0, 0, '$FORWARD', () -> set_animation_direction(FORWARD));
+    dir_buttons.add_button(0, 0, '$REVERSE', () -> set_animation_direction(REVERSE));
+    dir_buttons.add_button(0, 0, '$PINGPONG', () -> set_animation_direction(PINGPONG));
   }
 
   function set_animation_direction(anim_dir:AnimationDirection) {

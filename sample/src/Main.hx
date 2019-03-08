@@ -1,12 +1,14 @@
 package;
 
-import gxd.GM;
-import gxd.Game;
+import hxd.GM;
+import hxd.Game;
+import h2d.GameState;
+import states.*;
 
-// import states.*;
 // // import systems.SampleSwapperSystem;
 class Main {
-  // var sample_states:Array<Class<GameState>> = [SampleState4, SampleState3, SampleState2, SampleState1];
+  var sample_states:Array<Class<GameState>> = [SampleState1];
+
   static function main() {
     new Main();
   }
@@ -22,7 +24,8 @@ class Main {
 
     game.create = () -> {
       // Set the window's Background Color to something a little more pleasing ;)
-      GM.background_color = 0xff222034;
+      // GM.background_color = 0xffd95763;
+      new SampleState1();
     }
   }
 }

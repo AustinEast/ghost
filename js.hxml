@@ -1,5 +1,6 @@
 # import base.xml
 sample.hxml
+# copy web assets
+--macro ghost.Assets.copyProjectAssets()
 # output
--js sample/bin/game.js
--cmd open ./index.html
+-js bin/sample.js

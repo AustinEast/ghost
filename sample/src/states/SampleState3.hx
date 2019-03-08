@@ -1,13 +1,13 @@
 package states;
 
-import gxd.GM;
-import gxd.GameState;
-import glib.Random;
+import hxd.GM;
+import hxd.GameState;
+import ghost.Random;
 import echo.Shape;
-import g2d.Sprite;
+import h2d.Sprite;
 import h2d.Tile;
 
-using g2d.ext.ObjectExt;
+using h2d.ext.ObjectExt;
 /**
  * Sample GameState 3 - Collision Separation
  */

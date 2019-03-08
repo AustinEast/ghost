@@ -1,0 +1,10 @@
+-lib ghost
+-cp ghost
+-D doc-gen
+--macro include('ghost')
+--no-output
+-js bin/docs.js
+-xml bin/ghost.xml
+
+--next
+-cmd haxelib run dox -i bin -o bin/api --title "Ghost API" -D website "http://austineast.dev/ghost" -in ghost -in ghost -in hxmath

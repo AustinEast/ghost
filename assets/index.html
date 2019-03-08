@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Ghost Game Framework</title>
+    <meta name="description" content="Game Framework built on top of Heaps for Haxe" />
+    <meta property="og:title" content="Ghost - Game Framework" />
+    <meta property="og:description" content="Game Framework built on top of Heaps for Haxe" />
+    <meta property="og:url" content="https://austineast.dev/ghost" />
+    <meta property="og:image" content=”https://raw.githubusercontent.com/austineast/ghost/gh-pages/logo.png" />
+    <link rel="shortcut icon" href="https://raw.githubusercontent.com/austineast/ghost/gh-pages/icon.ico" type="image/x-icon" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@austinweast" />
+    <meta name="twitter:title" content="Ghost - Game Framework" />
+    <meta name="twitter:description" content="Game Framework built on top of Heaps for Haxe" />
+    <meta name="twitter:image:src" content="https://raw.githubusercontent.com/austineast/ghost/gh-pages/logo.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <style>
+        body,html { 
+            font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+            margin:0; 
+            padding:0; 
+            width:100%; 
+            height:100%;
+        }
+        main {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center; 
+        }
+        canvas#webgl { 
+            height:auto; 
+            max-width: 720px;
+        }
+        a {
+            color: white;
+        }
+        .theme {
+            color: white;
+            background: #d95763;
+        }
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-evenly;
+            width: 100%;
+            max-width: 720px;
+            margin: 40px;
+        }
+        .buttons a {
+            margin: 10px;
+            padding: 15px;
+            font-size: 1.5em;
+            color: #d95763;
+            background-color: white;
+            width: 50%;
+            max-width: 150px;
+            text-align: center;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body class="theme">
+    <main>
+        <img src="./logo.png"></img>
+        <h1>Ghost</h1>
+        <p>Game Framework built on top of <a href="https://heaps.io" target="_blank">Heaps</a> for Haxe</p>
+        <canvas width="640" height="360" id="webgl"></canvas>
+        <div class="buttons">
+            <a href="https://github.com/AustinEast/ghost/">Get Started</a>
+            <a href="./api/" target="_blank">API</a>
+        </div>
+        <footer style="font-style: italic;">Created by Austin East @ <a href="https://austineast.me">austineast.me</a></footer>
+    </main>
+</body>
+<script src="./sample.js"></script>
+<script>
+    // Resize the canvas on window resize
+    var canvas = document.getElementById('webgl');
+    canvas.style.width = '100%';
+    window.addEventListener('resize', () => canvas.style.width = '100%', false);
+</script>
+</html>

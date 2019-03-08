@@ -1,3 +1,0 @@
-package gxd.ui;
-
-// TODO
