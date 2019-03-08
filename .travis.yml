@@ -10,13 +10,11 @@ install:
  - haxelib git dox https://github.com/HaxeFoundation/dox.git
  - haxelib git hxmath https://github.com/tbrosman/hxmath.git
  - haxelib git heaps https://github.com/HeapsIO/heaps.git
- - haxelib install hlsdl
  - haxelib install ghostlib
  - haxelib install echo
  - haxelib dev ghost .
 
 script:
- - haxe hl.hxml
  - haxe js.hxml
  - haxe dox.hxml
 
