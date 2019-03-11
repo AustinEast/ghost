@@ -1,6 +1,6 @@
 package h2d.component;
 
-import ghost.EntityBase_h2d_Object;
+import ghost.EntityBase;
 import echo.data.Options.BodyOptions;
 
 class Body extends Component {
@@ -11,13 +11,18 @@ class Body extends Component {
     body = new echo.Body(body_options);
   }
 
+  override function pre_step(dt:Float) {
+    super.pre_step(dt);
+    body.position.set(entity.base.x, entity.base.y);
+  }
+
   override function post_step(dt:Float) {
     super.post_step(dt);
     entity.base.setPosition(body.x, body.y);
     entity.base.rotation = body.rotation;
   }
 
-  override function added(entity:EntityBase_h2d_Object) {
+  override function added(entity:EntityBase<Object>) {
     super.added(entity);
     entity.base.setPosition(body.x, body.y);
   }

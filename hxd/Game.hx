@@ -69,8 +69,8 @@ class Game extends hxd.App implements IDisposable {
 
     name = options.name;
     version = options.version;
-    width = options.width <= 0 ? engine.width : options.width;
-    height = options.height <= 0 ? engine.height : options.height;
+    width = options.width;
+    height = options.height;
     hxd.Timer.wantedFPS = options.framerate;
     age = 0;
     closed = false;
@@ -92,9 +92,11 @@ class Game extends hxd.App implements IDisposable {
   }
 
   override public function init() {
+    if (width <= 0) width = engine.width;
+    if (height <= 0) height = engine.height;
     root2d = new Mask(width, height, s2d);
-    viewport = new Layers(s2d);
-    ui = new Layers(s2d);
+    viewport = new Layers(root2d);
+    ui = new Layers(root2d);
 
     // Init the Game Manager
     GM.init(this, engine);
@@ -114,6 +116,10 @@ class Game extends hxd.App implements IDisposable {
     }
     age += dt;
     Process.update(dt);
+    // Temporary fix for macOS vsync issue on HL
+    #if hl
+    Sys.sleep(0.013);
+    #end
   }
 
   @:dox(hide) @:noCompletion
@@ -122,9 +128,8 @@ class Game extends hxd.App implements IDisposable {
     var scaleFactorY:Float = engine.height / height;
     var scaleFactor:Float = Math.min(scaleFactorX, scaleFactorY);
     if (scaleFactor < 1) scaleFactor = 1;
-
-    s2d.setScale(scaleFactor);
-    s2d.setPosition(engine.width * 0.5 - (width * scaleFactor) * 0.5, engine.height * 0.5 - (height * scaleFactor) * 0.5);
+    root2d.setScale(scaleFactor);
+    root2d.setPosition(engine.width * 0.5 - (width * scaleFactor) * 0.5, engine.height * 0.5 - (height * scaleFactor) * 0.5);
   }
 
   public function close() {
@@ -147,11 +152,11 @@ class Game extends hxd.App implements IDisposable {
 }
 
 typedef GameOptions = {
-  var ?name:String;
-  var ?version:String;
-  var ?width:Int;
-  var ?height:Int;
-  var ?framerate:Int;
+  ?name:String,
+  ?version:String,
+  ?width:Int,
+  ?height:Int,
+  ?framerate:Int
 }
 
 @:enum

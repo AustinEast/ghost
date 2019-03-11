@@ -1,12 +1,13 @@
 package h2d.component;
 
-import echo.shape.Rect;
+import ghost.EntityBase;
 import ghost.Color;
 import ghost.Data;
+import echo.shape.Rect;
+import h2d.data.Options;
 import h2d.Bitmap;
 import h2d.Tile;
 import hxd.res.Image;
-import ecs.component.Component;
 /**
  * Graphic Component
  *
@@ -36,12 +37,12 @@ class Graphic extends Component {
    * Width of the `Graphic`. Can change depending on the current frame.
    * Alias for `bitmap.tile.width`.
    */
-  public var width(get, null):Int;
+  public var width(get, null):Float;
   /**
    * Height of the `Graphic`. Can change depending on the current frame.
    * Alias for `bitmap.tile.height`.
    */
-  public var height(get, null):Int;
+  public var height(get, null):Float;
   /**
    * The X offset of the `Graphic` from it's `Transform`.
    */
@@ -55,11 +56,17 @@ class Graphic extends Component {
   public var bitmap(default, null):Bitmap;
 
   public function new(?options:GraphicOptions) {
+    super("graphic");
     options = Data.copy_fields(options, defaults);
     bitmap = options.bitmap;
     bitmap.tile != null ? frames = [bitmap.tile] : frames = [];
     center_offset();
     current_frame = 0;
+  }
+
+  override function added(entity:EntityBase<Object>) {
+    super.added(entity);
+    entity.base.addChild(bitmap);
   }
   /**
    * Loads an Image asset to be displayed by the Entity.
@@ -131,9 +138,9 @@ class Graphic extends Component {
   // getters
   function get_visible():Bool return bitmap.visible;
 
-  function get_width():Int return bitmap.tile == null ? 0 : bitmap.tile.width;
+  function get_width():Float return bitmap.tile == null ? 0 : bitmap.tile.width;
 
-  function get_height():Int return bitmap.tile == null ? 0 : bitmap.tile.height;
+  function get_height():Float return bitmap.tile == null ? 0 : bitmap.tile.height;
 
   // setters
   function set_visible(value:Bool):Bool return bitmap.visible = value;
@@ -161,8 +168,4 @@ class Graphic extends Component {
   static function get_defaults():GraphicOptions return {
     bitmap: new Bitmap()
   }
-}
-
-typedef GraphicOptions = {
-  var ?bitmap:Bitmap;
 }

@@ -3,13 +3,14 @@ package h2d;
 import hxd.GM;
 import ghost.Process;
 import h2d.Object;
+import h2d.Layers;
 import echo.World;
 import echo.data.Options;
 
 class GameState extends Process {
   public var entities:Array<Entity>;
   public var world:World;
-  public var base:Object;
+  public var base:Layers;
   public var ui:Object;
 
   public function new(?world_options:WorldOptions, ?parent:Process) {
@@ -17,7 +18,7 @@ class GameState extends Process {
     entities = [];
     if (world_options == null) world_options = {width: GM.width, height: GM.height};
     world = new World(world_options);
-    base = new Object();
+    base = new Layers();
     ui = new Object();
     attach();
   }
