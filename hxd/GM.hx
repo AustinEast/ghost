@@ -57,11 +57,6 @@ class GM {
    */
   public static var log(default, null):Log;
   /**
-   * Called before the game quits.
-   * Useful for saving, cleanup, etc.
-   */
-  public static var quit_game_callback:Void->Void;
-  /**
    * Game Instance.
    */
   public static var game(default, null):Game;
@@ -69,6 +64,11 @@ class GM {
    * Heaps Engine Instance.
    */
   public static var engine(default, null):Engine;
+  /**
+   * Called before the game quits.
+   * Useful for saving, cleanup, etc.
+   */
+  public static var quit_game_callback:Void->Void;
   /**
    * Quits the Game.
    *
@@ -92,7 +92,6 @@ class GM {
 
     // Init other properties
     time_scale = 1;
-    // TODO: See if we can migrate these to Game Components/Systems
     log = new Log();
     window = Window.getInstance();
     ui = new h2d.Object(game.ui);

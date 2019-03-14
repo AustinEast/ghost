@@ -1,8 +1,6 @@
 package hxd;
 
 import ghost.Process;
-import h2d.Object;
-import h2d.GameState;
 import ghost.Data;
 import ghost.Disposable;
 import h2d.Mask;
@@ -51,7 +49,7 @@ class Game extends hxd.App implements IDisposable {
   /**
    * Callback function that is called at the end of this Game's `init()`.
    *
-   * This acts as the Game's main entry point for adding in GameStates, GameObjects, Components, and Systems.
+   * This acts as the Game's main entry point for adding in GameStates.
    */
   public var create:Void->Void;
   /**

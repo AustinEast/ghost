@@ -19,7 +19,7 @@ class SampleState1 extends GameState {
   /**
    * The amount of Entities to spawn.
    */
-  var entity_count:Int = 2000;
+  var entity_count:Int = 1000;
   /**
    * Override `init()` to initialize the GameState.
    */
@@ -32,13 +32,13 @@ class SampleState1 extends GameState {
         body: {
           x: Math.random() * GM.width,
           y: Math.random() * GM.height,
-          velocity_x: Math.random() * 45 * (Random.chance() == true ? 1 : -1),
+          velocity_x: Math.random() * 10 * (Random.chance() == true ? 1 : -1),
           rotation: Math.random() * 360,
-          rotational_velocity: Math.random() * 45 * (Random.chance() == true ? 1 : -1)
+          rotational_velocity: Math.random() * 1 * (Random.chance() == true ? 1 : -1)
         }
       });
       // Load the Sprite's graphic
-      sprite.graphic.load(hxd.Res.images.cir);
+      sprite.graphic.load(hxd.Res.images.ghostlg);
       // Add a ScreenWrap Component to the Sprite
       sprite.add(new ScreenWrap(sprite.graphic.width, sprite.graphic.height));
       // Add the Sprite to the GameState
@@ -49,9 +49,7 @@ class SampleState1 extends GameState {
     add_ui();
   }
   /**
-   * Override `update()` to run logic every frame.
-   * This framework supports both using ECS Systems or a good old fashioned update loop to handle game logic.
-   * Or in this case, both at one time!
+   * Override `step()` to run logic every frame.
    */
   override public function step(dt:Float) {
     super.step(dt);

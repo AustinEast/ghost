@@ -7,7 +7,7 @@ import states.*;
 
 using h2d.ext.ObjectExt;
 
-// // import systems.SampleSwapperSystem;
+// import systems.SampleSwapperSystem;
 class Main {
   var sample_states:Array<Class<GameState>> = [SampleState1];
 
@@ -27,9 +27,10 @@ class Main {
     game.create = () -> {
       // Set the window's Background Color to something a little more pleasing ;)
       GM.background_color = 0xffd95763;
-      game.viewport.pixel_perfect();
+      // Add a `Pixel Perfect` filter to the 2D viewport
+      // game.viewport.pixel_perfect();
 
-      new SampleState1();
+      new CleaningState();
     }
   }
 }

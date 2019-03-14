@@ -1,25 +1,19 @@
-package h2d;
+package h3d;
 
 import hxd.GM;
 import ghost.Process;
-import h2d.Object;
-import h2d.Layers;
-import echo.World;
-import echo.data.Options;
+import h3d.scene.Object;
 
 class GameState extends Process {
   public var entities:Array<Entity>;
-  public var world:World;
-  public var base:Layers;
-  public var ui:Object;
+  public var base:Object;
+  public var ui:h2d.Object;
 
-  public function new(?world_options:WorldOptions, ?parent:Process) {
+  public function new(?parent:Process) {
     super(parent);
     entities = [];
-    if (world_options == null) world_options = {width: GM.width, height: GM.height};
-    world = new World(world_options);
-    base = new Layers();
-    ui = new Object();
+    base = new Object();
+    ui = new h2d.Object();
     attach();
   }
 
@@ -34,7 +28,7 @@ class GameState extends Process {
   }
 
   function attach() {
-    GM.game.viewport.addChild(base);
+    GM.game.s3d.addChild(base);
     GM.game.ui.addChild(ui);
   }
 
@@ -55,7 +49,6 @@ class GameState extends Process {
 
   override function post_step(dt:Float) {
     super.step(dt);
-    world.step(dt);
     for (e in entities) if (e.active && !e.disposed) e.post_step(dt);
   }
 
@@ -63,8 +56,6 @@ class GameState extends Process {
     super.dispose();
     for (e in entities) e.dispose();
     entities = null;
-    world.dispose();
-    world = null;
     dettach();
     base = null;
     ui = null;

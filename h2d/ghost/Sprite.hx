@@ -1,9 +1,7 @@
 package h2d.ghost;
 
-import hxd.Res;
-import h2d.data.Options;
 import h2d.Entity;
-import h2d.Bitmap;
+import h2d.data.Options;
 import h2d.component.Body;
 import h2d.component.Graphic;
 

@@ -4,7 +4,7 @@ import hxd.GM;
 import hxd.GameState;
 import ghost.Color;
 import h2d.component.Animator;
-import h2d.Sprite;
+import h2d.ghost.Sprite;
 import h2d.Bitmap;
 import h2d.Tile;
 import h2d.Text;

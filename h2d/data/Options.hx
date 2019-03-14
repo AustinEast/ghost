@@ -1,5 +1,6 @@
 package h2d.data;
 
+import h2d.data.Animations;
 import echo.data.Options;
 
 typedef SpriteOptions = {
@@ -8,5 +9,9 @@ typedef SpriteOptions = {
 }
 
 typedef GraphicOptions = {
-  ?bitmap:Bitmap
+  ?asset:hxd.res.Image,
+  ?animated:Bool,
+  ?width:Int,
+  ?height:Int,
+  ?animations:Array<Animation>
 }

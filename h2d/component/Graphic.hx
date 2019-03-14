@@ -4,6 +4,7 @@ import ghost.EntityBase;
 import ghost.Color;
 import ghost.Data;
 import echo.shape.Rect;
+import h2d.data.Animations;
 import h2d.data.Options;
 import h2d.Bitmap;
 import h2d.Tile;
@@ -19,6 +20,8 @@ class Graphic extends Component {
    *
    */
   public static var defaults(get, null):GraphicOptions;
+
+  public var animations:Animations;
   /**
    * Array of Tiles that this `Graphic` can display.
    * Each Tile can be thought of as a frame of an animation.
@@ -58,10 +61,24 @@ class Graphic extends Component {
   public function new(?options:GraphicOptions) {
     super("graphic");
     options = Data.copy_fields(options, defaults);
-    bitmap = options.bitmap;
-    bitmap.tile != null ? frames = [bitmap.tile] : frames = [];
+    bitmap = new Bitmap();
+    frames = [];
+    if (options.asset != null) load(options.asset, options.animated, options.width, options.height);
     center_offset();
     current_frame = 0;
+    animations = new Animations(options.animations);
+  }
+
+  override function step(dt:Float) {
+    super.step(dt);
+    if (animations.current != null) {
+      if (animations.current.frames.length == 1) current_frame = 0;
+      else if (animations.delay != 0 && !animations.paused) {
+        animations.step(dt);
+        current_frame = animations.current.frames[animations.index];
+      }
+    }
+    bitmap.tile = frames[current_frame];
   }
 
   override function added(entity:EntityBase<Object>) {
@@ -166,6 +183,8 @@ class Graphic extends Component {
   }
 
   static function get_defaults():GraphicOptions return {
-    bitmap: new Bitmap()
+    animated: false,
+    width: 0,
+    height: 0
   }
 }
