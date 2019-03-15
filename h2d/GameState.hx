@@ -10,7 +10,7 @@ import echo.data.Options;
 class GameState extends Process {
   public var entities:Array<Entity>;
   public var world:World;
-  public var base:Layers;
+  public var viewport:Layers;
   public var ui:Object;
 
   public function new(?world_options:WorldOptions, ?parent:Process) {
@@ -18,7 +18,7 @@ class GameState extends Process {
     entities = [];
     if (world_options == null) world_options = {width: GM.width, height: GM.height};
     world = new World(world_options);
-    base = new Layers();
+    viewport = new Layers();
     ui = new Object();
     attach();
   }
@@ -34,12 +34,12 @@ class GameState extends Process {
   }
 
   function attach() {
-    GM.game.viewport.addChild(base);
+    GM.game.viewport.addChild(viewport);
     GM.game.ui.addChild(ui);
   }
 
   function dettach() {
-    base.remove();
+    viewport.remove();
     ui.remove();
   }
 
@@ -66,7 +66,7 @@ class GameState extends Process {
     world.dispose();
     world = null;
     dettach();
-    base = null;
+    viewport = null;
     ui = null;
   }
 }

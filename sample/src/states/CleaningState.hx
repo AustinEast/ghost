@@ -17,18 +17,17 @@ class CleaningState extends GameState {
     for (i in 0...20) {
       add(new BoxLg(Random.range(GM.width * 0.5, GM.width), Random.range(0, GM.height * 0.5)));
       add(new Box(Random.range(GM.width * 0.5, GM.width), Random.range(0, GM.height * 0.5)));
+      add(new Box(Random.range(GM.width * 0.5, GM.width), Random.range(0, GM.height * 0.5)));
     }
 
     var ground = new Sprite({
-      body: {
-        x: GM.width * 0.5,
-        y: GM.height - 10,
-        mass: 0,
-        shape: {
-          type: RECT,
-          width: GM.width,
-          height: 20
-        }
+      x: GM.width * 0.5,
+      y: GM.height - 10,
+      mass: 0,
+      shape: {
+        type: RECT,
+        width: GM.width,
+        height: 20
       }
     });
     ground.graphic.make(GM.width, 20);
@@ -39,17 +38,23 @@ class CleaningState extends GameState {
     world.listen();
   }
 
+  var bias = 3;
+
   override function step(dt:Float) {
     super.step(dt);
-    world.for_each_dynamic((body) -> {
-      if (body.entity == hero) return;
+    world.for_each_dynamic((entity) -> {
+      if (entity == hero) return;
       if (hero.sucking) {
+        var eb = entity.bounds();
+        var hb = hero.bounds();
         if (!hero.facing) {
-          if (body.x > hero.body.x) body.acceleration.x -= 120 / (body.x - hero.body.x);
+          if (eb.left - bias > hb.right) entity.acceleration.x -= 120 / (eb.left - hb.right);
         }
         else {
-          if (body.x < hero.body.x) body.acceleration.x += 120 / (hero.body.x - body.x);
+          if (eb.right + bias < hb.left) entity.acceleration.x += 120 / (hb.left - eb.right);
         }
+        eb.put();
+        hb.put();
       }
     });
   }

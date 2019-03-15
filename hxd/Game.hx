@@ -115,9 +115,9 @@ class Game extends hxd.App implements IDisposable {
     age += dt;
     Process.update(dt);
     // Temporary fix for macOS vsync issue on HL
-    #if hl
-    Sys.sleep(0.013);
-    #end
+    // #if hl
+    // Sys.sleep(0.013);
+    // #end
   }
 
   @:dox(hide) @:noCompletion

@@ -29,18 +29,16 @@ class SampleState1 extends GameState {
     for (i in 0...entity_count) {
       // Create a new Sprite with options
       var sprite = new Sprite({
-        body: {
-          x: Math.random() * GM.width,
-          y: Math.random() * GM.height,
-          velocity_x: Math.random() * 10 * (Random.chance() == true ? 1 : -1),
-          rotation: Math.random() * 360,
-          rotational_velocity: Math.random() * 1 * (Random.chance() == true ? 1 : -1)
-        }
+        x: Math.random() * GM.width,
+        y: Math.random() * GM.height,
+        velocity_x: Math.random() * 10 * (Random.chance() == true ? 1 : -1),
+        rotation: Math.random() * 360,
+        rotational_velocity: Math.random() * 1 * (Random.chance() == true ? 1 : -1)
       });
       // Load the Sprite's graphic
       sprite.graphic.load(hxd.Res.images.ghostlg);
       // Add a ScreenWrap Component to the Sprite
-      sprite.add(new ScreenWrap(sprite.graphic.width, sprite.graphic.height));
+      sprite.components.add(new ScreenWrap(sprite.graphic.width, sprite.graphic.height));
       // Add the Sprite to the GameState
       add(sprite);
     }

@@ -9,15 +9,13 @@ class Hero extends Sprite {
   public var facing:Bool;
 
   var options:SpriteOptions = {
-    body: {
-      drag_x: 100,
-      max_velocity_x: 60,
-      shape: {
-        type: RECT,
-        width: 24,
-        height: 20,
-        offset_x: 6
-      }
+    drag_x: 100,
+    max_velocity_x: 60,
+    shape: {
+      type: RECT,
+      width: 24,
+      height: 20,
+      offset_x: 6
     },
     graphic: {
       asset: hxd.Res.images.buster,
@@ -55,29 +53,29 @@ class Hero extends Sprite {
 
   public function new(x:Float, y:Float) {
     super(options);
-    body.position.set(x, y);
+    position.set(x, y);
     graphic.animations.play("idle");
     sucking = false;
   }
 
   override function step(dt:Float) {
     super.step(dt);
-    sucking = Key.isDown(Key.X) && body.body.collided;
+    sucking = Key.isDown(Key.X) && collided;
     var left:Bool = false;
     var right:Bool = false;
     if (Key.isDown(Key.LEFT)) left = true;
     if (Key.isDown(Key.RIGHT)) right = true;
     if (left != right) {
       graphic.flip_x = left ? true : false;
-      body.shape.x = left ? -6 : 6;
+      shape.x = left ? -6 : 6;
       facing = left;
 
       if (!sucking) {
-        if (body.body.collided) body.velocity.x += left ? -5 : 5;
-        else body.acceleration.x += left ? -50 : 50;
+        if (collided) velocity.x += left ? -5 : 5;
+        else acceleration.x += left ? -50 : 50;
       }
     }
-    if (!sucking && Key.isPressed(Key.UP)) body.velocity.y = -90;
+    if (!sucking && Key.isPressed(Key.UP)) velocity.y = -90;
   }
 
   override function post_step(dt:Float) {
@@ -85,7 +83,7 @@ class Hero extends Sprite {
     if (sucking) {
       graphic.animations.play("suck");
     }
-    else if (body.body.collided) body.velocity.x != 0 ? graphic.animations.play("run") : graphic.animations.play("idle");
+    else if (collided) velocity.x != 0 ? graphic.animations.play("run") : graphic.animations.play("idle");
     else graphic.animations.play("jump");
   }
 }

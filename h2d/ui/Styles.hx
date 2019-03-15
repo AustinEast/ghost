@@ -50,7 +50,7 @@ class Styles {
     }
     flow.verticalSpacing = styles.spacing.vertical;
     flow.horizontalSpacing = styles.spacing.horizontal;
-    flow.isVertical = styles.vertical;
+    flow.layout = Vertical;
     if (styles.width != null) {
       flow.minWidth = styles.width.min;
       flow.maxWidth = styles.width.max;

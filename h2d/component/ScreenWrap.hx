@@ -15,9 +15,9 @@ class ScreenWrap extends Component {
 
   override function post_step(dt:Float) {
     super.post_step(dt);
-    if (entity.base.x > GM.width + width) entity.base.x = -width;
-    if (entity.base.x < -width) entity.base.x = GM.width + width;
-    if (entity.base.y > GM.height + height) entity.base.y = -height;
-    if (entity.base.y < -height) entity.base.y = GM.height + height;
+    if (owner.base.x > GM.width + width) owner.base.x = -width;
+    if (owner.base.x < -width) owner.base.x = GM.width + width;
+    if (owner.base.y > GM.height + height) owner.base.y = -height;
+    if (owner.base.y < -height) owner.base.y = GM.height + height;
   }
 }

@@ -1,6 +1,5 @@
 package h2d.component;
 
-import ghost.EntityBase;
 import ghost.Color;
 import ghost.Data;
 import echo.shape.Rect;
@@ -81,9 +80,9 @@ class Graphic extends Component {
     bitmap.tile = frames[current_frame];
   }
 
-  override function added(entity:EntityBase<Object>) {
-    super.added(entity);
-    entity.base.addChild(bitmap);
+  override function added(component) {
+    super.added(component);
+    owner.base.addChild(bitmap);
   }
   /**
    * Loads an Image asset to be displayed by the Entity.

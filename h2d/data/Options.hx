@@ -4,8 +4,8 @@ import h2d.data.Animations;
 import echo.data.Options;
 
 typedef SpriteOptions = {
+  > BodyOptions,
   ?graphic:GraphicOptions,
-  ?body:BodyOptions
 }
 
 typedef GraphicOptions = {
