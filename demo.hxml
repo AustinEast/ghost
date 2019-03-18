@@ -1,0 +1,18 @@
+# class paths
+-cp demo/src
+# entry point
+-main Main
+# libraries
+-lib ghost
+# defines
+-dce full
+-debug
+-D standalone
+-D resourcesPath=demo/res
+# output
+-js bin/demo.js
+# -hl bin/demo.hl
+# defines
+# -D windowSize=1400x700
+# 
+# -cmd hl bin/demo.hl

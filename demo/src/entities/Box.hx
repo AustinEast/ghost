@@ -12,7 +12,7 @@ class Box extends Sprite {
       height: 8
     },
     graphic: {
-      asset: hxd.Res.images.box,
+      asset: hxd.Res.img.box,
     }
   };
 

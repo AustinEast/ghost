@@ -10,10 +10,12 @@ class Entity extends Body {
   public var state:GameState;
   public var components:Components;
   public var disposed(default, null):Bool;
+  public var layer(default, set):Int;
 
-  public function new(options:BodyOptions, ?base:Object) {
+  public function new(options:BodyOptions, ?base:Object, layer:Int = 0) {
     super(options);
     this.base = base == null ? new Object() : base;
+    this.layer = 0;
     components = new Components(this);
     disposed = false;
   }
@@ -40,7 +42,7 @@ class Entity extends Body {
   @:allow(h2d.GameState)
   function added(state:GameState) {
     this.state = state;
-    state.viewport.addChild(base);
+    state.camera.add(base, layer);
     state.world.add(this);
     // for (component in component_arr) Std.instance(component, Component).state_added(state);
   }
@@ -51,5 +53,10 @@ class Entity extends Body {
     base.remove();
     state.world.remove(this);
     // for (component in component_arr) Std.instance(component, Component).state_added(state);
+  }
+
+  public function set_layer(value:Int) {
+    if (base.parent != null) base.parent.addChildAt(base, value);
+    return layer = value;
   }
 }

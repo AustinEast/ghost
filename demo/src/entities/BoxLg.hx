@@ -13,7 +13,7 @@ class BoxLg extends Sprite {
       height: 16
     },
     graphic: {
-      asset: hxd.Res.images.boxlg,
+      asset: hxd.Res.img.boxlg,
     }
   };
 

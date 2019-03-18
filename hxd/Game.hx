@@ -1,5 +1,7 @@
 package hxd;
 
+import h2d.Flow;
+import h2d.Object;
 import ghost.Process;
 import ghost.Data;
 import ghost.Disposable;
@@ -41,6 +43,9 @@ class Game extends hxd.App implements IDisposable {
    * Layers Object that ui will be displayed on. Eventually will be replaced by camera system
    */
   public var ui(default, null):Layers;
+  #if debug
+  public var debug(default, null):Flow;
+  #end
   /**
    * Age of the Game (in Seconds).
    */
@@ -55,7 +60,7 @@ class Game extends hxd.App implements IDisposable {
   /**
    * A Mask to constrain the root 2D Scene to the Game's width/height. Eventually will be replaced by camera system
    */
-  var root2d(default, null):Mask;
+  public var root2d(default, null):Mask;
   /**
    * Creates a new Game.
    * @param filesystem The type of FileSystem to initialize.
@@ -95,6 +100,8 @@ class Game extends hxd.App implements IDisposable {
     root2d = new Mask(width, height, s2d);
     viewport = new Layers(root2d);
     ui = new Layers(root2d);
+    debug = new Flow(s2d);
+    debug.layout = Vertical;
 
     // Init the Game Manager
     GM.init(this, engine);
@@ -113,6 +120,9 @@ class Game extends hxd.App implements IDisposable {
       return;
     }
     age += dt;
+    #if debug
+    GM.debugger.update();
+    #end
     Process.update(dt);
     // Temporary fix for macOS vsync issue on HL
     // #if hl
@@ -128,6 +138,9 @@ class Game extends hxd.App implements IDisposable {
     if (scaleFactor < 1) scaleFactor = 1;
     root2d.setScale(scaleFactor);
     root2d.setPosition(engine.width * 0.5 - (width * scaleFactor) * 0.5, engine.height * 0.5 - (height * scaleFactor) * 0.5);
+    #if debug
+    GM.debugger.resize();
+    #end
   }
 
   public function close() {

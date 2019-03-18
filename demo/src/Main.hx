@@ -2,13 +2,11 @@ package;
 
 import hxd.GM;
 import hxd.Game;
-import h2d.GameState;
-import states.*;
+import hxd.debug.plugins.Stats;
 
-// import systems.SampleSwapperSystem;
+using h2d.ext.ObjectExt;
+
 class Main {
-  var sample_states:Array<Class<GameState>> = [SampleState1];
-
   static function main() {
     new Main();
   }
@@ -16,7 +14,7 @@ class Main {
   function new() {
     // Create our Game with an Initial GameState and Options
     var game = new Game(EMBED, {
-      name: "Sample App",
+      name: "Demo App",
       version: "0.0.1",
       width: 320,
       height: 180
@@ -25,6 +23,11 @@ class Main {
     game.create = () -> {
       // Set the window's Background Color to something a little more pleasing ;)
       GM.background_color = 0xffd95763;
+      GM.debugger.add(new Stats());
+      // Add a `Pixel Perfect` filter to the 2D viewport
+      // game.viewport.pixel_perfect();
+      // Load the First Level
+      new GarageState();
     }
   }
 }

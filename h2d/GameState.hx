@@ -3,14 +3,14 @@ package h2d;
 import hxd.GM;
 import ghost.Process;
 import h2d.Object;
-import h2d.Layers;
+import h2d.ghost.Camera;
 import echo.World;
 import echo.data.Options;
 
 class GameState extends Process {
   public var entities:Array<Entity>;
   public var world:World;
-  public var viewport:Layers;
+  public var camera:Camera;
   public var ui:Object;
 
   public function new(?world_options:WorldOptions, ?parent:Process) {
@@ -18,7 +18,7 @@ class GameState extends Process {
     entities = [];
     if (world_options == null) world_options = {width: GM.width, height: GM.height};
     world = new World(world_options);
-    viewport = new Layers();
+    camera = new Camera();
     ui = new Object();
     attach();
   }
@@ -34,12 +34,12 @@ class GameState extends Process {
   }
 
   function attach() {
-    GM.game.viewport.addChild(viewport);
+    GM.game.viewport.addChild(camera);
     GM.game.ui.addChild(ui);
   }
 
   function dettach() {
-    viewport.remove();
+    camera.remove();
     ui.remove();
   }
 
@@ -66,7 +66,7 @@ class GameState extends Process {
     world.dispose();
     world = null;
     dettach();
-    viewport = null;
+    camera = null;
     ui = null;
   }
 }

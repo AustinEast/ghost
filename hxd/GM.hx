@@ -48,6 +48,9 @@ class GM {
    * Use the `ui` Object in a `GameState` instead to create UIs that only last during a single `GameState`.
    */
   public static var ui(default, null):h2d.Object;
+  #if debug
+  public static var debugger:hxd.debug.Debugger;
+  #end
   /**
    * Window Instance.
    */
@@ -95,6 +98,9 @@ class GM {
     log = new Log();
     window = Window.getInstance();
     ui = new h2d.Object(game.ui);
+    #if debug
+    debugger = new hxd.debug.Debugger(game);
+    #end
 
     log.info(':: :: :: :: ::');
     log.info(':: $name');

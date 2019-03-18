@@ -1,5 +1,6 @@
-package states;
+package;
 
+import h2d.col.Point;
 import echo.Group;
 import ghost.Random;
 import h2d.ghost.Sprite;
@@ -7,11 +8,11 @@ import hxd.GM;
 import h2d.GameState;
 import entities.*;
 
-class CleaningState extends GameState {
+class GarageState extends GameState {
   var hero:Hero;
 
   public function new() {
-    super({width: GM.width, height: GM.height, gravity_y: 130});
+    super({width: GM.width * 2, height: GM.height, gravity_y: 130});
     hero = new Hero(GM.width * 0.5, GM.height * 0.5);
 
     for (i in 0...20) {
@@ -34,6 +35,10 @@ class CleaningState extends GameState {
 
     add(ground);
     add(hero);
+
+    camera.target = hero;
+    camera.min = new Point(0, -30);
+    camera.max = new Point(10, 0);
 
     world.listen();
   }

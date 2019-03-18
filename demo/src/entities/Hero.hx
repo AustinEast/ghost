@@ -3,22 +3,23 @@ package entities;
 import hxd.Key;
 import h2d.ghost.Sprite;
 import h2d.data.Options;
+import h2d.component.Grounded;
 
 class Hero extends Sprite {
   public var sucking:Bool;
   public var facing:Bool;
+  public var grounded:Grounded;
 
   var options:SpriteOptions = {
     drag_x: 100,
     max_velocity_x: 60,
     shape: {
       type: RECT,
-      width: 24,
+      width: 16,
       height: 20,
-      offset_x: 6
     },
     graphic: {
-      asset: hxd.Res.images.buster,
+      asset: hxd.Res.img.buster,
       animated: true,
       width: 40,
       height: 32,
@@ -56,6 +57,13 @@ class Hero extends Sprite {
     position.set(x, y);
     graphic.animations.play("idle");
     sucking = false;
+    grounded = new Grounded({
+      type: RECT,
+      width: 14,
+      height: 2,
+      offset_y: 10
+    });
+    components.add(grounded);
   }
 
   override function step(dt:Float) {
@@ -67,15 +75,15 @@ class Hero extends Sprite {
     if (Key.isDown(Key.RIGHT)) right = true;
     if (left != right) {
       graphic.flip_x = left ? true : false;
-      shape.x = left ? -6 : 6;
+      // shapes[0].x = left ? -6 : 6;
       facing = left;
 
       if (!sucking) {
-        if (collided) velocity.x += left ? -5 : 5;
+        if (grounded.check()) velocity.x += left ? -5 : 5;
         else acceleration.x += left ? -50 : 50;
       }
     }
-    if (!sucking && Key.isPressed(Key.UP)) velocity.y = -90;
+    if (!sucking && grounded.check() && Key.isPressed(Key.UP)) velocity.y = -90;
   }
 
   override function post_step(dt:Float) {
