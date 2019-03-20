@@ -36,7 +36,7 @@ class SampleState1 extends GameState {
         rotational_velocity: Math.random() * 1 * (Random.chance() == true ? 1 : -1)
       });
       // Load the Sprite's graphic
-      sprite.graphic.load(hxd.Res.images.ghostlg);
+      sprite.graphic.load(hxd.Res.img.ghostlg);
       // Add a ScreenWrap Component to the Sprite
       sprite.components.add(new ScreenWrap(sprite.graphic.width, sprite.graphic.height));
       // Add the Sprite to the GameState

@@ -44,7 +44,7 @@ class SampleState4 extends GameState {
       },
       collider: {width: 12, height: 12, y: 2}
     });
-    player.graphic.load(hxd.Res.images.bot, true, 16, 16);
+    player.graphic.load(hxd.Res.img.bot, true, 16, 16);
     player.animator.add("idle", [0]);
     player.animator.add("run", [1, 2, 3, 4], 15, true);
     add(player);
@@ -55,17 +55,17 @@ class SampleState4 extends GameState {
         transform: {x: Math.random() * GM.width, y: Math.random() * GM.height * 0.5}
       });
       if (i % 2 == 0) {
-        sprite.graphic.load(hxd.Res.images.box);
+        sprite.graphic.load(hxd.Res.img.box);
         sprite.collider_from_graphic();
         sprite.motion.elasticity = 1;
       }
       else if (i % 3 == 0) {
-        sprite.graphic.load(hxd.Res.images.ghostlg);
+        sprite.graphic.load(hxd.Res.img.ghostlg);
         sprite.motion.elasticity = 1;
         sprite.collider.shape = Shape.circle(0, 0, 8);
       }
       else {
-        sprite.graphic.load(hxd.Res.images.boxlg);
+        sprite.graphic.load(hxd.Res.img.boxlg);
         sprite.collider_from_graphic();
         sprite.motion.elasticity = .2;
         // sprite.motion.mass = 5;

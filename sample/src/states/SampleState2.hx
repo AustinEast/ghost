@@ -43,7 +43,7 @@ class SampleState2 extends GameState {
     // * flag that the image is a Sprite Sheet
     // * the width of each Sprite Sheet cell
     // * the height of each Sprite Sheet cell
-    sprite.graphic.load(hxd.Res.images.baddegg, true, 180, 96);
+    sprite.graphic.load(hxd.Res.img.baddegg, true, 180, 96);
     // Add the Target Entity to the GameState
     add(sprite);
 
