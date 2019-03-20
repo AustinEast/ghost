@@ -12,7 +12,7 @@ class Entity extends Body {
   public var disposed(default, null):Bool;
   public var layer(default, set):Int;
 
-  public function new(options:BodyOptions, ?base:Object, layer:Int = 0) {
+  public function new(?options:BodyOptions, ?base:Object, layer:Int = 0) {
     super(options);
     this.base = base == null ? new Object() : base;
     this.layer = 0;
@@ -21,15 +21,15 @@ class Entity extends Body {
   }
 
   public function pre_step(dt:Float) {
-    components.pre_step(dt);
+    if (components.active) components.pre_step(dt);
   }
 
   public function step(dt:Float) {
-    components.step(dt);
+    if (components.active) components.step(dt);
   }
 
   public function post_step(dt:Float) {
-    components.post_step(dt);
+    if (components.active) components.post_step(dt);
     base.setPosition(x, y);
   }
 
@@ -58,5 +58,17 @@ class Entity extends Body {
   public function set_layer(value:Int) {
     if (base.parent != null) base.parent.addChildAt(base, value);
     return layer = value;
+  }
+
+  public function kill() {
+    active = false;
+    components.active = false;
+    base.visible = false;
+  }
+
+  public function revive() {
+    active = true;
+    components.active = true;
+    base.visible = true;
   }
 }

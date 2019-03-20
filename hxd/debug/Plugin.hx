@@ -1,25 +1,26 @@
 package hxd.debug;
 
+import ghost.Disposable;
 import h2d.Text;
 import h2d.ui.Button;
 import h2d.Object;
 import h2d.Tile;
 import h2d.Flow;
 
-class Plugin {
+class Plugin implements IDisposable {
   public var name:String;
+  public var active:Bool;
   // temp, display text until i figure out asset loading from external libraries ;p
   public var icon:Button; // BitmapButton;?
-  public var active:Bool;
+  public var debugger:Debugger;
 
-  var debugger:Debugger;
   var canvas:Object;
   var panel:Flow;
   var header:Flow;
   var base:Flow;
   var dragging:Bool;
 
-  public function new(name:String, icon:Tile) {
+  public function new(name:String, ?icon:Tile) {
     this.name = name;
     // this.icon = new Bitmap(icon);
     this.icon = new Button(name, () -> active ? hide() : show());
@@ -53,11 +54,11 @@ class Plugin {
   }
 
   public function remove() {
+    if (debugger != null) debugger.remove(this);
     hide();
     canvas.remove();
     panel.remove();
     icon.remove();
-    debugger = null;
   }
 
   public function update() {
@@ -79,5 +80,22 @@ class Plugin {
     active = false;
     canvas.visible = false;
     panel.visible = false;
+  }
+
+  public function dispose() {
+    active = false;
+    dragging = false;
+    icon.remove();
+    canvas.remove();
+    panel.remove();
+    header.remove();
+    base.remove();
+    icon = null;
+    canvas = null;
+    panel = null;
+    header = null;
+    base = null;
+    debugger.remove(this);
+    debugger = null;
   }
 }

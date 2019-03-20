@@ -30,6 +30,7 @@ class Debugger {
     menu.horizontalAlign = Right;
     menu.verticalAlign = Middle;
     icons = new Flow(menu);
+    icons.horizontalSpacing = 4;
     panels = new Object(base);
     this.game = game;
     hide();
@@ -49,6 +50,7 @@ class Debugger {
 
   public function remove(plugin:Plugin) {
     plugins.remove(plugin.name);
+    plugin.debugger = null;
     plugin.remove();
   }
 

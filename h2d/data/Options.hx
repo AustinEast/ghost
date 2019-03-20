@@ -15,3 +15,9 @@ typedef GraphicOptions = {
   ?height:Int,
   ?animations:Array<Animation>
 }
+
+typedef TilesOptions = {
+  tile_graphic:Tile,
+  ?tile_width:Int,
+  ?tile_height:Int
+}

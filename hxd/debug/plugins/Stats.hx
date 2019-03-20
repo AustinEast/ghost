@@ -3,7 +3,6 @@ package hxd.debug.plugins;
 import h2d.Tile;
 import hxd.res.DefaultFont;
 import ghost.Color;
-import h2d.Object;
 import h2d.Text;
 
 class Stats extends Plugin {
@@ -12,7 +11,7 @@ class Stats extends Plugin {
   var height:Text;
 
   public function new() {
-    super("stats", Tile.fromColor(0xfff));
+    super("stats");
     base.layout = Vertical;
     var font = DefaultFont.get();
     var padding = 4;
@@ -46,5 +45,12 @@ class Stats extends Plugin {
     fps.text = 'FPS: ${GM.render_framerate}';
     width.text = 'Width: ${GM.engine.width}';
     height.text = 'Height: ${GM.engine.height}';
+  }
+
+  override function dispose() {
+    fps.remove();
+    width.remove();
+    height.remove();
+    super.dispose();
   }
 }

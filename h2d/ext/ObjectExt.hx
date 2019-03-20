@@ -33,7 +33,7 @@ class ObjectExt {
     return c;
   }
 
-  public static function add_graphic(?parent:Object, ?tile:Tile, x:Float = 0, y:Float = 0):Bitmap {
+  public static function add_bitmap(?parent:Object, ?tile:Tile, x:Float = 0, y:Float = 0):Bitmap {
     var b = new Bitmap(tile, parent);
     b.x = x;
     b.y = y;

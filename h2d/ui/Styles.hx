@@ -230,6 +230,11 @@ typedef ButtonStyle = {
   }
 }
 
+typedef CheckBoxStyle = {
+  var ?text:TextStyle;
+  var ?flow:FlowStyle;
+}
+
 typedef SliderStyle = {
   var width:Int;
   var height:Int;

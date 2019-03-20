@@ -1,5 +1,6 @@
 package entities;
 
+import h2d.col.Point;
 import hxd.Key;
 import h2d.ghost.Sprite;
 import h2d.data.Options;
@@ -15,7 +16,7 @@ class Hero extends Sprite {
     max_velocity_x: 60,
     shape: {
       type: RECT,
-      width: 16,
+      width: 12,
       height: 20,
     },
     graphic: {
@@ -59,7 +60,7 @@ class Hero extends Sprite {
     sucking = false;
     grounded = new Grounded({
       type: RECT,
-      width: 14,
+      width: 10,
       height: 2,
       offset_y: 10
     });
@@ -75,7 +76,6 @@ class Hero extends Sprite {
     if (Key.isDown(Key.RIGHT)) right = true;
     if (left != right) {
       graphic.flip_x = left ? true : false;
-      // shapes[0].x = left ? -6 : 6;
       facing = left;
 
       if (!sucking) {
@@ -91,7 +91,7 @@ class Hero extends Sprite {
     if (sucking) {
       graphic.animations.play("suck");
     }
-    else if (collided) velocity.x != 0 ? graphic.animations.play("run") : graphic.animations.play("idle");
+    else if (grounded.check()) velocity.x != 0 ? graphic.animations.play("run") : graphic.animations.play("idle");
     else graphic.animations.play("jump");
   }
 }

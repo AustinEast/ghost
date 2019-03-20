@@ -1,18 +1,24 @@
 package;
 
-import h2d.col.Point;
-import echo.Group;
 import ghost.Random;
-import h2d.ghost.Sprite;
 import hxd.GM;
 import h2d.GameState;
+import h2d.col.Point;
+import h2d.ghost.Sprite;
+import h2d.ghost.TileMap;
+import hxd.debug.plugins.EchoDrawer;
 import entities.*;
 
 class GarageState extends GameState {
   var hero:Hero;
+  var powerups:Int;
+  var map:TileMap;
+  #if debug
+  var echo_drawer:EchoDrawer;
+  #end
 
   public function new() {
-    super({width: GM.width * 2, height: GM.height, gravity_y: 130});
+    super({width: GM.width * 2, height: GM.height * 2, gravity_y: 130});
     hero = new Hero(GM.width * 0.5, GM.height * 0.5);
 
     for (i in 0...20) {
@@ -21,29 +27,23 @@ class GarageState extends GameState {
       add(new Box(Random.range(GM.width * 0.5, GM.width), Random.range(0, GM.height * 0.5)));
     }
 
-    var ground = new Sprite({
-      x: GM.width * 0.5,
-      y: GM.height - 10,
-      mass: 0,
-      shape: {
-        type: RECT,
-        width: GM.width,
-        height: 20
-      }
-    });
-    ground.graphic.make(GM.width, 20);
+    map = new TileMap();
+    map.load_from_2D_Array(haxe.Json.parse(hxd.Res.dat.map.entry.getText()).data, hxd.Res.img.test_tile.toTile());
 
-    add(ground);
+    add(map);
     add(hero);
 
     camera.target = hero;
-    camera.min = new Point(0, -30);
-    camera.max = new Point(10, 0);
+    // camera.min = new Point(0, -30);
+    // camera.max = new Point(100, 300);
 
     world.listen();
-  }
 
-  var bias = 3;
+    #if debug
+    echo_drawer = new EchoDrawer(this);
+    GM.debugger.add(echo_drawer);
+    #end
+  }
 
   override function step(dt:Float) {
     super.step(dt);
@@ -51,16 +51,19 @@ class GarageState extends GameState {
       if (entity == hero) return;
       if (hero.sucking) {
         var eb = entity.bounds();
-        var hb = hero.bounds();
         if (!hero.facing) {
-          if (eb.left - bias > hb.right) entity.acceleration.x -= 120 / (eb.left - hb.right);
+          if (eb.left > hero.x + 6) entity.acceleration.x -= (120 / (eb.left - hero.x + 6)) + 10;
         }
         else {
-          if (eb.right + bias < hb.left) entity.acceleration.x += 120 / (hb.left - eb.right);
+          if (eb.right < hero.x - 6) entity.acceleration.x += 120 / (hero.x - 6 - eb.right);
         }
         eb.put();
-        hb.put();
       }
     });
+  }
+
+  override function dispose() {
+    super.dispose();
+    echo_drawer.remove();
   }
 }
