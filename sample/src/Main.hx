@@ -25,6 +25,8 @@ class Main {
     game.create = () -> {
       // Set the window's Background Color to something a little more pleasing ;)
       GM.background_color = 0xffd95763;
+
+      new SampleState1();
     }
   }
 }
