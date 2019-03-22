@@ -27,8 +27,7 @@ class GarageState extends GameState {
       add(new Box(Random.range(GM.width * 0.5, GM.width), Random.range(0, GM.height * 0.5)));
     }
 
-    map = new TileMap();
-    map.load_from_2D_Array(haxe.Json.parse(hxd.Res.dat.map.entry.getText()).data, hxd.Res.img.test_tile.toTile());
+    map = get_tiled_layer(1);
 
     add(map);
     add(hero);
@@ -65,5 +64,13 @@ class GarageState extends GameState {
   override function dispose() {
     super.dispose();
     echo_drawer.remove();
+  }
+
+  function get_tiled_layer(layer:Int = 0, collides:Bool = true):TileMap {
+    var data = haxe.Json.parse(hxd.Res.dat.garage.entry.getText());
+    var l = data.layers[layer];
+    var map = new TileMap();
+    map.load_from_array(l.data, l.width, l.height, hxd.Res.img.tiles.toTile(), data.tilewidth, data.tileheight, collides);
+    return map;
   }
 }

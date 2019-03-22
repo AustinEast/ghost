@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <OgmoVersion>1.0</OgmoVersion>
+  <Name>Ghostbusted</Name>
+  <BackgroundColor A="255" R="125" G="160" B="255" />
+  <GridColor A="255" R="255" G="240" B="90" />
+  <LevelDefaultSize>
+    <Width>640</Width>
+    <Height>480</Height>
+  </LevelDefaultSize>
+  <LevelMinimumSize>
+    <Width>640</Width>
+    <Height>480</Height>
+  </LevelMinimumSize>
+  <LevelMaximumSize>
+    <Width>640</Width>
+    <Height>480</Height>
+  </LevelMaximumSize>
+  <Filename>\\Mac\Home\gamedev\ghost\project\levels.oep</Filename>
+  <AngleMode>Degrees</AngleMode>
+  <ProjectType>JSON</ProjectType>
+  <CameraEnabled>false</CameraEnabled>
+  <CameraSize>
+    <Width>640</Width>
+    <Height>480</Height>
+  </CameraSize>
+  <ExportCameraPosition>true</ExportCameraPosition>
+  <LevelValueDefinitions />
+  <LayerDefinitions>
+    <LayerDefinition xsi:type="GridLayerDefinition">
+      <Name>Level</Name>
+      <Grid>
+        <Width>16</Width>
+        <Height>16</Height>
+      </Grid>
+      <ScrollFactor>
+        <X>1</X>
+        <Y>1</Y>
+      </ScrollFactor>
+      <Color A="255" R="0" G="0" B="0" />
+      <ExportMode>Bitstring</ExportMode>
+    </LayerDefinition>
+    <LayerDefinition xsi:type="TileLayerDefinition">
+      <Name>Tiles</Name>
+      <Grid>
+        <Width>16</Width>
+        <Height>16</Height>
+      </Grid>
+      <ScrollFactor>
+        <X>1</X>
+        <Y>1</Y>
+      </ScrollFactor>
+      <ExportMode>Array1D</ExportMode>
+    </LayerDefinition>
+  </LayerDefinitions>
+  <Tilesets>
+    <Tileset>
+      <Name>borders</Name>
+      <FilePath>..\demo\res\img\tiles.png</FilePath>
+      <TileSize>
+        <Width>16</Width>
+        <Height>16</Height>
+      </TileSize>
+      <TileSep>0</TileSep>
+    </Tileset>
+  </Tilesets>
+  <EntityDefinitions />
+</project>
