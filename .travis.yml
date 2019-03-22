@@ -15,8 +15,7 @@ install:
  - haxelib dev ghost .
 
 script:
- - haxe js.hxml
- - haxe dox.hxml
+ - haxe gh-pages.hxml
 
 deploy:
  - provider: pages

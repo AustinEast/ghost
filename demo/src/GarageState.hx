@@ -21,7 +21,7 @@ class GarageState extends GameState {
     super({width: GM.width * 2, height: GM.height * 2, gravity_y: 130});
     hero = new Hero(GM.width * 0.5, GM.height * 0.5);
 
-    for (i in 0...20) {
+    for (i in 0...10) {
       add(new BoxLg(Random.range(GM.width * 0.5, GM.width), Random.range(0, GM.height * 0.5)));
       add(new Box(Random.range(GM.width * 0.5, GM.width), Random.range(0, GM.height * 0.5)));
       add(new Box(Random.range(GM.width * 0.5, GM.width), Random.range(0, GM.height * 0.5)));
@@ -67,10 +67,10 @@ class GarageState extends GameState {
   }
 
   function get_tiled_layer(layer:Int = 0, collides:Bool = true):TileMap {
-    var data = haxe.Json.parse(hxd.Res.dat.garage.entry.getText());
-    var l = data.layers[layer];
+    var data = haxe.Json.parse(hxd.Res.dat.map.entry.getText());
+    // var l = data.layers[layer];
     var map = new TileMap();
-    map.load_from_array(l.data, l.width, l.height, hxd.Res.img.tiles.toTile(), data.tilewidth, data.tileheight, collides);
+    map.load_from_2d_array(data.data, hxd.Res.img.test_tile.toTile(), 16, 16, collides);
     return map;
   }
 }

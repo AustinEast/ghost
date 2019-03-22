@@ -1,11 +1,8 @@
-# class paths
--cp sample/src
-# entry point
--main Main
-# libraries
 -lib ghost
-# defines
+-cp sample/src
+-main Main
 -dce full
 -debug
 -D standalone
 -D resourcesPath=sample/res
+-js bin/sample.js
