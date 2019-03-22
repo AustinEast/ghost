@@ -1,4 +1,5 @@
 -lib ghost
+# -lib hldx
 -lib hlsdl
 -cp src
 -main Main

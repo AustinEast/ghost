@@ -64,7 +64,7 @@ class TileMap extends Entity {
   public function set_tiles() for (i in 0...map_data.length) {
     var x = i % width_in_tiles;
     var y = Math.floor(i / width_in_tiles);
-    tiles.set(x, y, map_data[i - 1]);
+    tiles.set(x, y, map_data[i]);
   }
 
   function generate_collider() {

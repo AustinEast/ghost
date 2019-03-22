@@ -16,8 +16,8 @@
 			"request": "launch",
             "type": "hl",
             "name": "HashLink Debugger (WIP)",
-			"hxml": "compile.hxml",
-			"cwd": "${workspaceRoot}",
+			"hxml": "build.hxml",
+			"cwd": "${workspaceRoot}/demo",
 			"preLaunchTask": {
 				"type" : "haxe",
 				"args" : "active configuration"

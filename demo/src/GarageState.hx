@@ -21,10 +21,10 @@ class GarageState extends GameState {
     super({width: GM.width * 2, height: GM.height * 2, gravity_y: 130});
     hero = new Hero(GM.width * 0.5, GM.height * 0.5);
 
-    for (i in 0...10) {
-      add(new BoxLg(Random.range(GM.width * 0.5, GM.width), Random.range(0, GM.height * 0.5)));
-      add(new Box(Random.range(GM.width * 0.5, GM.width), Random.range(0, GM.height * 0.5)));
-      add(new Box(Random.range(GM.width * 0.5, GM.width), Random.range(0, GM.height * 0.5)));
+    for (i in 0...40) {
+      add(new BoxLg(Random.range(0, GM.width * 2), Random.range(0, GM.height * 0.5)));
+      add(new Box(Random.range(0, GM.width * 2), Random.range(0, GM.height * 0.5)));
+      add(new Box(Random.range(0, GM.width * 2), Random.range(0, GM.height * 0.5)));
     }
 
     map = get_tiled_layer(1);
