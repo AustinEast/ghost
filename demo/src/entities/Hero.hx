@@ -69,7 +69,7 @@ class Hero extends Sprite {
 
   override function step(dt:Float) {
     super.step(dt);
-    sucking = Key.isDown(Key.X) && collided;
+    sucking = Key.isDown(Key.X) && grounded.check();
     var left:Bool = false;
     var right:Bool = false;
     if (Key.isDown(Key.LEFT)) left = true;
@@ -83,7 +83,9 @@ class Hero extends Sprite {
         else acceleration.x += left ? -50 : 50;
       }
     }
-    if (!sucking && grounded.check() && Key.isPressed(Key.UP)) velocity.y = -90;
+    if (Key.isPressed(Key.UP)) velocity.y = -90;
+    // Commented out for testing
+    // if (!sucking && grounded.check() && Key.isPressed(Key.UP)) velocity.y = -90;
   }
 
   override function post_step(dt:Float) {

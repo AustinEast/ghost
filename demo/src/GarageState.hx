@@ -1,5 +1,6 @@
 package;
 
+import echo.Group;
 import ghost.Random;
 import hxd.GM;
 import h2d.GameState;
@@ -13,18 +14,21 @@ class GarageState extends GameState {
   var hero:Hero;
   var powerups:Int;
   var map:TileMap;
+  var colliders:Group;
   #if debug
   var echo_drawer:EchoDrawer;
   #end
 
   public function new() {
     super({width: GM.width * 2, height: GM.height * 2, gravity_y: 130});
-    hero = new Hero(GM.width * 0.5, GM.height * 0.5);
+    colliders = new Group();
 
-    for (i in 0...40) {
-      add(new BoxLg(Random.range(0, GM.width * 2), Random.range(0, GM.height * 0.5)));
-      add(new Box(Random.range(0, GM.width * 2), Random.range(0, GM.height * 0.5)));
-      add(new Box(Random.range(0, GM.width * 2), Random.range(0, GM.height * 0.5)));
+    hero = new Hero(GM.width * 0.5, GM.height * 0.5);
+    colliders.add(hero);
+
+    for (i in 0...100) {
+      if (i % 2 == 0) colliders.add(add(new BoxLg(Random.range(0, GM.width * 2), Random.range(0, GM.height * 0.5))));
+      else colliders.add(add(new Box(Random.range(0, GM.width * 2), Random.range(0, GM.height * 0.5))));
     }
 
     map = get_tiled_layer(1);
@@ -36,7 +40,11 @@ class GarageState extends GameState {
     // camera.min = new Point(0, -30);
     // camera.max = new Point(100, 300);
 
-    world.listen();
+    world.listen(colliders, map.collider);
+    world.listen(colliders);
+
+    world.width = map.width;
+    world.height = map.height;
 
     #if debug
     echo_drawer = new EchoDrawer(this);

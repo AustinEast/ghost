@@ -44,7 +44,6 @@ class Entity extends Body {
     this.state = state;
     state.camera.add(base, layer);
     state.world.add(this);
-    // for (component in component_arr) Std.instance(component, Component).state_added(state);
   }
 
   @:allow(h2d.GameState)
@@ -52,7 +51,6 @@ class Entity extends Body {
     this.state = null;
     base.remove();
     state.world.remove(this);
-    // for (component in component_arr) Std.instance(component, Component).state_added(state);
   }
 
   public function set_layer(value:Int) {

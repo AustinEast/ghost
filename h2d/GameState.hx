@@ -23,14 +23,16 @@ class GameState extends Process {
     attach();
   }
 
-  public function add(entity:Entity) {
+  public function add(entity:Entity):Entity {
     if (entity.state != null) entity.state.remove(entity);
     entities.push(entity);
     entity.added(this);
+    return entity;
   }
 
-  public function remove(entity:Entity) {
+  public function remove(entity:Entity):Entity {
     if (entities.remove(entity)) entity.removed(this);
+    return entity;
   }
 
   function attach() {

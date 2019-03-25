@@ -5,11 +5,13 @@ import echo.Group;
 import h2d.component.Tiles;
 
 class TileMap extends Entity {
+  public var width(get, null):Float;
+  public var height(get, null):Float;
   public var width_in_tiles(default, null):Int;
   public var height_in_tiles(default, null):Int;
   public var collider(default, null):Group;
+  public var tiles:Tiles;
 
-  var tiles:Tiles;
   var map_data:Array<Int>;
   var start_index:Int;
 
@@ -43,7 +45,7 @@ class TileMap extends Entity {
     this.height_in_tiles = height_in_tiles;
     this.start_index = start_index;
     set_tiles();
-    if (collides) generate_collider();
+    if (collides) generate_collider_optimized();
   }
 
   public function load_from_2d_array(data:Array<Array<Int>>, tile_graphic:Tile, ?tile_width:Int, ?tile_height:Int, collides:Bool = true, start_index:Int = 0) {
@@ -58,14 +60,159 @@ class TileMap extends Entity {
     height_in_tiles = data.length;
     this.start_index = start_index;
     set_tiles();
-    if (collides) generate_collider();
+    if (collides) generate_collider_optimized();
   }
 
   public function set_tiles() for (i in 0...map_data.length) {
-    var x = i % width_in_tiles;
-    var y = Math.floor(i / width_in_tiles);
-    tiles.set(x, y, map_data[i]);
+    if (map_data[i] > start_index) {
+      var x = i % width_in_tiles;
+      var y = Math.floor(i / width_in_tiles);
+      tiles.set(x, y, map_data[i]);
+    }
   }
+
+  function generate_collider_optimized() {
+    inline function generate_rect(x:Float, y:Float, width:Int, height:Int) {
+      var b = new Body({
+        x: x * tiles.tile_width + ((tiles.tile_width * width) * 0.5),
+        y: y * tiles.tile_height + (tiles.tile_height * height * 0.5),
+        mass: 0,
+        shape: {
+          type: RECT,
+          width: tiles.tile_width * width,
+          height: tiles.tile_height * height
+        }
+      });
+      if (world != null) world.add(b);
+      collider.add(b);
+    }
+    collider.for_each(b -> b.remove());
+    collider.clear();
+    var tmp = new Array<Array<Int>>();
+    for (i in 0...map_data.length) {
+      var x = i % width_in_tiles;
+      var y = Math.floor(i / width_in_tiles);
+      if (tmp[y] == null) tmp[y] = [];
+      tmp[y][x] = map_data[i];
+    }
+    for (y in 0...tmp.length) {
+      var start_x = -1;
+      var width = 0;
+      var height = 1;
+      for (x in 0...tmp[y].length) {
+        var i = tmp[y][x];
+        if (i != -1 && i != start_index && tiles.properties[i].solid) {
+          if (start_x == -1) start_x = x;
+          width += 1;
+          tmp[y][x] = -1;
+        }
+        else {
+          if (start_x != -1) {
+            var yy = y + 1;
+            var flag = false;
+            while (yy < tmp.length - 1) {
+              if (flag) {
+                yy = tmp.length;
+                continue;
+              }
+              for (j in 0...width) {
+                if (tmp[yy][j + start_x] <= start_index || !tiles.properties[tmp[yy][j + start_x]].solid) flag = true;
+              }
+              if (!flag) {
+                for (j in 0...width) {
+                  // tmp[yy][j + start_index] = -1;
+                }
+                // height += 1;
+              }
+              yy += 1;
+            }
+            generate_rect(start_x, y, width, height);
+            start_x = -1;
+            width = 0;
+            height = 1;
+          }
+        }
+      }
+      if (start_x != -1) {
+        generate_rect(start_x, y, width, height);
+        start_x = -1;
+        width = 0;
+        height = 1;
+      }
+      refresh_cache();
+    }
+  }
+
+  //   for x = 0, map_width - 1 do
+  //     local start_y
+  //     local end_y
+  //     for y = 0, map_height - 1 do
+  //         if is_wall_f(x, y) then
+  //             if not start_y then
+  //                 start_y = y
+  //             end
+  //             end_y = y
+  //         elseif start_y then
+  //             local overlaps = {}
+  //             for _, r in ipairs(rectangles) do
+  //                 if (r.end_x == x - 1)
+  //                   and (start_y <= r.start_y)
+  //                   and (end_y >= r.end_y) then
+  //                     table.insert(overlaps, r)
+  //                 end
+  //             end
+  //             table.sort(
+  //                 overlaps,
+  //                 function (a, b)
+  //                     return a.start_y < b.start_y
+  //                 end
+  //             )
+  //             for _, r in ipairs(overlaps) do
+  //                 if start_y < r.start_y then
+  //                     local new_rect = {
+  //                         start_x = x,
+  //                         start_y = start_y,
+  //                         end_x = x,
+  //                         end_y = r.start_y - 1
+  //                     }
+  //                     table.insert(rectangles, new_rect)
+  //                     start_y = r.start_y
+  //                 end
+  //                 if start_y == r.start_y then
+  //                     r.end_x = r.end_x + 1
+  //                     if end_y == r.end_y then
+  //                         start_y = nil
+  //                         end_y = nil
+  //                     elseif end_y > r.end_y then
+  //                         start_y = r.end_y + 1
+  //                     end
+  //                 end
+  //             end
+  //             if start_y then
+  //                 local new_rect = {
+  //                     start_x = x,
+  //                     start_y = start_y,
+  //                     end_x = x,
+  //                     end_y = end_y
+  //                 }
+  //                 table.insert(rectangles, new_rect)
+  //                 start_y = nil
+  //                 end_y = nil
+  //             end
+  //         end
+  //     end
+  //     if start_y then
+  //         local new_rect = {
+  //             start_x = x,
+  //             start_y = start_y,
+  //             end_x = x,
+  //             end_y = end_y
+  //         }
+  //         table.insert(rectangles, new_rect)
+  //         start_y = nil
+  //         end_y = nil
+  //     end
+  // end
 
   function generate_collider() {
     collider.for_each(b -> b.remove());
@@ -90,6 +237,10 @@ class TileMap extends Entity {
       }
     }
   }
+
+  function get_width():Float return width_in_tiles * tiles.tile_width;
+
+  function get_height():Float return width_in_tiles * tiles.tile_height;
 
   override function set_x(value:Float):Float {
     return super.set_x(value);
