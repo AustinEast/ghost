@@ -4,8 +4,6 @@ import echo.Group;
 import ghost.Random;
 import hxd.GM;
 import h2d.GameState;
-import h2d.col.Point;
-import h2d.ghost.Sprite;
 import h2d.ghost.TileMap;
 import hxd.debug.plugins.EchoDrawer;
 import entities.*;
@@ -26,7 +24,7 @@ class GarageState extends GameState {
     hero = new Hero(GM.width * 0.5, GM.height * 0.5);
     colliders.add(hero);
 
-    for (i in 0...100) {
+    for (i in 0...60) {
       if (i % 2 == 0) colliders.add(add(new BoxLg(Random.range(0, GM.width * 2), Random.range(0, GM.height * 0.5))));
       else colliders.add(add(new Box(Random.range(0, GM.width * 2), Random.range(0, GM.height * 0.5))));
     }
