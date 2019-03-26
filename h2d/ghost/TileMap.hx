@@ -120,9 +120,9 @@ class TileMap extends Entity {
               }
               if (!flag) {
                 for (j in 0...width) {
-                  // tmp[yy][j + start_index] = -1;
+                  tmp[yy][j + start_x] = -1;
                 }
-                // height += 1;
+                height += 1;
               }
               yy += 1;
             }
@@ -134,6 +134,24 @@ class TileMap extends Entity {
         }
       }
       if (start_x != -1) {
+        var yy = y + 1;
+        var flag = false;
+        while (yy < tmp.length - 1) {
+          if (flag) {
+            yy = tmp.length;
+            continue;
+          }
+          for (j in 0...width) {
+            if (tmp[yy][j + start_x] <= start_index || !tiles.properties[tmp[yy][j + start_x]].solid) flag = true;
+          }
+          if (!flag) {
+            for (j in 0...width) {
+              tmp[yy][j + start_x] = -1;
+            }
+            height += 1;
+          }
+          yy += 1;
+        }
         generate_rect(start_x, y, width, height);
         start_x = -1;
         width = 0;
@@ -142,77 +160,6 @@ class TileMap extends Entity {
       refresh_cache();
     }
   }
-
-  //   for x = 0, map_width - 1 do
-  //     local start_y
-  //     local end_y
-  //     for y = 0, map_height - 1 do
-  //         if is_wall_f(x, y) then
-  //             if not start_y then
-  //                 start_y = y
-  //             end
-  //             end_y = y
-  //         elseif start_y then
-  //             local overlaps = {}
-  //             for _, r in ipairs(rectangles) do
-  //                 if (r.end_x == x - 1)
-  //                   and (start_y <= r.start_y)
-  //                   and (end_y >= r.end_y) then
-  //                     table.insert(overlaps, r)
-  //                 end
-  //             end
-  //             table.sort(
-  //                 overlaps,
-  //                 function (a, b)
-  //                     return a.start_y < b.start_y
-  //                 end
-  //             )
-  //             for _, r in ipairs(overlaps) do
-  //                 if start_y < r.start_y then
-  //                     local new_rect = {
-  //                         start_x = x,
-  //                         start_y = start_y,
-  //                         end_x = x,
-  //                         end_y = r.start_y - 1
-  //                     }
-  //                     table.insert(rectangles, new_rect)
-  //                     start_y = r.start_y
-  //                 end
-  //                 if start_y == r.start_y then
-  //                     r.end_x = r.end_x + 1
-  //                     if end_y == r.end_y then
-  //                         start_y = nil
-  //                         end_y = nil
-  //                     elseif end_y > r.end_y then
-  //                         start_y = r.end_y + 1
-  //                     end
-  //                 end
-  //             end
-  //             if start_y then
-  //                 local new_rect = {
-  //                     start_x = x,
-  //                     start_y = start_y,
-  //                     end_x = x,
-  //                     end_y = end_y
-  //                 }
-  //                 table.insert(rectangles, new_rect)
-  //                 start_y = nil
-  //                 end_y = nil
-  //             end
-  //         end
-  //     end
-  //     if start_y then
-  //         local new_rect = {
-  //             start_x = x,
-  //             start_y = start_y,
-  //             end_x = x,
-  //             end_y = end_y
-  //         }
-  //         table.insert(rectangles, new_rect)
-  //         start_y = nil
-  //         end_y = nil
-  //     end
-  // end
 
   function generate_collider() {
     collider.for_each(b -> b.remove());
