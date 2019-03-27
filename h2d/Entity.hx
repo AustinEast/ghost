@@ -35,6 +35,8 @@ class Entity extends Body {
 
   override public function dispose() {
     super.dispose();
+    base.remove();
+    components.dispose();
     state = null;
     disposed = true;
   }

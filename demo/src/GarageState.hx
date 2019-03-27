@@ -1,11 +1,15 @@
 package;
 
+import h2d.ghost.Sprite;
+import hxd.Key;
 import echo.Group;
 import ghost.Random;
 import hxd.GM;
 import h2d.GameState;
 import h2d.ghost.TileMap;
+import h2d.col.Point;
 import hxd.debug.plugins.EchoDrawer;
+import hxd.tools.OgmoLoader;
 import entities.*;
 
 class GarageState extends GameState {
@@ -13,30 +17,49 @@ class GarageState extends GameState {
   var powerups:Int;
   var map:TileMap;
   var colliders:Group;
+  var level:OgmoLoader;
   #if debug
   var echo_drawer:EchoDrawer;
   #end
 
   public function new() {
-    super({width: GM.width * 2, height: GM.height * 2, gravity_y: 130});
+    super({width: GM.width * 2, height: GM.height * 2, gravity_y: 180});
+  }
+
+  override public function create() {
+    super.create();
     colliders = new Group();
+    level = new OgmoLoader(hxd.Res.dat.garage.entry.getText());
 
-    hero = new Hero(GM.width * 0.5, GM.height * 0.5);
-    colliders.add(hero);
+    map = level.load_tilemap(hxd.Res.img.test_tile.toTile(), 16, 16, 'Collision');
 
-    for (i in 0...60) {
-      if (i % 2 == 0) colliders.add(add(new BoxLg(Random.range(0, GM.width * 2), Random.range(0, GM.height * 0.5))));
-      else colliders.add(add(new Box(Random.range(0, GM.width * 2), Random.range(0, GM.height * 0.5))));
-    }
-
-    map = get_tiled_layer(1);
+    level.load_entities((entity) -> {
+      var s:h2d.ghost.Sprite;
+      switch (entity.name.toLowerCase()) {
+        case 'player':
+          hero = new Hero();
+          s = hero;
+        case 'boxsm':
+          s = new Box();
+        case 'boxlg':
+          s = new BoxLg();
+        default:
+          s = new Sprite();
+      }
+      var b = s.bounds();
+      s.x += entity.x + b.width * 0.5;
+      s.y += entity.y + b.height * 0.5;
+      b.put();
+      s.refresh_cache();
+      add(s);
+      colliders.add(s);
+    }, 'Entities');
 
     add(map);
-    add(hero);
 
     camera.target = hero;
-    // camera.min = new Point(0, -30);
-    // camera.max = new Point(100, 300);
+    camera.min = new Point(0, 0);
+    camera.max = new Point(level.width, level.height);
 
     world.listen(colliders, map.collider);
     world.listen(colliders);
@@ -57,26 +80,21 @@ class GarageState extends GameState {
       if (hero.sucking) {
         var eb = entity.bounds();
         if (!hero.facing) {
-          if (eb.left > hero.x + 6) entity.acceleration.x -= (120 / (eb.left - hero.x + 6)) + 10;
+          if (eb.left > hero.x + 6 && eb.left < hero.x + 40) entity.acceleration.x -= 20;
         }
         else {
-          if (eb.right < hero.x - 6) entity.acceleration.x += 120 / (hero.x - 6 - eb.right);
+          if (eb.right < hero.x - 6 && eb.right > hero.x - 40) entity.acceleration.x += 20;
         }
         eb.put();
       }
     });
+    if (Key.isReleased(Key.K)) close();
   }
 
   override function dispose() {
     super.dispose();
+    #if debug
     echo_drawer.remove();
-  }
-
-  function get_tiled_layer(layer:Int = 0, collides:Bool = true):TileMap {
-    var data = haxe.Json.parse(hxd.Res.dat.map.entry.getText());
-    // var l = data.layers[layer];
-    var map = new TileMap();
-    map.load_from_2d_array(data.data, hxd.Res.img.test_tile.toTile(), 16, 16, collides);
-    return map;
+    #end
   }
 }

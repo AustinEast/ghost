@@ -26,8 +26,8 @@ class Camera extends Layers {
       if (dy < min.y) dy = min.y;
     }
     if (max != null) {
-      if (dx > max.x) dx = max.x;
-      if (dy > max.y) dy = max.y;
+      if (dx > max.x - GM.width) dx = max.x - GM.width;
+      if (dy > max.y - GM.height) dy = max.y - GM.height;
     }
     x = -dx;
     y = -dy;

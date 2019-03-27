@@ -80,7 +80,7 @@ class Game extends hxd.App implements IDisposable {
 
     // Load the FileSystem
     // If we dont have access to macros, just `initEmbed()`
-    #if macro
+    #if hl
     switch (filesystem) {
       case EMBED:
         hxd.Res.initEmbed();
@@ -100,8 +100,10 @@ class Game extends hxd.App implements IDisposable {
     root2d = new Mask(width, height, s2d);
     viewport = new Layers(root2d);
     ui = new Layers(root2d);
+    #if debug
     debug = new Flow(s2d);
     debug.layout = Vertical;
+    #end
 
     // Init the Game Manager
     GM.init(this, engine);

@@ -16,8 +16,7 @@ class Box extends Sprite {
     }
   };
 
-  public function new(x:Float, y:Float) {
+  public function new() {
     super(options);
-    position.set(x, y);
   }
 }

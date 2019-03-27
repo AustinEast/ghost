@@ -20,7 +20,12 @@ class GameState extends Process {
     world = new World(world_options);
     camera = new Camera();
     ui = new Object();
-    attach();
+  }
+
+  override function create() {
+    super.create();
+    GM.game.viewport.addChild(camera);
+    GM.game.ui.addChild(ui);
   }
 
   public function add(entity:Entity):Entity {
@@ -33,16 +38,6 @@ class GameState extends Process {
   public function remove(entity:Entity):Entity {
     if (entities.remove(entity)) entity.removed(this);
     return entity;
-  }
-
-  function attach() {
-    GM.game.viewport.addChild(camera);
-    GM.game.ui.addChild(ui);
-  }
-
-  function dettach() {
-    camera.remove();
-    ui.remove();
   }
 
   override function pre_step(dt:Float) {
@@ -67,7 +62,8 @@ class GameState extends Process {
     entities = null;
     world.dispose();
     world = null;
-    dettach();
+    camera.remove();
+    ui.remove();
     camera = null;
     ui = null;
   }

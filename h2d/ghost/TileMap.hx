@@ -187,7 +187,7 @@ class TileMap extends Entity {
 
   function get_width():Float return width_in_tiles * tiles.tile_width;
 
-  function get_height():Float return width_in_tiles * tiles.tile_height;
+  function get_height():Float return height_in_tiles * tiles.tile_height;
 
   override function set_x(value:Float):Float {
     return super.set_x(value);

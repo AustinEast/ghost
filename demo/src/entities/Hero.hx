@@ -14,6 +14,7 @@ class Hero extends Sprite {
   var options:SpriteOptions = {
     drag_x: 100,
     max_velocity_x: 60,
+    gravity_scale: 1.5,
     shape: {
       type: RECT,
       width: 12,
@@ -53,9 +54,8 @@ class Hero extends Sprite {
     }
   };
 
-  public function new(x:Float, y:Float) {
+  public function new() {
     super(options);
-    position.set(x, y);
     graphic.animations.play("idle");
     sucking = false;
     grounded = new Grounded({
@@ -83,9 +83,9 @@ class Hero extends Sprite {
         else acceleration.x += left ? -50 : 50;
       }
     }
-    if (Key.isPressed(Key.UP)) velocity.y = -90;
+    // if (Key.isPressed(Key.UP)) velocity.y = -90;
     // Commented out for testing
-    // if (!sucking && grounded.check() && Key.isPressed(Key.UP)) velocity.y = -90;
+    if (!sucking && grounded.check() && Key.isPressed(Key.UP)) velocity.y = -120;
   }
 
   override function post_step(dt:Float) {

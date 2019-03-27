@@ -1,5 +1,6 @@
 package hxd;
 
+import ghost.Process;
 import h2d.Layers;
 import hxd.Game;
 import ghost.Log;
@@ -83,7 +84,12 @@ class GM {
   public static function quit(exit_application:Bool = true) {
     quit_game_callback();
     game.close();
+    #if hl
+    if (exit_application) hxd.System.exit();
+    #end
   }
+
+  public static function reset() Process.shutdown();
   /**
    * Called by `Game` during it's initialization to set up the Game Manager (`GM`).
    * @param game_entity the Game Entity.
