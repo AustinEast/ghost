@@ -1,5 +1,6 @@
 package;
 
+import h2d.Entity;
 import h2d.ghost.Sprite;
 import hxd.Key;
 import echo.Group;
@@ -12,11 +13,13 @@ import hxd.debug.plugins.EchoDrawer;
 import hxd.tools.OgmoLoader;
 import entities.*;
 
+using ghost.ext.FloatExt;
+
 class GarageState extends GameState {
   var hero:Hero;
   var powerups:Int;
   var map:TileMap;
-  var colliders:Group;
+  var colliders:TypedGroup<Entity>;
   var level:OgmoLoader;
   #if debug
   var echo_drawer:EchoDrawer;
@@ -28,7 +31,7 @@ class GarageState extends GameState {
 
   override public function create() {
     super.create();
-    colliders = new Group();
+    colliders = new TypedGroup<Entity>();
     level = new OgmoLoader(hxd.Res.dat.garage.entry.getText());
 
     map = level.load_tilemap(hxd.Res.img.test_tile.toTile(), 16, 16, 'Collision');
@@ -43,6 +46,9 @@ class GarageState extends GameState {
           s = new Box();
         case 'boxlg':
           s = new BoxLg();
+        case 'trash':
+          s = new Trash();
+          s.rotation = Math.random() * 360;
         default:
           s = new Sprite();
       }
@@ -75,18 +81,22 @@ class GarageState extends GameState {
 
   override function step(dt:Float) {
     super.step(dt);
-    world.for_each_dynamic((entity) -> {
+    colliders.for_each_dynamic((entity) -> {
       if (entity == hero) return;
-      if (hero.sucking) {
-        var eb = entity.bounds();
-        if (!hero.facing) {
-          if (eb.left > hero.x + 6 && eb.left < hero.x + 40) entity.acceleration.x -= 20;
+      var eb = entity.bounds();
+      if (!hero.facing) {
+        if (hero.sucking && eb.left.within(hero.x + 6, hero.x + 40)) entity.acceleration.x -= 20;
+        if (entity.data.trash != null && eb.left.within(hero.x, hero.x + 20) && entity.y.within(hero.y + 8, hero.y - 8)) {
+          entity.kill();
         }
-        else {
-          if (eb.right < hero.x - 6 && eb.right > hero.x - 40) entity.acceleration.x += 20;
-        }
-        eb.put();
       }
+      else {
+        if (hero.sucking && eb.right.within(hero.x - 6, hero.x - 40)) entity.acceleration.x += 20;
+        if (entity.data.trash != null && eb.right.within(hero.x, hero.x - 20) && entity.y.within(hero.y + 8, hero.y - 8)) {
+          entity.kill();
+        }
+      }
+      eb.put();
     });
     if (Key.isReleased(Key.K)) close();
   }

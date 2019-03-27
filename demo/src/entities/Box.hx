@@ -5,7 +5,7 @@ import h2d.ghost.Sprite;
 
 class Box extends Sprite {
   var options:SpriteOptions = {
-    drag_x: 10,
+    drag_x: 20,
     shape: {
       type: RECT,
       width: 8,

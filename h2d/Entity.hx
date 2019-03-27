@@ -31,6 +31,7 @@ class Entity extends Body {
   public function post_step(dt:Float) {
     if (components.active) components.post_step(dt);
     base.setPosition(x, y);
+    base.rotation = rotation;
   }
 
   override public function dispose() {
@@ -55,11 +56,6 @@ class Entity extends Body {
     state.world.remove(this);
   }
 
-  public function set_layer(value:Int) {
-    if (base.parent != null) base.parent.addChildAt(base, value);
-    return layer = value;
-  }
-
   public function kill() {
     active = false;
     components.active = false;
@@ -70,5 +66,10 @@ class Entity extends Body {
     active = true;
     components.active = true;
     base.visible = true;
+  }
+
+  function set_layer(value:Int) {
+    if (base.parent != null) base.parent.addChildAt(base, value);
+    return layer = value;
   }
 }

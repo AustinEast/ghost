@@ -16,8 +16,8 @@
     <Width>1000</Width>
     <Height>480</Height>
   </LevelMaximumSize>
-  <Filename>C:\Users\wierd\gamedev\ghost\demo\res\dat\levels.oep</Filename>
-  <RecentLevelDirectory>C:\Users\wierd\gamedev\ghost\demo\res\dat</RecentLevelDirectory>
+  <Filename>Z:\gamedev\ghost\demo\res\dat\levels.oep</Filename>
+  <RecentLevelDirectory>Z:\gamedev\ghost\demo\res\dat</RecentLevelDirectory>
   <AngleMode>Degrees</AngleMode>
   <ProjectType>JSON</ProjectType>
   <CameraEnabled>false</CameraEnabled>
@@ -104,6 +104,21 @@
         <Y>0</Y>
       </Origin>
       <ImageDefinition DrawMode="Image" ImagePath="..\img\boxlg.png" Tiled="false">
+        <RectColor A="255" R="255" G="0" B="0" />
+      </ImageDefinition>
+      <ValueDefinitions />
+      <NodesDefinition Enabled="false" Limit="-1" DrawMode="None" Ghost="false" />
+    </EntityDefinition>
+    <EntityDefinition Name="Trash" Limit="-1" ResizableX="false" ResizableY="false" Rotatable="true" RotateIncrement="15">
+      <Size>
+        <Width>10</Width>
+        <Height>10</Height>
+      </Size>
+      <Origin>
+        <X>0</X>
+        <Y>0</Y>
+      </Origin>
+      <ImageDefinition DrawMode="Image" ImagePath="..\img\trash.png" Tiled="false">
         <RectColor A="255" R="255" G="0" B="0" />
       </ImageDefinition>
       <ValueDefinitions />
