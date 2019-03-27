@@ -77,10 +77,12 @@ class Styles {
     text.letterSpacing = styles.letter_spacing == null ? 1 : styles.letter_spacing;
     text.lineSpacing = styles.line_spacing == null ? 0 : styles.line_spacing;
     if (styles.dropShadow != null) {
-      text.dropShadow.dx = styles.dropShadow.dx == null ? 0 : styles.dropShadow.dx;
-      text.dropShadow.dy = styles.dropShadow.dy == null ? 0 : styles.dropShadow.dy;
-      text.dropShadow.color = styles.dropShadow.color == null ? Color.BLACK : styles.dropShadow.color;
-      text.dropShadow.alpha = styles.dropShadow.alpha == null ? 0 : styles.dropShadow.alpha;
+      text.dropShadow = {
+        dx: styles.dropShadow.dx == null ? 0 : styles.dropShadow.dx,
+        dy: styles.dropShadow.dy == null ? 0 : styles.dropShadow.dy,
+        color: styles.dropShadow.color == null ? Color.BLACK : styles.dropShadow.color,
+        alpha: styles.dropShadow.alpha == null ? 0 : styles.dropShadow.alpha
+      }
     }
 
     return text;
