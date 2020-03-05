@@ -18,6 +18,7 @@ class Boot {
     var cam_speed = 50;
     var player:Entity;
 
+    // Define our Game's Start method
     var start = (game:Game) -> {
       // Load the Ogmo project
       game.load_project(hxd.Res.project.entry.getText());
@@ -41,17 +42,20 @@ class Boot {
       player = game.get_entity("Player");
       if (player != null) game.camera.target = player;
 
+      // Get all the Box Entities and set them up
       for (entity in game.get_all_entities('Box')) {
         entity.body.drag.x = 100;
         entity.components.add(new Suckable());
       }
 
+      // Get all the Big Box Entities and set them up
       for (entity in game.get_all_entities('Big Box')) {
         entity.body.mass = 5;
         entity.body.drag.x = 100;
         entity.components.add(new Suckable());
       }
 
+      // Get all the Trash Entities and set them up
       for (entity in game.get_all_entities('Trash')) {
         entity.body.drag.x = 100;
         entity.body.clear_shapes();
@@ -65,6 +69,7 @@ class Boot {
         entity.components.add(new Trash());
       }
 
+      // Get all the One Way Platform Entities and set them up
       for (entity in game.get_all_entities('One Way')) {
         entity.body.mass = 0;
       }
@@ -77,6 +82,7 @@ class Boot {
       game.add_system(new SuckerSystem());
     }
 
+    // Define our Game's Main update loop
     var step = (game:Game, dt:Float) -> {
       // if (player == null) return;
 
@@ -92,6 +98,7 @@ class Boot {
       // if (Key.isDown(Key.DOWN)) game.camera.viewY += cam_speed * dt;
     }
 
+    // Create the Game
     new Game({
       filesystem: LOCAL,
       width: 320,
