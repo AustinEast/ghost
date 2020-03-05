@@ -1,5 +1,5 @@
 # ghost
-2D ECS Game Framework to bootstrap and simplify game development with the Heaps and OpenFL frameworks.
+A 2D ECS Framework to bootstrap game development with Heaps and OpenFL.
 
 [![Build Status](https://travis-ci.org/AustinEast/ghost.svg?branch=master)](https://travis-ci.org/AustinEast/ghost)
 
