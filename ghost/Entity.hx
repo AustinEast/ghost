@@ -12,6 +12,7 @@ import h2d.Object;
 #elseif openfl
 import openfl.display.Sprite;
 #end
+
 using hxmath.math.MathUtil;
 
 typedef EntityOptions = {
@@ -21,8 +22,8 @@ typedef EntityOptions = {
   ?y:Float,
   ?rotation:Float,
   ?body:BodyOptions,
-  ?display:#if heaps Object #elseif openfl Sprite #end,
-  ?components:Array<Component>
+  ?components:Array<Component>,
+  ?display:#if heaps Object #elseif openfl Sprite #end
 }
 
 class Entity implements IDisposable {
