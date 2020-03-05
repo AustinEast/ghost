@@ -5,8 +5,10 @@ import ghost.System;
 import ghost.component.ScreenWrap;
 
 class ScreenWrapSystem extends System {
+  @:dox(hide)
   @:nodes var nodes:Node<ScreenWrap>;
 
+  @:dox(hide)
   override function step(dt:float) {
     super.step(dt);
 
