@@ -2,9 +2,9 @@
     "name": "ghost",
     "license": "MIT",
     "tags": [],
-    "contributors": [
-      "austineast"
-    ],
+    "description": "TODO",
+    "contributors": ["austineast"],
+    "url": "https://austineast.dev/ghost",
     "releasenote": "initial release",
     "version": "0.0.1",
     "dependencies": {
