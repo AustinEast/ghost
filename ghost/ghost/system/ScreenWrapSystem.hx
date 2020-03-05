@@ -5,10 +5,9 @@ import ghost.System;
 import ghost.component.ScreenWrap;
 
 class ScreenWrapSystem extends System {
-  @:dox(hide)
+  #if !dox
   @:nodes var nodes:Node<ScreenWrap>;
 
-  @:dox(hide)
   override function step(dt:float) {
     super.step(dt);
 
@@ -19,4 +18,5 @@ class ScreenWrapSystem extends System {
       // if (node.entity.y < -height) entity.display.y = GM.height + height;
     }
   }
+  #end
 }
