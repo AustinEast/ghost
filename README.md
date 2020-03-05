@@ -1,5 +1,5 @@
 # ghost
-Framework to help bootstrap and simplify game development with the Heaps Engine.
+Framework to help bootstrap and simplify game development with the Heaps and OpenFL frameworks.
 Currently in rapid development, so it is not recommended for use yet.
 
 ## About
