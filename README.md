@@ -37,7 +37,7 @@ See `demo` for a Heaps example, and `sample` for an OpenFL example
 #### Systems
 
 ### Project Structure
-- assets
+- assets (`res/` if using Heaps)
   - default .ogmo project
   - default level (maybe? itd be cool to be able to press play immediately in Ogmo)
 - src
