@@ -1,5 +1,5 @@
--lib ghost
 -lib heaps
+-lib ghost
 -cp ghost
 -D doc-gen
 --macro include('ghost')
