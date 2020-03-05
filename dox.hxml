@@ -7,4 +7,4 @@
 -xml bin/ghost.xml
 
 --next
--cmd haxelib run dox -i bin -o bin/api --title "Ghost API" -D website "http://austineast.dev/ghost" -in ghost -in ghost -in hxmath
+-cmd haxelib run dox -i bin -o bin/api --title "Ghost API" -D website "http://austineast.dev/ghost" -in ghost -in echo

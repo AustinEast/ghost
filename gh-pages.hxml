@@ -1,8 +1,0 @@
-demo.hxml
---next
-sample.hxml
---next
-dox.hxml
---next
--lib ghostlib
---macro ghost.Assets.copyProjectAssets()

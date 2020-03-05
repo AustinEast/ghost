@@ -1,0 +1,2 @@
+--macro echo.Macros.add_data("entity", "ghost.Entity")
+--macro include("entity")

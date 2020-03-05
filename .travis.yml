@@ -4,18 +4,18 @@ dist: trusty
 language: haxe
 
 haxe:
- - "4.0.0-rc.2"
+ - "4.0.5"
 
 install:
  - haxelib git dox https://github.com/HaxeFoundation/dox.git
- - haxelib git hxmath https://github.com/tbrosman/hxmath.git
  - haxelib git heaps https://github.com/HeapsIO/heaps.git
- - haxelib git ghostlib https://github.com/AustinEast/ghostlib.git
- - haxelib git echo https://github.com/AustinEast/echo.git
+ - haxelib install hxmath
+ - haxelib install echo
+ - haxelib install ogmo-3
  - haxelib dev ghost .
 
 script:
- - haxe gh-pages.hxml
+ - haxe dox.hxml
 
 deploy:
  - provider: pages
@@ -25,7 +25,7 @@ deploy:
    on:
     tags: true
  - provider: script
-   haxe: "4.0.0-rc.2"
+   haxe: "4.0.5"
    script: bash ./release_haxelib.sh $HAXELIB_PWD
    on:
     tags: true

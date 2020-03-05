@@ -8,8 +8,7 @@
     "releasenote": "initial release",
     "version": "0.0.1",
     "dependencies": {
-      "ghostlib": "",
       "echo": "",
-      "heaps": ""
+      "ogmo-3": ""
     }
   }

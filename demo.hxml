@@ -1,8 +1,0 @@
--lib ghost
--cp demo/src
--main Main
--dce full
--debug
--D standalone
--D resourcesPath=demo/res
--js bin/demo.js
