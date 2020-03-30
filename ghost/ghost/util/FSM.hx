@@ -13,9 +13,9 @@ class FSM<T> {
   var current:State<T>;
   var requested:State<T>;
 
-  public function new(parent:T, initialState:State<T>) {
+  public function new(parent:T, ?initial_state:State<T>) {
     this.parent = parent;
-    requested = initialState;
+    if (initial_state != null) requested = initialState;
   }
 
   public function set(state:State<T>):State<T> return requested = state;
@@ -30,6 +30,6 @@ class FSM<T> {
       requested = null;
     }
 
-    current.step(parent, dt);
+    if (current != null) current.step(parent, dt);
   }
 }
