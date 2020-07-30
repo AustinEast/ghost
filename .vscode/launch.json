@@ -2,26 +2,9 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "chrome",
-            "request": "launch",
-            "name": "Chrome Debugger",
-            "url": "file://${workspaceFolder}/bin/index.html",
-            "webRoot": "${workspaceFolder}",
-            "preLaunchTask": {
-				"type" : "haxe",
-				"args" : "active configuration"
-			}
-        },
-        {
-			"request": "launch",
-            "type": "hl",
-            "name": "HashLink Debugger (WIP)",
-			"hxml": "build.hxml",
-			"cwd": "${workspaceRoot}/demo",
-			"preLaunchTask": {
-				"type" : "haxe",
-				"args" : "active configuration"
-			}
+			"name": "Haxe Interpreter",
+			"type": "haxe-eval",
+			"request": "launch"
 		}
     ]
 }

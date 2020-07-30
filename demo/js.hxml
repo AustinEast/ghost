@@ -1,8 +1,0 @@
-# import base.xml
-base.hxml
-
-# output
--js bin/game.js
-
-# uncomment next line to open the output on build
--cmd open ../index.html
