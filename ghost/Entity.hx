@@ -1,7 +1,7 @@
 package ghost;
 
 import ghost.Layer.TypedLayer;
-import ghost.util.Components;
+import cog.Components;
 import hxmath.math.Vector2;
 import echo.util.JSON;
 import echo.Body;

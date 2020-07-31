@@ -5,8 +5,6 @@ import ghost.entity.Sprite;
 import ghost.entity.TileMap;
 import ghost.Layer;
 import ghost.system.AnimationSystem;
-import ghost.util.NodeType;
-import ghost.util.Nodes;
 import ghost.util.Color;
 import ghost.util.Group;
 import echo.data.Options;

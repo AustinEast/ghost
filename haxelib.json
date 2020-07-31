@@ -8,6 +8,7 @@
     "releasenote": "initial release",
     "version": "0.0.1",
     "dependencies": {
+      "cog": "",
       "echo": "",
       "ogmo-3": ""
     }
