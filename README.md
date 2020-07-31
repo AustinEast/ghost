@@ -3,7 +3,6 @@ A 2D Game Framework written in Haxe.
 
 [![Build Status](https://travis-ci.org/AustinEast/ghost.svg?branch=master)](https://travis-ci.org/AustinEast/ghost)
 
-## About
 Currently in rapid development, so it is not recommended for use yet.
 
 <!-- 
