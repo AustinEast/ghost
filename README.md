@@ -1,11 +1,12 @@
 # ghost
-A 2D ECS Framework to bootstrap game development with Heaps and OpenFL.
+A 2D Game Framework written in Haxe.
 
 [![Build Status](https://travis-ci.org/AustinEast/ghost.svg?branch=master)](https://travis-ci.org/AustinEast/ghost)
 
 ## About
 Currently in rapid development, so it is not recommended for use yet.
 
+<!-- 
 ## Features
 
 ## Getting Started
@@ -54,3 +55,5 @@ See `demo` for a Heaps example, and `sample` for an OpenFL example
 - loading levels
 - move to gameplay coding - simple game-level update loop, then a custom Entity, then a component + system (maybe suuppper basic platformer?)
 - different game states - game over state?
+-->
+
